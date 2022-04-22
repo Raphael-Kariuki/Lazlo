@@ -17,6 +17,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public void onUpgrade(SQLiteDatabase DB, int i, int i1){
         DB.execSQL("drop Table if exists userDetails");
+        //recreate the db
+        onCreate(DB);
     }
     public boolean insertUserData(String userName, String email, String password){
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -25,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("email", email);
         contentValues.put("password", password);
         long result = DB.insert("userDetails", null, contentValues);
+        DB.close();
         if(result == -1){
             return false;
         }else{
