@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context){
@@ -34,9 +36,24 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    public ArrayList<HashMap<String, String>> getUserData(){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ArrayList<HashMap<String,String>> userList = new ArrayList<>();
+        Cursor cursor = DB.rawQuery("Select userName, email, password from userDetails ", null);
+        while(cursor.moveToNext()){
+            HashMap<String, String> user = new HashMap<>();
+            user.put("username",cursor.getString(0));
+            user.put("email", cursor.getString(1));
+            user.put("password", cursor.getString(2));
+            userList.add(user);
+                    }
+        cursor.close();
+        return userList;
+    }
     public Cursor getData(){
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from userDetails ", null);
+        Cursor cursor = DB.rawQuery("Select * from Userdetails ",null);
+        //cursor.close();
         return cursor;
     }
 }

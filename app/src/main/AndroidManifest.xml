@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lazlo">
         <activity
+            android:name=".AddTasks"
+            android:exported="false" />
+        <activity
             android:name=".myAccount"
             android:exported="false" />
         <activity

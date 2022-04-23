@@ -3,12 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.2869791666666667" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1693840579710145" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
         <entry key="app/src/main/res/layout/activity_my_account.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.271875" />
+        <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/userdata_listrow.xml" value="0.1" />
       </map>
     </option>
   </component>

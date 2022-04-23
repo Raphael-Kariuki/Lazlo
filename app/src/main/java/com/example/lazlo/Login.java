@@ -10,11 +10,18 @@ import android.database.Cursor;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lazlo.Sql.DBHelper;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.os.Bundle;
+
+
 
 public class Login extends AppCompatActivity {
 
@@ -69,7 +76,7 @@ public class Login extends AppCompatActivity {
     public static boolean loginCheck(Cursor cursor, String emailCheck, String passCheck){
         while (cursor.moveToNext()){
             if (cursor.getString(0).equals(emailCheck)){
-                if(cursor.getString(2).equals(passCheck)){
+                if(cursor.getString(1).equals(passCheck)){
                     return true;
                 }
                 return false;
@@ -77,4 +84,5 @@ public class Login extends AppCompatActivity {
         }
         return false;
     }
+
 }
