@@ -1,6 +1,7 @@
 package com.example.lazlo.Sql;
 
 /*added code*/
+import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
@@ -16,12 +17,16 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         DB.execSQL("create Table userDetails(userName TEXT primary key,email TEXT, password PASSWORD )");
+        DB.execSQL("create Table TaskList(UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
+
     }
+
     public void onUpgrade(SQLiteDatabase DB, int i, int i1){
         DB.execSQL("drop Table if exists userDetails");
         //recreate the db
         onCreate(DB);
     }
+
     public boolean insertUserData(String userName, String email, String password){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -29,6 +34,20 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("email", email);
         contentValues.put("password", password);
         long result = DB.insert("userDetails", null, contentValues);
+        DB.close();
+        if(result == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public boolean insertTasks( String userName, String taskTitle, String taskDescription){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("TaskTitle", taskTitle);
+        contentValues.put("TaskDescription", taskDescription);
+        contentValues.put("UserName", userName);
+        long result = DB.insert("TasksList", null, contentValues);
         DB.close();
         if(result == -1){
             return false;

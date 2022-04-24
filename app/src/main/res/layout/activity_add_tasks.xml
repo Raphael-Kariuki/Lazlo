@@ -10,70 +10,69 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
-
-    <TextView
-        android:id="@+id/cancel_task_addition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:drawableStartCompat="@drawable/hamburger_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"/>
-
     <TextView
         android:id="@+id/createTasksLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
+        android:layout_width="264dp"
+        android:layout_height="26dp"
         android:layout_marginTop="4dp"
-        android:text="@string/create_new_task"
+        android:clickable="false"
+        android:gravity="start"
 
+        android:text="@string/create_new_task"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="false"/>
-
-    <TextView
-        android:id="@+id/saveCreatedTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:gravity="end"
-        android:text="Save task"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/cancel_task_addition"
-        tools:layout_editor_absoluteX="16dp"
-        android:orientation="vertical">
+    <ImageButton
+        android:id="@+id/btn_saveTask"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:id="@+id/taskTitle"
+        android:id="@+id/taskDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task name"
-        android:gravity="center"
-        />
+        android:gravity="start"
+        android:hint="Description"
+        android:textColorLink="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/taskTitle"
+        tools:layout_editor_absoluteX="16dp" />
+
     <EditText
         android:id="@+id/select_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Select the date"
+        android:layout_marginTop="28dp"
 
-        />
-    </LinearLayout>
+        android:hint="Set the deadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription" />
+
+    <EditText
+        android:id="@+id/taskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="start"
+        android:hint="Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createTasksLabel" />
+
+    <ImageButton
+        android:id="@+id/cancelTaskCreation"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
