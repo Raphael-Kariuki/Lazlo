@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ public class AddTasks extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
+    SharedPreferences tasks_sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,10 @@ public class AddTasks extends AppCompatActivity {
             public void onClick(View view) {
                 // get the string email broadcasted from login to stand in as the
                 //determiner of who enters tasks. Should be replaced by the username or userId
-                Intent intent = getIntent();
+                tasks_sharedPrefs = getSharedPreferences("user_details",MODE_PRIVATE);
 
-                String userName = intent.getStringExtra("email").toString().trim();
-                final String USERNAME = userName;
+
+                String USERNAME = tasks_sharedPrefs.getString("username",null);
                 String taskTitle_String = task_title.getText().toString().trim();
                 String taskDescription_String = task_description.getText().toString().trim();
                 //will process dates later

@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
-    SQLiteDatabase newDb;
+    //create database
     public DBHelper(Context context){
         super(context, "UserData", null, 1);
     }
+    //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
         DB.execSQL("create Table TaskList(UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
@@ -22,16 +23,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-
-
-
+    //method run when there's a db upgrade
     public void onUpgrade(SQLiteDatabase DB, int i, int i1){
         DB.execSQL("drop Table if exists userDetails");
         DB.execSQL("drop Table if exists TaskList");
         //recreate the db
         onCreate(DB);
     }
-
+    //Method to insert userdata on sign up, returning true if successful and otherwise
+    //executed on signup.java
     public boolean insertUserData(String userName, String email, String password){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -46,6 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    //method to insert task, executed on addtasks.java
     public boolean insertTasks( String userName, String taskTitle, String taskDescription){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -60,6 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    //create an array from userdata details from db to be used in populating a listview
     public ArrayList<HashMap<String, String>> getUserData(){
         SQLiteDatabase DB = this.getWritableDatabase();
         ArrayList<HashMap<String,String>> userList = new ArrayList<>();
@@ -74,10 +76,24 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return userList;
     }
+    //method to obtain login credentials which are checked on login
     public Cursor getData(){
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor = DB.rawQuery("Select * from Userdetails ",null);
         //cursor.close();
         return cursor;
+    }
+    //method to create an array of user tasks
+    public ArrayList<HashMap<String, String>> getTasks(String userID){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ArrayList<HashMap<String,String>> tasksList = new ArrayList<>();
+        Cursor cursor = DB.rawQuery("Select * from TaskList where UserName = ?",new String[]{userID});
+        while (cursor.moveToNext()){
+            HashMap<String,String> task = new HashMap<>();
+            task.put("task_title", cursor.getString(1));
+            task.put("task_description", cursor.getString(2));
+            tasksList.add(task);
+        }
+        return tasksList;
     }
 }
