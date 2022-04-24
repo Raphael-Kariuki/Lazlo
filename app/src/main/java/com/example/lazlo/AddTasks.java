@@ -23,6 +23,7 @@ public class AddTasks extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +53,32 @@ public class AddTasks extends AppCompatActivity {
         });
         btn_saveTasks = (ImageButton) findViewById(R.id.btn_saveTask);
         dbHelper = new DBHelper(this);
+
+
         btn_saveTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent();
                 // get the string email broadcasted from login to stand in as the
                 //determiner of who enters tasks. Should be replaced by the username or userId
+                Intent intent = getIntent();
+
                 String userName = intent.getStringExtra("email").toString().trim();
+                final String USERNAME = userName;
                 String taskTitle_String = task_title.getText().toString().trim();
                 String taskDescription_String = task_description.getText().toString().trim();
                 //will process dates later
-                boolean b = dbHelper.insertTasks(userName, taskTitle_String,taskDescription_String);
+                boolean b = dbHelper.insertTasks(USERNAME, taskTitle_String,taskDescription_String);
                 if (taskTitle_String.equals("") && taskDescription_String.equals("")){
                     Toast.makeText(getApplicationContext(), "Missing content", Toast.LENGTH_LONG).show();
                 }
                 if (b){
                     //put out notification of success and redirect to taskview
+                    Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getApplicationContext(), FinalPage.class);
+                    startActivity(i);
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_LONG).show();
                 }
             }
         });

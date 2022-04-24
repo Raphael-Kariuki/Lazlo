@@ -11,18 +11,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
+    SQLiteDatabase newDb;
     public DBHelper(Context context){
         super(context, "UserData", null, 1);
     }
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table userDetails(userName TEXT primary key,email TEXT, password PASSWORD )");
         DB.execSQL("create Table TaskList(UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
+        DB.execSQL("create Table userDetails(userName TEXT primary key,email TEXT, password PASSWORD )");
 
     }
 
+
+
+
     public void onUpgrade(SQLiteDatabase DB, int i, int i1){
         DB.execSQL("drop Table if exists userDetails");
+        DB.execSQL("drop Table if exists TaskList");
         //recreate the db
         onCreate(DB);
     }
@@ -47,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("TaskTitle", taskTitle);
         contentValues.put("TaskDescription", taskDescription);
         contentValues.put("UserName", userName);
-        long result = DB.insert("TasksList", null, contentValues);
+        long result = DB.insert("TaskList", null, contentValues);
         DB.close();
         if(result == -1){
             return false;

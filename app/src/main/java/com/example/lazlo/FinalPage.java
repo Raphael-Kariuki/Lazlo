@@ -22,6 +22,7 @@ public class FinalPage extends AppCompatActivity {
     TextView hamburger_menu;
     ListView tasks_listView;
     Button btn_addTasks;
+    String s2;
     @Override
     public void onBackPressed(){
         FinalPage.this.finish();
@@ -31,10 +32,10 @@ public class FinalPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_page);
-        /* text = findViewById(R.id.changeText);
+        // text = findViewById(R.id.changeText);
         Intent intent = getIntent();
-        String s2 = intent.getStringExtra("email");
-        text.setText(s2); */
+        s2 = intent.getStringExtra("email");
+        //text.setText(s2); */
 
 
         //method to populate list
@@ -52,6 +53,8 @@ public class FinalPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), myAccount.class);
+
+
                 startActivity(intent);
             }
         });
@@ -74,6 +77,7 @@ public class FinalPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),AddTasks.class);
+                intent.putExtra("email", s2);
                 startActivity(intent);
             }
         });
