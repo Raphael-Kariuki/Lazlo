@@ -94,9 +94,32 @@ public class FinalPage extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    dbHelper.deleteTask(l);
+                    SetOrRefreshListView();
+                    return true;
+                }
+            });
+        }else {
+            simpleCursorAdapter.swapCursor(cursor);
         }
 
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        SetOrRefreshListView();
+        //refresh listview when returning to the activity
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        cursor.close();
+        //clean up
+    }
+
    /*private void populateLandingPageListView() {
         DBHelper db = new DBHelper(this);
         ArrayList<HashMap<String, String>> taskList = db.getTasks(s2);
@@ -137,7 +160,7 @@ public class FinalPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 dbHelper.deleteTask(l);
-                populateTaskListView();
+                SetOrRefreshListView();
             }
         });
     }

@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-    <!-- view appears when the user has no tasks-->
+    <!-- view appears when the user has no tasks
 
     <TextView
         android:id="@android:id/empty"
@@ -80,7 +80,7 @@
         android:text="No tasks\n Click on add task button to add tasks"
         android:textStyle="bold" />
 
-
+-->
 
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

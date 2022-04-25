@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id LONG PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT NOT NULL,email TEXT NOT NULL, password PASSWORD NOT NULL)");
 
     }
@@ -48,7 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
     public long deleteTask(long id){
-        return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id),null,null,null});
+        return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id)});
     }
     public Cursor getAll() {
         return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
@@ -108,5 +108,17 @@ public class DBHelper extends SQLiteOpenHelper {
             tasksList.add(task);
         }
         return tasksList;
+    }
+    public long update(long id, String UserName, String TaskTitle, String TaskDescription) {
+        long rv = 0;
+        ContentValues cv = new ContentValues();
+        if (UserName != null && UserName.length() > 0) cv.put("UserName",UserName);
+        if (TaskTitle != null && TaskTitle.length() > 0) cv.put("TaskTitle",TaskTitle);
+        if (TaskDescription != null && TaskDescription.length() > 0) cv.put("TaskDescription",TaskDescription);
+        if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
+        return rv;
+    }
+    public Cursor getTaskById(long id) {
+        return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);
     }
 }
