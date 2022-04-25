@@ -18,8 +18,8 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table TaskList(UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
-        DB.execSQL("create Table userDetails(userName TEXT primary key,email TEXT, password PASSWORD )");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT NOT NULL,email TEXT NOT NULL, password PASSWORD NOT NULL)");
 
     }
 
@@ -30,14 +30,15 @@ public class DBHelper extends SQLiteOpenHelper {
         //recreate the db
         onCreate(DB);
     }
+
     //Method to insert userdata on sign up, returning true if successful and otherwise
     //executed on signup.java
     public boolean insertUserData(String userName, String email, String password){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("userName", userName);
-        contentValues.put("email", email);
-        contentValues.put("password", password);
+        if(userName != null && userName.length() > 0) contentValues.put("userName", userName);
+        if(email != null && email.length() > 0) contentValues.put("email", email);
+        if (password != null && password.length() > 0) contentValues.put("password", password);
         long result = DB.insert("userDetails", null, contentValues);
         DB.close();
         if(result == -1){
@@ -46,6 +47,10 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    public long deleteTask(long id){
+        return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id),null,null,null});
+    }
+
     //method to insert task, executed on addtasks.java
     public boolean insertTasks( String userName, String taskTitle, String taskDescription){
         SQLiteDatabase DB = this.getWritableDatabase();
@@ -81,6 +86,11 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor = DB.rawQuery("Select * from Userdetails ",null);
         //cursor.close();
+        return cursor;
+    }
+    public Cursor get_tasks(String userID){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        Cursor cursor = DB.rawQuery("Select _id,TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
         return cursor;
     }
     //method to create an array of user tasks

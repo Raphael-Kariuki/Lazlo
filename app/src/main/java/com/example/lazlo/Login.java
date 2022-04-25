@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
         btnSubmitLoginCredentials = (Button) findViewById(R.id.btnSubmit_login);
         dbHelper = new DBHelper(this);
         Intent intent = new Intent(Login.this, FinalPage.class);
-        //sharedpreferences are used to store variables persistently, even
+        //shared preferences are used to store variables persistently, even
         //after uses closes the app. Only cleared when they logout.
         //preferred to global variables as global variables are lost when user closes the app
         sharedPreferences = getSharedPreferences("user_details",MODE_PRIVATE);
@@ -87,8 +87,8 @@ public class Login extends AppCompatActivity {
     }
     public static boolean loginCheck(Cursor cursor, String emailCheck, String passCheck){
         while (cursor.moveToNext()){
-            if (cursor.getString(0).equals(emailCheck)){
-                if(cursor.getString(1).equals(passCheck)){
+            if (cursor.getString(2).equals(emailCheck)){
+                if(cursor.getString(3).equals(passCheck)){
                     return true;
                 }
                 return false;
