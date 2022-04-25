@@ -50,6 +50,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public long deleteTask(long id){
         return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id),null,null,null});
     }
+    public Cursor getAll() {
+        return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
+    }
 
     //method to insert task, executed on addtasks.java
     public boolean insertTasks( String userName, String taskTitle, String taskDescription){
@@ -90,7 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public Cursor get_tasks(String userID){
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select _id,TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
+        Cursor cursor = DB.rawQuery("Select TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
         return cursor;
     }
     //method to create an array of user tasks

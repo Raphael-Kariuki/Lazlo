@@ -39,9 +39,9 @@ public class FinalPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_page);
 
-        //tasks_listView = this.findViewById(R.id.task_listView);
-        //dbHelper = new DBHelper(this);
-        //SetOrRefreshListView();
+        tasks_listView = this.findViewById(R.id.task_listView);
+        dbHelper = new DBHelper(this);
+        SetOrRefreshListView();
 
 
 
@@ -63,7 +63,7 @@ public class FinalPage extends AppCompatActivity {
 
         //method to populate list
 
-        populateTaskListView();
+        //populateTaskListView();
 
         // click to add task
         addNewTasks();
@@ -82,9 +82,9 @@ public class FinalPage extends AppCompatActivity {
 
     }
     private void SetOrRefreshListView(){
-        cursor = dbHelper.get_tasks(s2);
+        cursor = dbHelper.getAll();
         if (simpleCursorAdapter == null){
-            simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_expandable_list_item_2,cursor,new String[]{"task_title","task_description"},new int[]{android.R.id.text1,android.R.id.text1},0);
+            simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,cursor,new String[]{"TaskTitle","TaskDescription"},new int[]{android.R.id.text1,android.R.id.text2},0);
             tasks_listView.setAdapter(simpleCursorAdapter);
             tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -106,7 +106,7 @@ public class FinalPage extends AppCompatActivity {
     }*/
     private void populateTaskListView(){
         DBHelper db = new DBHelper(this);
-        Cursor taskCursor = db.get_tasks(s2);
+        Cursor taskCursor = db.getAll();
         class TasksCursorAdapter extends CursorAdapter{
 
             public TasksCursorAdapter(Context context, Cursor cursor){
@@ -133,6 +133,13 @@ public class FinalPage extends AppCompatActivity {
         TasksCursorAdapter tasksCursorAdapter = new TasksCursorAdapter(this, taskCursor);
         tasks_listView = (ListView) findViewById(R.id.task_listView);
         tasks_listView.setAdapter(tasksCursorAdapter);
+        tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dbHelper.deleteTask(l);
+                populateTaskListView();
+            }
+        });
     }
 
     private void addNewTasks(){
