@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,8 +52,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public long deleteTask(long id){
         return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id)});
     }
-    public Cursor getAll() {
-        return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
+    public Cursor getAll(String uname) {
+        //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
+        return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,null);
+        //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
 
     //method to insert task, executed on addtasks.java
@@ -112,11 +116,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public long update(long id, String UserName, String TaskTitle, String TaskDescription) {
         long rv = 0;
         ContentValues cv = new ContentValues();
-        if (UserName != null && UserName.length() > 0) cv.put("UserName",UserName);
-        if (TaskTitle != null && TaskTitle.length() > 0) cv.put("TaskTitle",TaskTitle);
-        if (TaskDescription != null && TaskDescription.length() > 0) cv.put("TaskDescription",TaskDescription);
-        if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
-        return rv;
+            if (UserName != null && UserName.length() > 0) cv.put("UserName",UserName);
+            if (TaskTitle != null && TaskTitle.length() > 0) cv.put("TaskTitle",TaskTitle);
+            if (TaskDescription != null && TaskDescription.length() > 0) cv.put("TaskDescription",TaskDescription);
+            if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
+            return rv;
+
     }
     public Cursor getTaskById(long id) {
         return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);

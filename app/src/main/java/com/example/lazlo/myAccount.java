@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.os.Bundle;
 
 public class myAccount extends AppCompatActivity {
-    Button logout;
+    Button logout,btnTasks;
     SharedPreferences prf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,14 @@ public class myAccount extends AppCompatActivity {
                 editor.commit();
                 startActivity(i);
 
+            }
+        });
+        btnTasks = findViewById(R.id.btn_tasks);
+        btnTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FinalPage.class);
+                startActivity(intent);
             }
         });
     }

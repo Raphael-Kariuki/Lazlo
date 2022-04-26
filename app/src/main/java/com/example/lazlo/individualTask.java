@@ -11,11 +11,13 @@ import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class individualTask extends AppCompatActivity {
   EditText Ttitle, Tdescription;
@@ -47,18 +49,26 @@ public class individualTask extends AppCompatActivity {
         Btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.update(currentId,null,Ttitle.getText().toString(),Tdescription.getText().toString());
+                 dbHelper.update(currentId,null,Ttitle.getText().toString(),Tdescription.getText().toString());
+
+
             }
         });
 
     }
     private void showData(){
-        Cursor cursor = dbHelper.getTaskById(currentId);
-        if (cursor.moveToFirst()){
-            Ttitle.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
-            Tdescription.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+        try {
+            Cursor cursor = dbHelper.getTaskById(currentId);
+            if (cursor.moveToFirst()){
+                Ttitle.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
+                Tdescription.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+            }
+            cursor.close();
+        }catch (Exception e){
+            Toast.makeText(this,"Error " + e + "occurred", Toast.LENGTH_LONG).show();
         }
-        cursor.close();
+
+
     }
 
     }

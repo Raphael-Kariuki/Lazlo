@@ -82,7 +82,7 @@ public class FinalPage extends AppCompatActivity {
 
     }
     private void SetOrRefreshListView(){
-        cursor = dbHelper.getAll();
+        cursor = dbHelper.getAll(s2);
         if (simpleCursorAdapter == null){
             simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,cursor,new String[]{"TaskTitle","TaskDescription"},new int[]{android.R.id.text1,android.R.id.text2},0);
             tasks_listView.setAdapter(simpleCursorAdapter);
@@ -129,7 +129,7 @@ public class FinalPage extends AppCompatActivity {
     }*/
     private void populateTaskListView(){
         DBHelper db = new DBHelper(this);
-        Cursor taskCursor = db.getAll();
+        Cursor taskCursor = db.getAll(s2);
         class TasksCursorAdapter extends CursorAdapter{
 
             public TasksCursorAdapter(Context context, Cursor cursor){

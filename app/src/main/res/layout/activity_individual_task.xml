@@ -30,13 +30,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/Tdescription"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/activity_vertical_margin"/>
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:text="Save"/>
     <Button
         android:id="@+id/Btnshow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/Btnsave"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:text="Show Tasks"/>
         />
 </RelativeLayout>
 
