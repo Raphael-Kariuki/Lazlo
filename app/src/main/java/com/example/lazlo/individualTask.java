@@ -49,7 +49,15 @@ public class individualTask extends AppCompatActivity {
         Btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 dbHelper.update(currentId,null,Ttitle.getText().toString(),Tdescription.getText().toString());
+
+                try {
+                    dbHelper.update(currentId,null,Ttitle.getText().toString(),Tdescription.getText().toString());
+                    Toast.makeText(getApplicationContext(),"Task updated successfully", Toast.LENGTH_LONG).show();
+
+                }catch (Exception e){
+                    System.out.println("Error inserting: " + e);
+                    Toast.makeText(getApplicationContext(),"Task update failure", Toast.LENGTH_LONG).show();
+                }
 
 
             }

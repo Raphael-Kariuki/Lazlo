@@ -42,7 +42,8 @@
         android:hint="Description"
         android:textColorLink="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        />
 
     <EditText
         android:id="@+id/select_date"

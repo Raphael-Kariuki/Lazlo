@@ -62,9 +62,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertTasks( String userName, String taskTitle, String taskDescription){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("TaskTitle", taskTitle);
-        contentValues.put("TaskDescription", taskDescription);
-        contentValues.put("UserName", userName);
+        if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
+
+        if (taskTitle != null && taskTitle.length() > 0)contentValues.put("TaskTitle", taskTitle);
+        if (taskDescription != null && taskDescription.length() > 0) contentValues.put("TaskDescription", taskDescription);
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();
         if(result == -1){
