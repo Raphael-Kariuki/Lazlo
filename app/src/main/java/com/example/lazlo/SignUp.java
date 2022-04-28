@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 /* added code */
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ public class SignUp extends AppCompatActivity {
     TextView switch2login;
     Button btnSignUp;
     DBHelper dbHelper;
+    boolean b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +40,38 @@ public class SignUp extends AppCompatActivity {
                 String email1 = email.getText().toString().trim();
                 String password1 = password.getText().toString().trim();
                 String password2 = confirmPassword.getText().toString().trim();
-                boolean b = dbHelper.insertUserData(username1,email1,password1);
+
+
                 if (!password2.equals(password1)){
-                    Toast.makeText(SignUp.this,"Passwords don't match, button poof",Toast.LENGTH_SHORT).show();
-                    btnSignUp.setEnabled(false);
+                    Toast.makeText(SignUp.this,"Passwords don't match",Toast.LENGTH_SHORT).show();
+                    password.setText("");
+                }if(username1.equals("")){
+                    Toast.makeText(SignUp.this,"user name can't be blank",Toast.LENGTH_SHORT).show();
                 }
-                if (b){
-                    Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(SignUp.this, Login.class);
-                    startActivity(i);
-                }else {
-                    Toast.makeText(SignUp.this, "Failed to insert the data", Toast.LENGTH_SHORT).show();
+                if(email1.equals("")){
+                    Toast.makeText(SignUp.this,"Email can't be blank",Toast.LENGTH_SHORT).show();
+                }if (!Patterns.EMAIL_ADDRESS.matcher(email1).matches()){
+                    Toast.makeText(SignUp.this,"Email syntax error",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        b = dbHelper.insertUserData(username1,email1,password1);
+
+                       if (b){
+                            Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(SignUp.this, Login.class);
+                            startActivity(i);
+                       }else {
+                          Toast.makeText(SignUp.this, "Failed to insert the data", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (SQLiteConstraintException e){
+                        Toast.makeText(SignUp.this,"Unique values error",Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+
+
+
+
             }
         });
         switch2login = findViewById(R.id.Switch2login);

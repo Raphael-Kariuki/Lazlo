@@ -31,6 +31,10 @@ public class Dashboard extends AppCompatActivity {
     LocalDate selectedStart_duration_String,selectedEnd_duration_String;
     TextView sumTotalView;
 
+
+    public void onBackPressed(){
+        Dashboard.this.finish();
+    }
     public static LocalDate getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
         LocalDate date = LocalDate.parse(string, dateTimeFormatter);
         return date;

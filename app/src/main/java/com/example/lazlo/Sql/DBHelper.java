@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline DATE NOT NULL)");
-        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email TEXT UNIQUE NOT NULL, password PASSWORD NOT NULL)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
     }
 

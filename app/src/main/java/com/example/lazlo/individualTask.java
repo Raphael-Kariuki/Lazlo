@@ -29,8 +29,8 @@ public class individualTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
-        Ttitle = findViewById(R.id.Ttitle);
-        Tdescription = findViewById(R.id.Tdescription);
+        Ttitle = findViewById(R.id.individualTaskTitle_TextInputEdit);
+        Tdescription = findViewById(R.id.individualTaskDescription_TextInputEdit);
         Btnsave = findViewById(R.id.Btnsave);
         Btnshow = findViewById(R.id.Btnshow);
         dbHelper = new DBHelper(this);
@@ -72,7 +72,6 @@ public class individualTask extends AppCompatActivity {
     public void showData(){
         System.out.println("Populating...");
         try {
-            currentId = 1;
             cursor = dbHelper.getTaskById(currentId);
             System.out.println("Success conn to db...with id: " + currentId);
         }catch (Exception e){
