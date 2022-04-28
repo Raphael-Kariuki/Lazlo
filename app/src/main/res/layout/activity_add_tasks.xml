@@ -34,36 +34,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/taskDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:hint="Description"
-        android:textColorLink="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle"
-        tools:layout_editor_absoluteX="16dp"
-        />
+    <ImageButton
+        android:id="@+id/cancelTaskCreation"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tasksCategory"
+        android:id="@+id/taskTitle_TextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/createTasksLabel"
+        android:layout_marginTop="40dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/taskTitleAutoCompleteView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Task title"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/taskDescription_TextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/taskTitle_TextLayout"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/taskDescriptionAutoCompleteView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Task Description"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tasksCategoryTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/taskDescription"
-        tools:layout_editor_absoluteX="16dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
 
         >
-<AutoCompleteTextView
-    android:id="@+id/tasksAutoCompleteView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:hint="Select category"
-    android:layout_weight="1"
-    android:inputType="none"/>
+        <AutoCompleteTextView
+            android:id="@+id/tasksAutoCompleteView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Select category"
+            android:layout_weight="1"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
 
     <TextView
         android:id="@+id/others"
@@ -74,7 +112,7 @@
         android:textStyle="bold"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:padding="@dimen/activity_vertical_margin"
-        app:layout_constraintTop_toBottomOf="@+id/tasksCategory"
+        app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
         tools:layout_editor_absoluteX="16dp"
         android:gravity="center"/>
 
@@ -108,7 +146,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price_TextLayout" />
-
+<!--
     <EditText
         android:id="@+id/taskTitle"
         android:layout_width="match_parent"
@@ -118,15 +156,9 @@
         android:hint="Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createTasksLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/createTasksLabel" /> -->
 
-    <ImageButton
-        android:id="@+id/cancelTaskCreation"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 

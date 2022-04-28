@@ -39,15 +39,16 @@ import java.util.concurrent.ExecutionException;
 import java.lang.reflect.Field;
 
 public class AddTasks extends AppCompatActivity {
-    EditText task_title,task_description,select_date;
+    TextInputEditText task_title,task_description,priceAutocompleteView;
+    EditText select_date;
     DatePickerDialog datePickerDialog;
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
     LocalDate selected_date,date_now;
     AutoCompleteTextView tasksCategories;
-    TextInputEditText priceAutocompleteView;
     String selected_category;
+    Double Price;
 
 //method to parse date input from adding task
 
@@ -61,8 +62,8 @@ public class AddTasks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tasks);
-        task_title = (EditText) findViewById(R.id.taskTitle);
-        task_description = (EditText) findViewById(R.id.taskDescription);
+        task_title = (TextInputEditText) findViewById(R.id.taskTitleAutoCompleteView);
+        task_description = (TextInputEditText) findViewById(R.id.taskDescriptionAutoCompleteView);
         select_date = (EditText) findViewById(R.id.select_date);
 
         //process dropdown
@@ -122,8 +123,11 @@ public class AddTasks extends AppCompatActivity {
                 String taskDescription_String = task_description.getText().toString().trim();
                 String selectedDate_String = select_date.getText().toString().trim();
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
-                Double Price = Double.parseDouble(TaskAssociatedPrice);
-
+               if (TaskAssociatedPrice.equals("")){
+                   Price = 0.0;
+               }else {
+                   Price = Double.parseDouble(TaskAssociatedPrice);
+               }
 
                 //Process dates
 

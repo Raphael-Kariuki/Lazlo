@@ -135,7 +135,7 @@ public class FinalPage extends AppCompatActivity {
                 //String Description = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
 
                 TextView taskTitle;
-                taskTitle = (TextView) view.findViewById(R.id.taskTitle);
+                taskTitle = (TextView) view.findViewById(R.id.taskTitleAutoCompleteView);
                 //TextView taskDescription = (TextView) view.findViewById(R.id.taskDescription);
 
                 taskTitle.setText(title);

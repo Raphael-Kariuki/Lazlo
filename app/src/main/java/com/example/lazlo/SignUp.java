@@ -43,7 +43,7 @@ public class SignUp extends AppCompatActivity {
                     btnSignUp.setEnabled(false);
                 }
                 if (b){
-                    Toast.makeText(SignUp.this,"Data inserted",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(SignUp.this, Login.class);
                     startActivity(i);
                 }else {

@@ -3,6 +3,7 @@ package com.example.lazlo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import android.widget.Button;
 import android.database.Cursor;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Dashboard extends AppCompatActivity {
     TextInputEditText startDuration_choice,endDuration_choice;
@@ -91,9 +93,7 @@ public class Dashboard extends AppCompatActivity {
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy");
                 try {
                     selectedStart_duration = startDuration_choice.getText().toString().trim();
-                    System.out.println("Start: " + selectedStart_duration);
                     selectedEnd_duration = endDuration_choice.getText().toString().trim();
-                    System.out.println("Start: " + selectedEnd_duration);
                     selectedStart_duration_String = getDateFromString(selectedStart_duration,dateTimeFormatter);
                     selectedEnd_duration_String = getDateFromString(selectedEnd_duration,dateTimeFormatter);
                 }catch (IllegalArgumentException e){
@@ -102,8 +102,11 @@ public class Dashboard extends AppCompatActivity {
 
                 try {
                     Cursor cursor = dbHelper.getSum(selectedStart_duration_String, selectedEnd_duration_String);
+                    if (cursor.getCount() == 0){
+                        sumTotalView.setText("No entries found");
+                    }
                     if (cursor.moveToFirst()){
-                        sumTotalView.setText(cursor.getString(cursor.getColumnIndexOrThrow("sumTotal")));
+                        sumTotalView.setText("Kshs " + cursor.getString(cursor.getColumnIndexOrThrow("sumTotal")));
                     }
                     cursor.close();
                 }catch (Exception e){

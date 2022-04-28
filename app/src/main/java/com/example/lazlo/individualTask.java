@@ -23,23 +23,28 @@ public class individualTask extends AppCompatActivity {
   EditText Ttitle, Tdescription;
   Button Btnsave, Btnshow;
   DBHelper dbHelper;
-  long currentId
-;
+  long currentId;
+  Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
-        Ttitle = this.findViewById(R.id.Ttitle);
-        Tdescription = this.findViewById(R.id.Tdescription);
-        Btnsave = this.findViewById(R.id.Btnsave);
-        Btnshow = this.findViewById(R.id.Btnshow);
+        Ttitle = findViewById(R.id.Ttitle);
+        Tdescription = findViewById(R.id.Tdescription);
+        Btnsave = findViewById(R.id.Btnsave);
+        Btnshow = findViewById(R.id.Btnshow);
         dbHelper = new DBHelper(this);
         currentId = this.getIntent().getLongExtra("my_id_extra",-1);
         if (currentId < 0){
             //do something as invalid id passed
             finish();
+        }else {
+            try {
+                showData();
+            } catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
         }
-        showData();
         Btnshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,17 +69,24 @@ public class individualTask extends AppCompatActivity {
         });
 
     }
-    private void showData(){
+    public void showData(){
+        System.out.println("Populating...");
         try {
-            Cursor cursor = dbHelper.getTaskById(currentId);
-            if (cursor.moveToFirst()){
-                Ttitle.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
-                Tdescription.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
-            }
-            cursor.close();
+            currentId = 1;
+            cursor = dbHelper.getTaskById(currentId);
+            System.out.println("Success conn to db...with id: " + currentId);
         }catch (Exception e){
             Toast.makeText(this,"Error " + e + "occurred", Toast.LENGTH_LONG).show();
         }
+        System.out.println("done...");
+        if (cursor.moveToFirst()){
+            System.out.println("Setting text...");
+            Ttitle.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
+            System.out.println("TaskTitle" + cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
+            Tdescription.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+            System.out.println("TaskDescription" + cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+        }
+        cursor.close();
 
 
     }
