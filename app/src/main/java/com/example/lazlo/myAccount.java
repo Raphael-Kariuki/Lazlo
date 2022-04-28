@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.os.Bundle;
 
 public class myAccount extends AppCompatActivity {
-    Button logout,btnTasks,btnDrafts;
+    Button logout,btnTasks,btnDrafts,btnDashboard;
     SharedPreferences prf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,14 @@ public class myAccount extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),TabLayout_Home.class);
+                startActivity(intent);
+            }
+        });
+        btnDashboard = findViewById(R.id.btnDashBoard);
+        btnDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                 startActivity(intent);
             }
         });

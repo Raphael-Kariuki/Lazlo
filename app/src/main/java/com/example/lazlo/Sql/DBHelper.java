@@ -61,6 +61,10 @@ public class DBHelper extends SQLiteOpenHelper {
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
 
+    public Cursor getSum(LocalDate startDate, LocalDate endDate){
+        return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotal from TaskList where TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
+    }
+
     //method to insert task, executed on addtasks.java
     public boolean insertTasks(String userName, String taskTitle, String taskDescription,String taskCategory,Double taskAssociatedPrice, LocalDate taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();

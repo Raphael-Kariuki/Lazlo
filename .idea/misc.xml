@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.20364583333333333" />
