@@ -1,19 +1,26 @@
 package com.example.lazlo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.lazlo.Sql.DBHelper;
 
 
 //
@@ -24,9 +31,15 @@ import android.widget.TextView;
 public class Home extends Fragment {
 
 
-    SharedPreferences session_prefs;
-    TextView uname;
+    TextView hamburger_menu,uname;
+    ListView tasks_listView,task1;
+    Button btn_addTasks;
     String s2;
+    SharedPreferences session_prefs;
+
+    DBHelper dbHelper;
+    Cursor cursor;
+    SimpleCursorAdapter simpleCursorAdapter;
 /*
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,10 +90,6 @@ public class Home extends Fragment {
         
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-    public void setText(String text){
-        session_prefs = getActivity().getSharedPreferences("user_details", Context.MODE_PRIVATE);
-        s2 = session_prefs.getString("username", null);
-        uname = (TextView) getView().findViewById(R.id.uname_view);
-        uname.setText(s2);
-    }
+
+
 }

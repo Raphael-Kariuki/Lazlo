@@ -24,10 +24,10 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        username = findViewById(R.id.submit_username);
-        email = findViewById(R.id.submit_email);
-        password = findViewById(R.id.submit_password);
-        confirmPassword = findViewById(R.id.submit_confirmPassword);
+        username = findViewById(R.id.SignupUsername_input);
+        email = findViewById(R.id.SignupEmail_input);
+        password = findViewById(R.id.SignupPassword_input);
+        confirmPassword = findViewById(R.id.SignupPasswordConfirm_input);
         btnSignUp = findViewById(R.id.btnSignUp_signUpPage);
         dbHelper = new DBHelper(this);
         btnSignUp.setOnClickListener(new View.OnClickListener() {

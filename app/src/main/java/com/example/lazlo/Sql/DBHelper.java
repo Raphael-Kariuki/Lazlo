@@ -9,7 +9,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.widget.Toast;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -20,8 +23,8 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table if not exists TaskList(_id LONG PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL)");
-        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT NOT NULL,email TEXT NOT NULL, password PASSWORD NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id LONG PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE NOT NULL,TaskDeadline DATE NOT NULL)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email TEXT UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
     }
 
@@ -59,13 +62,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //method to insert task, executed on addtasks.java
-    public boolean insertTasks( String userName, String taskTitle, String taskDescription){
+    public boolean insertTasks(String userName, String taskTitle, String taskDescription,String taskCategory,Double taskAssociatedPrice, LocalDate taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
 
         if (taskTitle != null && taskTitle.length() > 0)contentValues.put("TaskTitle", taskTitle);
         if (taskDescription != null && taskDescription.length() > 0) contentValues.put("TaskDescription", taskDescription);
+        if (taskCategory != null && taskCategory.length() > 0) contentValues.put("TaskCategory", taskCategory);
+        contentValues.put("TaskAssociatedPrice", taskAssociatedPrice);
+        if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();
         if(result == -1){

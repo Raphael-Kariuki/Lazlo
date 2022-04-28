@@ -44,17 +44,6 @@ public class FinalPage extends AppCompatActivity {
         SetOrRefreshListView();
 
 
-
-
-
-
-
-
-
-
-
-
-
         session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
         s2 = session_prefs.getString("username",null);
         uname = (TextView) findViewById(R.id.uname_view);
@@ -81,7 +70,7 @@ public class FinalPage extends AppCompatActivity {
         });
 
     }
-    private void SetOrRefreshListView(){
+    public void SetOrRefreshListView(){
         cursor = dbHelper.getAll(s2);
         if (simpleCursorAdapter == null){
             simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,cursor,new String[]{"TaskTitle","TaskDescription"},new int[]{android.R.id.text1,android.R.id.text2},0);

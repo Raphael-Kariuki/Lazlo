@@ -37,8 +37,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Boolean e=false, p=false;
         setContentView(R.layout.activity_login);
-        email = findViewById(R.id.email_input);
-        password = findViewById(R.id.password_input);
+        email = findViewById(R.id.loginEmail_input);
+        password = findViewById(R.id.loginPassword_input);
         btnSubmitLoginCredentials = (Button) findViewById(R.id.btnSubmit_login);
         dbHelper = new DBHelper(this);
         Intent intent = new Intent(Login.this, FinalPage.class);

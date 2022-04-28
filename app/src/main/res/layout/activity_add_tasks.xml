@@ -45,16 +45,69 @@
         tools:layout_editor_absoluteX="16dp"
         />
 
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tasksCategory"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription"
+        tools:layout_editor_absoluteX="16dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+
+        >
+<AutoCompleteTextView
+    android:id="@+id/tasksAutoCompleteView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:hint="Select category"
+    android:layout_weight="1"
+    android:inputType="none"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/others"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Others"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:padding="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@+id/tasksCategory"
+        tools:layout_editor_absoluteX="16dp"
+        android:gravity="center"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/price_TextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/others"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:padding="5dp"
+
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/priceAutoCompleteView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Bills"
+            android:layout_weight="1"
+            android:inputType="none"/>
+            
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <EditText
         android:id="@+id/select_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
 
         android:hint="Set the deadline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/price_TextLayout" />
 
     <EditText
         android:id="@+id/taskTitle"
@@ -74,6 +127,8 @@
         android:src="@mipmap/ic_launcher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
