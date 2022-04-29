@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".Login"
+    android:background="@color/cardview_dark_background">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,14 +28,14 @@
         android:layout_centerHorizontal="true"
         android:padding="@dimen/activity_horizontal_margin"/>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/loginEmail_inputLayout"
+        android:id="@+id/loginUserName_inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/loginEmail_input"
+            android:id="@+id/loginUserName_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"/>
+            android:hint="@string/username"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -50,19 +51,19 @@
             android:id="@+id/loginPassword_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:autofillHints="password"
             />
     </com.google.android.material.textfield.TextInputLayout>
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnSubmit_login"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:text="Login"
+    />
 
-    <Button
-        android:id="@+id/btnSubmit_login"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Login"
-        />
     <TextView
         android:id="@+id/login_or_signup_label2"
         android:layout_width="wrap_content"

@@ -100,9 +100,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return userList;
     }
     //method to obtain login credentials which are checked on login
-    public Cursor getData(){
+    public Cursor getData(String login_Uname){
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from Userdetails ",null);
+        Cursor cursor = DB.rawQuery("Select userName, password from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
         //cursor.close();
         return cursor;
     }

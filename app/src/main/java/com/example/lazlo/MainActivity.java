@@ -7,12 +7,13 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
     /* added code */
-    Button login, sign_up;
+   MaterialButton login, sign_up;
     DBHelper dbHelper;
 
     @Override
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this);
-        login = (Button) findViewById(R.id.btn_login);
+        login =  findViewById(R.id.btn_login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sign_up = (Button) findViewById(R.id.btn_sign_up);
+        sign_up = findViewById(R.id.btn_sign_up);
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

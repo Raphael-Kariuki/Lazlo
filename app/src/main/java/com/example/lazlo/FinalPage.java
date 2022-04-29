@@ -160,7 +160,7 @@ public class FinalPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),AddTasks.class);
-                intent.putExtra("email", s2);
+                intent.putExtra("username", s2);
                 startActivity(intent);
             }
         });

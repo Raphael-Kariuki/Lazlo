@@ -4,94 +4,124 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /* added code */
 
-import androidx.appcompat.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lazlo.Sql.DBHelper;
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import android.os.Bundle;
 
-
-
 public class Login extends AppCompatActivity {
-
-    EditText email, password;
-    Button btnSubmitLoginCredentials;
+    String uname;
+    EditText username, password;
+    MaterialButton btnSubmitLoginCredentials;
     TextView createAccount;
     DBHelper dbHelper;
     SharedPreferences sharedPreferences;
+    TextInputLayout loginUserName_inputLayout,loginPassword_inputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Boolean e=false, p=false;
         setContentView(R.layout.activity_login);
-        email = findViewById(R.id.loginEmail_input);
+        username = findViewById(R.id.loginUserName_input);
         password = findViewById(R.id.loginPassword_input);
-        btnSubmitLoginCredentials = (Button) findViewById(R.id.btnSubmit_login);
+        btnSubmitLoginCredentials = findViewById(R.id.btnSubmit_login);
         dbHelper = new DBHelper(this);
         Intent intent = new Intent(Login.this, FinalPage.class);
+        loginUserName_inputLayout = (TextInputLayout) findViewById(R.id.loginUserName_inputLayout);
+        loginPassword_inputLayout = (TextInputLayout) findViewById(R.id.loginPassword_inputLayout);
+        loginUserName_inputLayout.requestFocus();
         //shared preferences are used to store variables persistently, even
         //after uses closes the app. Only cleared when they logout.
         //preferred to global variables as global variables are lost when user closes the app
+
         sharedPreferences = getSharedPreferences("user_details",MODE_PRIVATE);
         if (sharedPreferences.contains("username") && sharedPreferences.contains("password")){
             startActivity(intent);
         }
-        btnSubmitLoginCredentials.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emailCheck = email.getText().toString().trim();
-                String passCheck = password.getText().toString().trim();
-                Cursor cursor = dbHelper.getData();
-                if (cursor.getCount() == 0){
-                    Toast.makeText(Login.this, "No entries Exists", Toast.LENGTH_LONG).show();
+        btnSubmitLoginCredentials.setOnClickListener(view -> {
+            String unameCheck = username.getText().toString().trim();
+            String passCheck = password.getText().toString().trim();
+
+            Cursor cursor = dbHelper.getData(unameCheck);
+                if (!unameCheck.isEmpty()){
+                    if (!passCheck.isEmpty()){
+                        if (cursor.getCount() != 0){
+                            if (loginCheck(cursor, unameCheck, passCheck)){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("username", uname);
+                                editor.apply();
+                                username.setText("");
+                                password.setText("");
+                                startActivity(intent);
+                            }/*else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                            builder.setCancelable(true);
+                            builder.setTitle("Wrong credentials");
+                            builder.setMessage("Username or password not found");
+                            builder.setPositiveButton("Login again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent logIn = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(logIn);
+                                }
+                            });
+                            builder.setNegativeButton("Sign up", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent signUp = new Intent(getApplicationContext(), SignUp.class);
+                                    startActivity(signUp);
+                                }
+                            });
+                            builder.show();
+                        }*/
+                        }else{
+                            loginUserName_inputLayout.setErrorEnabled(true);
+                            loginUserName_inputLayout.setError("Invalid username");
+                            loginPassword_inputLayout.setErrorEnabled(false);
+                        }
+                    }else{
+                        loginPassword_inputLayout.setErrorEnabled(true);
+                        loginPassword_inputLayout.setError("No blank password");
+                        loginUserName_inputLayout.setErrorEnabled(false);
+                    }
+                }else{
+                    loginUserName_inputLayout.setErrorEnabled(true);
+                    loginUserName_inputLayout.setError("No blank username");
+                    loginPassword_inputLayout.setErrorEnabled(false);
                 }
-                if (loginCheck(cursor, emailCheck, passCheck)){
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("username", emailCheck);
-                    editor.commit();
-                    //intent.putExtra("email",emailCheck);
-                    email.setText("");
-                    password.setText("");
-                    startActivity(intent);
-                }else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                    builder.setCancelable(true);
-                    builder.setTitle("Wrong credentials");
-                    builder.setMessage("Wrong credentials");
-                    builder.show();
-                }
-                dbHelper.close();
-            }
+            dbHelper.close();
         });
         createAccount = findViewById(R.id.createAccount);
-        createAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Login.this, SignUp.class);
-                startActivity(intent);
-            }
+        createAccount.setOnClickListener(view -> {
+            Intent intent1 = new Intent(Login.this, SignUp.class);
+            startActivity(intent1);
         });
     }
-    public static boolean loginCheck(Cursor cursor, String emailCheck, String passCheck){
+    public boolean loginCheck(Cursor cursor, String unameCheck, String passCheck){
         while (cursor.moveToNext()){
-            if (cursor.getString(2).equals(emailCheck)){
-                if(cursor.getString(3).equals(passCheck)){
-                    return true;
+            if (cursor.getString(cursor.getColumnIndexOrThrow("userName")).equals(unameCheck)){
+                if(cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(passCheck)){
+                    uname = cursor.getString(cursor.getColumnIndexOrThrow("userName"));
+                        return true;
+                }else{
+                    loginUserName_inputLayout = (TextInputLayout) findViewById(R.id.loginUserName_inputLayout);
+                    loginUserName_inputLayout.setErrorEnabled(false);
+                    loginPassword_inputLayout = (TextInputLayout) findViewById(R.id.loginPassword_inputLayout);
+                    loginPassword_inputLayout.setErrorEnabled(true);
+                    loginPassword_inputLayout.setError("Wrong password");
+                    //Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
                 }
                 return false;
+            }else {
+                Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show();
             }
         }
         return false;

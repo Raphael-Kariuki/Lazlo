@@ -113,7 +113,7 @@ public class AddTasks extends AppCompatActivity {
         btn_saveTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // get the string email broadcasted from login to stand in as the
+                // get the string username broadcasted from login to stand in as the
                 //determiner of who enters tasks. Should be replaced by the username or userId
                 tasks_sharedPrefs = getSharedPreferences("user_details",MODE_PRIVATE);
 
@@ -123,6 +123,9 @@ public class AddTasks extends AppCompatActivity {
                 String taskDescription_String = task_description.getText().toString().trim();
                 String selectedDate_String = select_date.getText().toString().trim();
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
+
+                //caveat for avoiding null value sent to db, more memory ofcourse
+                //TODO:accept empty values on task addition
                if (TaskAssociatedPrice.equals("")){
                    Price = 0.0;
                }else {
