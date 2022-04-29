@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_username_24"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupUsername_input"
@@ -41,6 +42,7 @@
             android:hint="@string/username"
             android:inputType="textPersonName"
             android:autofillHints="Username"
+
             />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -49,6 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_email_24"
+
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupEmail_input"
@@ -67,6 +71,7 @@
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_password_24"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPassword_input"
@@ -84,6 +89,7 @@
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_password_24"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPasswordConfirm_input"
