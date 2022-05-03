@@ -35,6 +35,7 @@ public class AddTasks extends AppCompatActivity {
     Double Price;
     TextInputLayout taskTitle_TextLayout,taskDescription_TextLayout,tasksCategoryTextLayout,
             price_TextLayout,selectedDate_TextInputLayout;
+    boolean b;
 
 //method to parse date input from adding task
 
@@ -71,13 +72,7 @@ public class AddTasks extends AppCompatActivity {
         //===================================================process dropdown=========================================================
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
         tasksCategories.setAdapter(adapter);
-        tasksCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_category = (String) adapterView.getItemAtPosition(i);
-            }
-        });
+        tasksCategories.setOnItemClickListener((adapterView, view, i, l) -> selected_category = (String) adapterView.getItemAtPosition(i));
 
 
         //======================================================process date picker=======================================================
@@ -110,21 +105,43 @@ public class AddTasks extends AppCompatActivity {
                 String taskDescription_String = task_description.getText().toString().trim();
                 String selectedDate_String = select_date.getText().toString().trim();
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
+                String selectedCategory_string = tasksCategories.getText().toString().trim();
+
 
                 //process inputs
                 if (!taskTitle_String.isEmpty()){
                     if (!taskDescription_String.isEmpty()){
-                        if (!selected_category.isEmpty()){
-                            if (!selectedDate_String.isEmpty()){
-                                date_now = LocalDate.now();
-                                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy");
-                                try {
-                                    selected_date = getDateFromString(selectedDate_String, dateTimeFormatter);
-                                }catch (IllegalArgumentException e){
-                                    System.out.println("Exception" + e);
+                        if (!selectedCategory_string.isEmpty()){
+                            if (!selectedDate_String.isEmpty() && willDateFormat(selectedDate_String)){
+                                if (willPriceFormat(TaskAssociatedPrice)){
+                                    date_now = LocalDate.now();
+                                    if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
+                                        try {
+                                            //insert task to db if dates are cool
+                                            b = dbHelper.insertTasks(USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date);
+
+                                        }catch(Exception e){
+                                            System.out.println("Db insertion error: " + e);
+                                        }
+                                        if (b){
+                                            Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
+                                            finish();
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
+                                        }
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
+                                        select_date.setText("");
+                                    }
+                                }else{
+                                    price_TextLayout.setErrorEnabled(true);
+                                    price_TextLayout.setError("Wrong price");
+                                    taskTitle_TextLayout.setErrorEnabled(false);
+                                    taskDescription_TextLayout.setErrorEnabled(false);
+                                    price_TextLayout.setErrorEnabled(false);
+                                    tasksCategoryTextLayout.setErrorEnabled(false);
+                                    selectedDate_TextInputLayout.setErrorEnabled(false);
                                 }
-
-
                             }else{
                                 selectedDate_TextInputLayout.setErrorEnabled(true);
                                 selectedDate_TextInputLayout.setError("Blank deadline");
@@ -160,39 +177,35 @@ public class AddTasks extends AppCompatActivity {
                     selectedDate_TextInputLayout.setErrorEnabled(false);
                     }
 
-                //caveat for avoiding null value sent to db, more memory of course
-                //TODO:accept empty values on task addition
-               if (TaskAssociatedPrice.equals("")){
-                   Price = 0.0;
-               }else {
-                   Price = Double.parseDouble(TaskAssociatedPrice);
-               }
-                //Process dates
 
-               if (selected_date.compareTo(date_now) < 0){
-                   Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
-                   select_date.setText("");
-               }if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
-                    try {
-                        //insert task to db if dates are cool
-                        boolean b = dbHelper.insertTasks(USERNAME, taskTitle_String,taskDescription_String,selected_category,Price,selected_date);
-                        if (taskTitle_String.equals("") || taskDescription_String.equals("") || selectedDate_String.equals("")){
-                            Toast.makeText(getApplicationContext(), "Missing content", Toast.LENGTH_LONG).show();
-                        }
-                        if (b){
-                            //put out notification of success and redirect to taskview
-                            Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
-                            finish();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_LONG).show();
-                        }
-                    }catch (Exception e){
-                        System.out.println("Error: " + e);
-                    }
 
-                }
+
             }
         });
+
+    }
+    private boolean willDateFormat(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy");
+        try {
+            selected_date = getDateFromString(selectedDate, dateTimeFormatter);
+            return true;
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+            return false;
+        }
+    }
+    private boolean willPriceFormat(String priceToParse){
+            try {
+                if (!priceToParse.isEmpty()){
+                    Price = Double.parseDouble(priceToParse);
+                }else {
+                    Price = 0.0;
+                }
+                return true;
+            }catch(Exception e){
+                System.out.println("Price Exception" + e);
+                return false;
+            }
 
     }
 
