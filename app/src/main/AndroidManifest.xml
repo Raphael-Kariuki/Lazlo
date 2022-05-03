@@ -10,17 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lazlo">
         <activity
+            android:name=".sortedTasks"
+            android:exported="false" />
+        <activity
             android:name=".Dashboard"
             android:exported="true">
-           <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-        <activity
-            android:name=".TabLayout_Home"
-            android:exported="false" />
         <activity
             android:name=".individualTask"
             android:exported="false" />

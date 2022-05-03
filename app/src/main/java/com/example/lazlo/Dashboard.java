@@ -3,6 +3,7 @@ package com.example.lazlo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +34,9 @@ public class Dashboard extends AppCompatActivity {
 
 
     public void onBackPressed(){
-        Dashboard.this.finish();
+        Intent intent = new Intent(getApplicationContext(), FinalPage.class);
+        startActivity(intent);
+        //Dashboard.this.finish();
     }
     public static LocalDate getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
         LocalDate date = LocalDate.parse(string, dateTimeFormatter);

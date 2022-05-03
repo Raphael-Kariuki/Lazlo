@@ -4,21 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkFragment">
+    tools:context=".BusinessFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/WorkAddTask_floatingBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:contentDescription="@string/add_task" />
+
+        />
 
 </FrameLayout>

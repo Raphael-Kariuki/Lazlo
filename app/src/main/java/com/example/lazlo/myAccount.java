@@ -37,14 +37,7 @@ public class myAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnDrafts = findViewById(R.id.btn_Drafts);
-        btnDrafts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),TabLayout_Home.class);
-                startActivity(intent);
-            }
-        });
+
         btnDashboard = findViewById(R.id.btnDashBoard);
         btnDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,5 +46,13 @@ public class myAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+            btnDrafts = findViewById(R.id.btn_Drafts);
+            btnDrafts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), sortedTasks.class);
+                    startActivity(intent);
+                }
+            });
     }
 }

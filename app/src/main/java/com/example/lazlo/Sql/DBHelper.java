@@ -60,6 +60,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,null);
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
+    public Cursor getAllByCategories(String uname, String category) {
+        //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
+        return this.getWritableDatabase().query("TaskList",null,"UserName=? and TaskCategory = ? ",new String[]{String.valueOf(uname),String.valueOf(category)},null,null,null);
+        //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
+    }
 
     public Cursor getSum(LocalDate startDate, LocalDate endDate){
         return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotal from TaskList where TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
@@ -70,7 +75,6 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
-
         if (taskTitle != null && taskTitle.length() > 0)contentValues.put("TaskTitle", taskTitle);
         if (taskDescription != null && taskDescription.length() > 0) contentValues.put("TaskDescription", taskDescription);
         if (taskCategory != null && taskCategory.length() > 0) contentValues.put("TaskCategory", taskCategory);

@@ -4,20 +4,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="5dip" >
-        <TextView
-            android:id="@+id/taskTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/taskTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold" />
         <TextView
             android:id="@+id/taskDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/taskTitle"
             android:layout_marginTop="7dp"
-            android:textColor="#343434"
-            android:textSize="14dp" />
+            android:textColor="#000000"
+            android:textSize="14sp"
+            />
 
+    <TextView
+        android:id="@+id/TaskAssociatedPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="#000000"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@id/taskTitle"/>
 
-    </RelativeLayout>
+</RelativeLayout>

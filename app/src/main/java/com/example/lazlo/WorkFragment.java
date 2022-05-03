@@ -1,22 +1,25 @@
 package com.example.lazlo;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-//
- //* A simple {@link Fragment} subclass.
- //* Use the {@link School#newInstance} factory method to
- /* create an instance of this fragment.
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link WorkFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class School extends Fragment {
-/*
+public class WorkFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,7 +29,7 @@ public class School extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public School() {
+    public WorkFragment() {
         // Required empty public constructor
     }
 
@@ -36,12 +39,11 @@ public class School extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment School.
+     * @return A new instance of fragment WorkFragment.
      */
     // TODO: Rename and change types and number of parameters
-   /*
-    public static School newInstance(String param1, String param2) {
-        School fragment = new School();
+    public static WorkFragment newInstance(String param1, String param2) {
+        WorkFragment fragment = new WorkFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -56,13 +58,18 @@ public class School extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
-*/
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_school, container, false);
+        return inflater.inflate(R.layout.fragment_work, container, false);
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }

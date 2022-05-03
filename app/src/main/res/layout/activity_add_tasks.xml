@@ -137,7 +137,7 @@
             
     </com.google.android.material.textfield.TextInputLayout>
 <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/select_date"
+    android:id="@+id/selectedDate_TextInputLayout"
     style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

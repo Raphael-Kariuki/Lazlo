@@ -1,17 +1,15 @@
 package com.example.lazlo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,20 +17,20 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Locale;
 
 
 public class FinalPage extends AppCompatActivity {
-    TextView hamburger_menu,uname;
     ListView tasks_listView,task1;
-    Button btn_addTasks;
+    FloatingActionButton btn_addTasks,hamburger_menu;
     String s2;
     SharedPreferences session_prefs;
-
     DBHelper dbHelper;
     Cursor cursor;
     SimpleCursorAdapter simpleCursorAdapter;
+    AppCompatTextView uname;
+    AppCompatButton home, school,work,business;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +38,14 @@ public class FinalPage extends AppCompatActivity {
         setContentView(R.layout.activity_final_page);
 
         tasks_listView = this.findViewById(R.id.task_listView);
+
         dbHelper = new DBHelper(this);
         SetOrRefreshListView();
 
 
         session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
         s2 = session_prefs.getString("username",null);
-        uname = (TextView) findViewById(R.id.uname_view);
+        uname = findViewById(R.id.userName);
         uname.setText(s2);
 
 
@@ -60,40 +59,47 @@ public class FinalPage extends AppCompatActivity {
 
         //hamburger menu action
 
-        hamburger_menu = (TextView) findViewById(R.id.hamburger_menu);
-        hamburger_menu.setOnClickListener(new View.OnClickListener() {
+        hamburger_menu = findViewById(R.id.hamburger_menu);
+        hamburger_menu.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), myAccount.class);
+            startActivity(intent);
+        });
+        home = findViewById(R.id.homeTask);
+        work = findViewById(R.id.workTasks);
+        school =findViewById(R.id.schoolTasks);
+        business = findViewById(R.id.businessTasks);
+
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), myAccount.class);
-                startActivity(intent);
+                populateHomeTasks();
+            }
+        });
+        work.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateWorkTasks();
+            }
+        });
+        school.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateSchoolTasks();
+            }
+        });
+        business.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateBusinessTasks();
             }
         });
 
+
     }
+
     public void SetOrRefreshListView(){
         cursor = dbHelper.getAll(s2);
-        if (simpleCursorAdapter == null){
-            simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,cursor,new String[]{"TaskTitle","TaskDescription"},new int[]{android.R.id.text1,android.R.id.text2},0);
-            tasks_listView.setAdapter(simpleCursorAdapter);
-            tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getApplicationContext(),individualTask.class);
-                    intent.putExtra("my_id_extra", l);
-                    startActivity(intent);
-                }
-            });
-            tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    dbHelper.deleteTask(l);
-                    SetOrRefreshListView();
-                    return true;
-                }
-            });
-        }else {
-            simpleCursorAdapter.swapCursor(cursor);
-        }
+        taskListPopulate();
 
     }
     @Override
@@ -116,46 +122,10 @@ public class FinalPage extends AppCompatActivity {
         ListAdapter adapter = new SimpleAdapter(this,taskList,R.layout.userdata_listrow,new String[]{"task_title","task_description"}, new int[]{R.id.taskTitle,R.id.taskDescription});
         tasks_listView.setAdapter(adapter);
     }*/
-    private void populateTaskListView(){
-        DBHelper db = new DBHelper(this);
-        Cursor taskCursor = db.getAll(s2);
-        class TasksCursorAdapter extends CursorAdapter{
 
-            public TasksCursorAdapter(Context context, Cursor cursor){
-                super(context, cursor, 0);
-            }
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent){
-                return LayoutInflater.from(context).inflate(R.layout.userdata_listrow, parent, false);
-            }
-            @Override
-            public void bindView(View view, Context context, Cursor cursor){
-
-                String title = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")).toUpperCase(Locale.ROOT);
-                //String Description = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
-
-                TextView taskTitle;
-                taskTitle = (TextView) view.findViewById(R.id.taskTitleAutoCompleteView);
-                //TextView taskDescription = (TextView) view.findViewById(R.id.taskDescription);
-
-                taskTitle.setText(title);
-                //taskDescription.setText(Description);
-            }
-        }
-        TasksCursorAdapter tasksCursorAdapter = new TasksCursorAdapter(this, taskCursor);
-        tasks_listView = (ListView) findViewById(R.id.task_listView);
-        tasks_listView.setAdapter(tasksCursorAdapter);
-        tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dbHelper.deleteTask(l);
-                SetOrRefreshListView();
-            }
-        });
-    }
 
     private void addNewTasks(){
-        btn_addTasks = (Button) findViewById(R.id.btn_addTasks);
+        btn_addTasks =  findViewById(R.id.btn_addTasks);
         btn_addTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,5 +135,50 @@ public class FinalPage extends AppCompatActivity {
             }
         });
     }
+    private  void populateHomeTasks(){
+        cursor = dbHelper.getAllByCategories(s2,"Home");
+        taskListPopulate();
+
+    }
+    private  void populateWorkTasks(){
+        cursor = dbHelper.getAllByCategories(s2,"Work");
+        taskListPopulate();
+
+    }
+    private  void populateSchoolTasks(){
+        cursor = dbHelper.getAllByCategories(s2,"School");
+        taskListPopulate();
+
+    }
+    private  void populateBusinessTasks(){
+        cursor = dbHelper.getAllByCategories(s2,"Business");
+        taskListPopulate();
+
+    }
+    private void taskListPopulate(){
+        if (simpleCursorAdapter == null){
+            simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+            tasks_listView.setAdapter(simpleCursorAdapter);
+            tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(getApplicationContext(),individualTask.class);
+                    intent.putExtra("my_id_extra", l);
+                    startActivity(intent);
+                }
+            });
+            tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    dbHelper.deleteTask(l);
+                    SetOrRefreshListView();
+                    return true;
+                }
+            });
+        }else {
+            simpleCursorAdapter.swapCursor(cursor);
+        }
+    }
+
 
 }
