@@ -104,25 +104,14 @@
 
 
 
-    <TextView
-        android:id="@+id/others"
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Others"
-        android:textStyle="bold"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:padding="@dimen/activity_vertical_margin"
-        app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
-        tools:layout_editor_absoluteX="16dp"
-        android:gravity="center"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/others"
+        app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="5dp"
 
@@ -133,20 +122,22 @@
             android:layout_height="match_parent"
             android:hint="Bills"
             android:layout_weight="1"
-            android:inputType="none"/>
+            android:inputType="text"/>
             
     </com.google.android.material.textfield.TextInputLayout>
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/selectedDate_TextInputLayout"
-    style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@+id/price_TextLayout">
-    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+    app:layout_constraintTop_toBottomOf="@+id/price_TextLayout"
+    android:layout_marginTop="@dimen/activity_vertical_margin">
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/selectDate_AutocompleteView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Select the deadline"
+        android:inputType="text"
         />
 
 </com.google.android.material.textfield.TextInputLayout>

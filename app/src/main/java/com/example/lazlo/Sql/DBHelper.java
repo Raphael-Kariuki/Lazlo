@@ -24,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline DATE NOT NULL)");
+        DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
     }
@@ -53,11 +54,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
     public long deleteTask(long id){
-        return this.getWritableDatabase().delete("userDetails","_id=?",new String[]{String.valueOf(id)});
+        return this.getWritableDatabase().delete("TaskList","_id=?",new String[]{String.valueOf(id)});
+    }
+    public long deleteDraftTask(long id){
+        return this.getWritableDatabase().delete("TaskListDrafts","_id=?",new String[]{String.valueOf(id)});
     }
     public Cursor getAll(String uname) {
         //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
         return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,null);
+        //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
+    }
+    public Cursor getAllDrafts(String uname) {
+        //return this.getWritableDatabase().query("TaskListDrafts",null,null,null,null,null,null,null);
+        return this.getWritableDatabase().query("TaskListDrafts",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,null);
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
     public Cursor getAllByCategories(String uname, String category) {
@@ -71,7 +80,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //method to insert task, executed on addtasks.java
-    public boolean insertTasks(String userName, String taskTitle, String taskDescription,String taskCategory,Double taskAssociatedPrice, LocalDate taskDeadline){
+    public boolean insertTasks(String userName, String taskTitle, String taskDescription,String taskCategory,
+                               Double taskAssociatedPrice, LocalDate taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
@@ -88,6 +98,25 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    public boolean insertDraftTasks(String userName, String taskTitle, String taskDescription,String taskCategory,
+                               String taskAssociatedPrice, String taskDeadline){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("UserName", userName);
+        contentValues.put("TaskTitle", taskTitle);
+        contentValues.put("TaskDescription", taskDescription);
+        contentValues.put("TaskCategory", taskCategory);
+        contentValues.put("TaskAssociatedPrice", taskAssociatedPrice);
+        contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
+        long result = DB.insert("TaskListDrafts", null, contentValues);
+        DB.close();
+        if(result == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     //create an array from userdata details from db to be used in populating a listview
     public ArrayList<HashMap<String, String>> getUserData(){
         SQLiteDatabase DB = this.getWritableDatabase();

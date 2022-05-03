@@ -1,8 +1,10 @@
 package com.example.lazlo;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,8 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class AddTasks extends AppCompatActivity {
-    TextInputEditText task_title,task_description,priceAutocompleteView;
-    AutoCompleteTextView select_date;
+    TextInputEditText task_title,task_description,select_date,priceAutocompleteView;
     DatePickerDialog datePickerDialog;
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
@@ -35,7 +36,7 @@ public class AddTasks extends AppCompatActivity {
     Double Price;
     TextInputLayout taskTitle_TextLayout,taskDescription_TextLayout,tasksCategoryTextLayout,
             price_TextLayout,selectedDate_TextInputLayout;
-    boolean b;
+    boolean b,d;
 
 //method to parse date input from adding task
 
@@ -52,7 +53,7 @@ public class AddTasks extends AppCompatActivity {
         //===================================================Variables===============================================================
         task_title = (TextInputEditText) findViewById(R.id.taskTitleAutoCompleteView);
         task_description = (TextInputEditText) findViewById(R.id.taskDescriptionAutoCompleteView);
-        select_date = (AutoCompleteTextView) findViewById(R.id.selectDate_AutocompleteView);
+        select_date = (TextInputEditText) findViewById(R.id.selectDate_AutocompleteView);
         priceAutocompleteView = (TextInputEditText) findViewById(R.id.priceAutoCompleteView);
         tasksCategories = (AutoCompleteTextView) findViewById(R.id.tasksAutoCompleteView);
 
@@ -63,6 +64,8 @@ public class AddTasks extends AppCompatActivity {
         selectedDate_TextInputLayout = findViewById(R.id.selectedDate_TextInputLayout);
 
         btn_saveTasks = (ImageButton) findViewById(R.id.btn_saveTask);
+        btn_cancelTaskCreation = findViewById(R.id.cancelTaskCreation);
+
         dbHelper = new DBHelper(this);
         // get the string username broadcast from login to stand in as the
         //determiner of who enters tasks. Should be replaced by the username or userId
@@ -182,7 +185,34 @@ public class AddTasks extends AppCompatActivity {
 
             }
         });
+        btn_cancelTaskCreation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                        try {
+                            String USERNAME = tasks_sharedPrefs.getString("username",null);
+                            String taskTitle_String = task_title.getText().toString().trim();
+                            String taskDescription_String = task_description.getText().toString().trim();
+                            String selectedDate_String = select_date.getText().toString().trim();
+                            String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
+                            String selectedCategory_string = tasksCategories.getText().toString().trim();
+                            d = dbHelper.insertDraftTasks(USERNAME, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
+                            if (d){
+                                Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
+                        }
+
+
+
+
+
+
+            }
+        });
     }
     private boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy");
@@ -208,6 +238,4 @@ public class AddTasks extends AppCompatActivity {
             }
 
     }
-
-
     }

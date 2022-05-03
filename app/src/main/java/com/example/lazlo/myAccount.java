@@ -46,11 +46,12 @@ public class myAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-            btnDrafts = findViewById(R.id.btn_Drafts);
-            btnDrafts.setOnClickListener(new View.OnClickListener() {
+        btnDrafts = findViewById(R.id.btn_Drafts);
+        btnDrafts.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), sortedTasks.class);
+                    Intent intent = new Intent(getApplicationContext(), Drafts.class);
+                    intent.putExtra("username", prf.getString("username",null));
                     startActivity(intent);
                 }
             });
