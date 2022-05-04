@@ -3,4 +3,11 @@
     <string name="username">Username</string>
     <string name="login">Login</string>
     <string name="or">or</string>
+    <string name="bills">Bills</string>
+    <string name="task_title">Task title</string>
+    <string name="view_and_edit_individual_task">View and Edit individual task</string>
+    <string name="task_description">Task description</string>
+    <string name="save">Save</string>
+    <string name="show_tasks">Show Tasks</string>
+    <string name="task_category">Task category</string>
 </resources>
