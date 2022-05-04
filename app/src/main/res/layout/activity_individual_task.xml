@@ -23,7 +23,7 @@
         android:id="@+id/individualTaskTitle_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/viewEditTaskTitle"
         app:hintAnimationEnabled="true"
 
@@ -43,7 +43,7 @@
         android:id="@+id/individualTaskDescription_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/individualTaskTitle_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         >
@@ -59,7 +59,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/individualTaskCategory_TextLayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
         android:layout_below="@id/individualTaskDescription_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -77,7 +77,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/individualTaskBills_TextLayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/individualTaskCategory_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
@@ -91,23 +91,53 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/individualTaskDeadline_TextLayout"
+
+    <LinearLayout
+        android:id="@+id/deadlines"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_below="@id/individualTaskBills_TextLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/individualTaskBills_TextLayout"
         >
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/individualTaskDeadline_TextInputEdit"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/individualTaskDateDeadline_TextLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Deadline"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/individualTaskBills_TextLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="1">
 
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/individualTaskDateDeadline_TextInputEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Select date"
 
-    </com.google.android.material.textfield.TextInputLayout>
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/individualTaskTimeDeadline_TextLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/individualTaskBills_TextLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/individualTaskTimeDeadline_TextInputEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Select time"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
 
 
 
@@ -115,7 +145,7 @@
         android:id="@+id/Btnsave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/individualTaskDeadline_TextLayout"
+        android:layout_below="@id/deadlines"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:text="@string/save"/>

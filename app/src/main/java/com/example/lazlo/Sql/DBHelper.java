@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline DATE NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline DATETIME NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
@@ -80,8 +80,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //method to insert task, executed on addtasks.java
-    public boolean insertTasks(String userName, String taskTitle, String taskDescription,String taskCategory,
-                               Double taskAssociatedPrice, LocalDate taskDeadline){
+    public boolean insertTasks(String userName, String taskTitle, String taskDescription, String taskCategory,
+                               Double taskAssociatedPrice, LocalDateTime taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
@@ -157,14 +157,23 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return tasksList;
     }
-    public long update(long id, String UserName, String TaskTitle, String TaskDescription) {
+    public boolean update(long id, String UserName, String TaskTitle, String TaskDescription,String TaskCategory,
+                          String TaskAssociatedPrice, String TaskDeadline) {
         long rv = 0;
         ContentValues cv = new ContentValues();
             if (UserName != null && UserName.length() > 0) cv.put("UserName",UserName);
             if (TaskTitle != null && TaskTitle.length() > 0) cv.put("TaskTitle",TaskTitle);
             if (TaskDescription != null && TaskDescription.length() > 0) cv.put("TaskDescription",TaskDescription);
+            if (TaskCategory != null && TaskCategory.length() > 0 ) cv.put("TaskCategory", TaskCategory);
+            if (TaskAssociatedPrice != null && TaskAssociatedPrice.length() > 0 ) cv.put("TaskAssociatedPrice", TaskAssociatedPrice);
+            if (TaskDeadline != null && TaskDeadline.length() > 0 ) cv.put("TaskDeadline", TaskDeadline);
             if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
-            return rv;
+            this.getWritableDatabase().close();
+        if(rv == -1){
+            return false;
+        }else{
+            return true;
+        }
 
     }
     public Cursor getTaskById(long id) {

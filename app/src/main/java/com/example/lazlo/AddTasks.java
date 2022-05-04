@@ -33,7 +33,7 @@ public class AddTasks extends AppCompatActivity {
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
-    LocalDate selected_date,date_now;
+    LocalDateTime selected_date,date_now;
     AutoCompleteTextView tasksCategories;
     String selected_category, selected_time;
     Double Price;
@@ -43,8 +43,8 @@ public class AddTasks extends AppCompatActivity {
 
 //method to parse date input from adding task
 
-    public static LocalDate getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
-        return LocalDate.parse(string, dateTimeFormatter);
+    public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
+        return LocalDateTime.parse(string, dateTimeFormatter);
     }
 
 
@@ -122,15 +122,16 @@ public class AddTasks extends AppCompatActivity {
                 String selectedDate_String = select_date.getText().toString().trim();
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
                 String selectedCategory_string = tasksCategories.getText().toString().trim();
+                String selectedDateTime = selectedDate_String + " " + selected_time;
 
 
                 //process inputs
                 if (!taskTitle_String.isEmpty()){
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
-                            if (!selectedDate_String.isEmpty() && willDateFormat(selectedDate_String)){
+                            if (!selectedDate_String.isEmpty() && willDateFormat(selectedDateTime)){
                                 if (willPriceFormat(TaskAssociatedPrice)){
-                                    date_now = LocalDate.now();
+                                    date_now = LocalDateTime.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
                                         try {
                                             //insert task to db if dates are cool
@@ -228,7 +229,7 @@ public class AddTasks extends AppCompatActivity {
         });
     }
     private boolean willDateFormat(String selectedDate){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
             return true;
@@ -286,7 +287,11 @@ private void selectTime(){
     TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-            selected_time = hour + ":" + minute;
+            if (hour < 10){
+                selected_time = "0" + hour + ":" + minute;
+            }else{
+                selected_time = hour + ":" + minute;
+            }
             selectTime_AutocompleteView.setText(FormatTime(hour, minute));
         }
     },hour, minute,false);
