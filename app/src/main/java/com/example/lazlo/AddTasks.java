@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
@@ -21,21 +23,22 @@ import com.google.android.material.textfield.TextInputLayout;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class AddTasks extends AppCompatActivity {
-    TextInputEditText task_title,task_description,select_date,priceAutocompleteView;
+    TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView;
     DatePickerDialog datePickerDialog;
     ImageButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
     LocalDate selected_date,date_now;
     AutoCompleteTextView tasksCategories;
-    String selected_category;
+    String selected_category, selected_time;
     Double Price;
     TextInputLayout taskTitle_TextLayout,taskDescription_TextLayout,tasksCategoryTextLayout,
-            price_TextLayout,selectedDate_TextInputLayout;
+            price_TextLayout,selectedDate_TextInputLayout,selectedTime_TextInputLayout;
     boolean b,d;
 
 //method to parse date input from adding task
@@ -56,12 +59,14 @@ public class AddTasks extends AppCompatActivity {
         select_date = (TextInputEditText) findViewById(R.id.selectDate_AutocompleteView);
         priceAutocompleteView = (TextInputEditText) findViewById(R.id.priceAutoCompleteView);
         tasksCategories = (AutoCompleteTextView) findViewById(R.id.tasksAutoCompleteView);
+        selectTime_AutocompleteView = findViewById(R.id.selectTime_AutocompleteView);
 
         taskTitle_TextLayout = findViewById(R.id.taskTitle_TextLayout);
         taskDescription_TextLayout = findViewById(R.id.taskDescription_TextLayout);
         tasksCategoryTextLayout = findViewById(R.id.tasksCategoryTextLayout);
         price_TextLayout = findViewById(R.id.price_TextLayout);
         selectedDate_TextInputLayout = findViewById(R.id.selectedDate_TextInputLayout);
+        selectedTime_TextInputLayout = findViewById(R.id.selectedTime_TextInputLayout);
 
         btn_saveTasks = (ImageButton) findViewById(R.id.btn_saveTask);
         btn_cancelTaskCreation = findViewById(R.id.cancelTaskCreation);
@@ -97,7 +102,15 @@ public class AddTasks extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+        //==========================================================process time==========================================
+        selectTime_AutocompleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectTime();
+            }
+        });
         //================================================save inputs=======================================================
+
         btn_saveTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,4 +251,45 @@ public class AddTasks extends AppCompatActivity {
             }
 
     }
+    //this method converts the time into 12hr format and assigns am or pm
+    public String FormatTime(int hour, int minute) {
+
+        String time;
+        time = "";
+        String formattedMinute;
+
+        if (minute / 10 == 0) {
+            formattedMinute = "0" + minute;
+        } else {
+            formattedMinute = "" + minute;
+        }
+
+
+        if (hour == 0) {
+            time = "12" + ":" + formattedMinute + " AM";
+        } else if (hour < 12) {
+            time = hour + ":" + formattedMinute + " AM";
+        } else if (hour == 12) {
+            time = "12" + ":" + formattedMinute + " PM";
+        } else {
+            int temp = hour - 12;
+            time = temp + ":" + formattedMinute + " PM";
+        }
+
+
+        return time;
+    }
+private void selectTime(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+    TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            selected_time = hour + ":" + minute;
+            selectTime_AutocompleteView.setText(FormatTime(hour, minute));
+        }
+    },hour, minute,false);
+    timePickerDialog.show();
+}
     }

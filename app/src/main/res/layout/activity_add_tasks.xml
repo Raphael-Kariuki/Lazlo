@@ -49,7 +49,7 @@
         android:id="@+id/taskTitle_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/createTasksLabel"
         android:layout_marginTop="40dp"
         >
@@ -68,7 +68,7 @@
         android:id="@+id/taskDescription_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         >
@@ -87,9 +87,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tasksCategoryTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
 
@@ -100,15 +100,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Select category"
-            android:inputType="none"
-            tools:ignore="TouchTargetSizeCheck" />
+             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_TextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="5dp"
@@ -124,22 +123,55 @@
             tools:ignore="TouchTargetSizeCheck" />
             
     </com.google.android.material.textfield.TextInputLayout>
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/selectedDate_TextInputLayout"
-    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    app:layout_constraintTop_toBottomOf="@+id/price_TextLayout"
-    android:layout_marginTop="@dimen/activity_vertical_margin">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/selectDate_AutocompleteView"
+    <LinearLayout
+        android:id="@+id/deadlineLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="Select the deadline"
-        android:inputType="text"
-        tools:ignore="TouchTargetSizeCheck" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/price_TextLayout"
+        android:orientation="horizontal"
+        >
 
-</com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/selectedDate_TextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/selectDate_AutocompleteView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Select the date"
+                android:inputType="text"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/selectedTime_TextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/selectTime_AutocompleteView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Select the time"
+                android:inputType="text"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
