@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public Cursor getAll(String uname) {
         //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
-        return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,null);
+        return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
     public Cursor getAllDrafts(String uname) {
@@ -78,6 +78,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getSum(LocalDate startDate, LocalDate endDate){
         return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotal from TaskList where TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
     }
+    public Cursor getSpendingDetails(LocalDate startDate, LocalDate endDate){
+        return this.getWritableDatabase().query("TaskList",new String[]{"_id","TaskTitle","TaskAssociatedPrice"},"TaskDeadline > ? and TaskDeadline < ?",new String[]{String.valueOf(startDate),String.valueOf(endDate)},null,null,"TaskAssociatedPrice DESC");
+    }
+
 
     //method to insert task, executed on addtasks.java
     public boolean insertTasks(String userName, String taskTitle, String taskDescription, String taskCategory,

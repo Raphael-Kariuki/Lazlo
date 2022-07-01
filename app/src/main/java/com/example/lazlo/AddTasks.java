@@ -3,9 +3,11 @@ package com.example.lazlo;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -123,7 +125,6 @@ public class AddTasks extends AppCompatActivity {
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
                 String selectedCategory_string = tasksCategories.getText().toString().trim();
                 String selectedDateTime = selectedDate_String + " " + selected_time;
-
 
                 //process inputs
                 if (!taskTitle_String.isEmpty()){

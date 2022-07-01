@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import android.widget.Button;
 import android.database.Cursor;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ public class Dashboard extends AppCompatActivity {
     DBHelper dbHelper = new DBHelper(this);
     LocalDate selectedStart_duration_String,selectedEnd_duration_String;
     TextView sumTotalView;
+    SimpleCursorAdapter simpleCursorAdapter;
+    ListView showSpendingListView;
 
 
     public void onBackPressed(){
@@ -53,6 +57,7 @@ public class Dashboard extends AppCompatActivity {
         startDuration_choice = (TextInputEditText) findViewById(R.id.startDateInput);
         endDuration_choice = (TextInputEditText) findViewById(R.id.endDateInput);
         sumTotalView = (TextView) findViewById(R.id.SumTotalView);
+        showSpendingListView = findViewById(R.id.showSpendingListView);
 
         final Calendar calendar = Calendar.getInstance();
         int sYear = calendar.get(Calendar.YEAR);
@@ -109,6 +114,8 @@ public class Dashboard extends AppCompatActivity {
 
                 try {
                     Cursor cursor = dbHelper.getSum(selectedStart_duration_String, selectedEnd_duration_String);
+                    Cursor cursor1 = dbHelper.getSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
+                    spendingListViewPopulate(cursor1);
                     if (cursor.getCount() == 0){
                         sumTotalView.setText("No entries found");
                     }
@@ -125,5 +132,11 @@ public class Dashboard extends AppCompatActivity {
 
 
 
+    }
+    private void spendingListViewPopulate(Cursor cursor){
+        if (simpleCursorAdapter == null){
+            simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.spending_listview,cursor,new String[]{"TaskTitle","TaskAssociatedPrice"},new int[]{R.id.spendingViewTitle_textView,R.id.spendingViewPrice_textView},0);
+            showSpendingListView.setAdapter(simpleCursorAdapter);
+        }
     }
 }

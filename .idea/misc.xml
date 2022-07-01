@@ -15,15 +15,17 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout-v28/fragment_work.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_alarm_broadcast.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_entry_splash.xml" value="0.20625" />
-        <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.1897644927536232" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
         <entry key="app/src/main/res/layout/activity_my_account.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_notification.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.271875" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />
@@ -32,6 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.15718418514946964" />
         <entry key="app/src/main/res/layout/fragment_school.xml" value="0.2869791666666667" />
         <entry key="app/src/main/res/layout/fragment_work.xml" value="0.19056261343012704" />
+        <entry key="app/src/main/res/layout/spending_listview.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tasks_dropdown.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/userdata_listrow.xml" value="0.33" />

@@ -82,12 +82,27 @@ public class individualTask extends AppCompatActivity {
                 String updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
                 String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
                 String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
-                String updateDateTime = selected_date + " " + timeDate2update;
+                System.out.println(updateDate + updateTime);
+// format the date and time straight from input ===========================================
+                String[] timeDeh = updateTime.split(":", 2);
+                String new_hour, new_minute;
+                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 1){
+                    new_hour = "0" + timeDeh[0];
+                }else{
+                    new_hour = timeDeh[0];
+                }
+                new_minute = timeDeh[1];
+                //===============================
+                String new_date = parseDate(updateDate);
+//==========================================================================
+
+                String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
+                System.out.println(updateDateTime);
                 if (!updateTitle.isEmpty()){
                     if (!updateDescription.isEmpty()){
                         if (!updateCategory.isEmpty()){
                             if (!updatePrice.isEmpty() && willPriceFormat(updatePrice)){
-                                if (!updateDate.isEmpty() && willDateFormat(updateDate)){
+                                if (!updateDate.isEmpty() && willDateFormat(updateDateTime)){
                                     LocalDateTime date_now = LocalDateTime.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                         try {
@@ -145,6 +160,7 @@ public class individualTask extends AppCompatActivity {
         });
     }
     public void showData(){
+        String regex;
         System.out.println("Populating...");
         try {
             cursor = dbHelper.getTaskById(currentId);
@@ -162,7 +178,12 @@ public class individualTask extends AppCompatActivity {
             individualTaskCategory_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory")));
             individualTaskBills_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice")));
             String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
-            String[] dateTime = timeDateToFormat.split("T", 2);
+            if(timeDateToFormat.contains("T")){
+                regex = "T";
+            }else{
+                regex = " ";
+            }
+            String[] dateTime = timeDateToFormat.split(regex, 2);
             individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
             individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
 
@@ -239,6 +260,28 @@ public class individualTask extends AppCompatActivity {
             return false;
         }
 
+    }
+    private String parseDate(String toDecideOn){
+      String regex = "";
+      String new_day = "",new_month = "",new_year = "",new_date;
+        if (toDecideOn.contains("/")){
+            regex = "/";
+      }else if(toDecideOn.contains("-")){
+            regex = "-";
+      }
+        String[] date = toDecideOn.split(regex,3);
+
+        if (Integer.parseInt(date[0]) > 31){
+            new_year = date[0];
+            new_month = date[1];
+            new_day = date[2];
+        }else if(Integer.parseInt(date[0]) < 31){
+            new_day = date[0];
+            new_month = date[1];
+            new_year = date[2];
+        }
+        new_date = new_day + "/" + new_month + "/" + new_year;
+        return new_date;
     }
 
     }
