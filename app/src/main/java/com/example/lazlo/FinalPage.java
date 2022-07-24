@@ -30,7 +30,7 @@ public class FinalPage extends AppCompatActivity {
     Cursor cursor;
     SimpleCursorAdapter simpleCursorAdapter;
     AppCompatTextView uname;
-    AppCompatButton home, school,work,business;
+    AppCompatButton home, school,work,business,shopping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +68,19 @@ public class FinalPage extends AppCompatActivity {
         work = findViewById(R.id.workTasks);
         school =findViewById(R.id.schoolTasks);
         business = findViewById(R.id.businessTasks);
+        shopping = findViewById(R.id.shoppingTasks);
+
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 populateHomeTasks();
+            }
+        });
+        shopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                populateHomeShopping();
             }
         });
         work.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +145,11 @@ public class FinalPage extends AppCompatActivity {
     }
     private  void populateHomeTasks(){
         cursor = dbHelper.getAllByCategories(s2,"Home");
+        taskListPopulate();
+
+    }
+    private  void populateHomeShopping(){
+        cursor = dbHelper.getAllByCategories(s2,"Shopping");
         taskListPopulate();
 
     }

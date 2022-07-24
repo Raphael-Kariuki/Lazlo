@@ -20,12 +20,12 @@
     <string name="task_category">Task category</string>
     <string-array name="categories">
         <item>Home</item>
+        <item>Shopping</item>
         <item>Work</item>
         <item>School</item>
         <item>Business</item>
     </string-array>
     <string-array name="Durations">
-        <item>Weekly</item>
         <item>Monthly</item>
         <item>Custom</item>
 
