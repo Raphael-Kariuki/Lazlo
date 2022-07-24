@@ -85,6 +85,7 @@ public class individualTask extends AppCompatActivity {
                 System.out.println(updateDate + updateTime);
 // format the date and time straight from input ===========================================
                 String[] timeDeh = updateTime.split(":", 2);
+
                 String new_hour, new_minute;
                 if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 1){
                     new_hour = "0" + timeDeh[0];
