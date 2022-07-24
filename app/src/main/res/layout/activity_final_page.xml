@@ -42,8 +42,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Home"
-            android:textSize="10sp"
-            android:drawableStart="@drawable/ic_baseline_home_24"
+            android:textSize="9sp"
+            android:drawableTop="@drawable/ic_baseline_home_24"
+            android:textColor="@color/black"
+
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/shoppingTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home"
+            android:textSize="9sp"
+            android:drawableTop="@drawable/ic_baseline_home_24"
             android:textColor="@color/black"
 
             />
@@ -52,9 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_baseline_school_24"
+            android:drawableTop="@drawable/ic_baseline_school_24"
             android:text="School"
-            android:textSize="10sp"
+            android:textSize="9sp"
             android:textColor="@color/black"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/businessTasks"
@@ -62,8 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Business"
-            android:textSize="10sp"
-            android:drawableStart="@drawable/ic_baseline_business_24"
+            android:textSize="9sp"
+            android:drawableTop="@drawable/ic_baseline_business_24"
             android:textColor="@color/black"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/workTasks"
@@ -71,8 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Work"
-            android:textSize="10sp"
-            android:drawableStart="@drawable/ic_baseline_work_24"
+            android:textSize="9sp"
+            android:drawableTop="@drawable/ic_baseline_work_24"
             android:textColor="@color/black"/>
 </LinearLayout>
 

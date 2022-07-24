@@ -7,11 +7,13 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1185" />
+        <entry key="app/src/main/res/drawable/ic_baseline_business_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/ic_baseline_save_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_school_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout-v28/fragment_work.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
