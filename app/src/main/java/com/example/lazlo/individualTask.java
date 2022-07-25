@@ -155,7 +155,18 @@ public class individualTask extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(individualTask.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        individualTaskDateDeadline_TextInputEdit.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        String formattedMonth = null,formattedDay = null;
+                        if (monthOfYear + 1 <= 9){
+                            formattedMonth = "0" + (monthOfYear + 1) ;
+                        }else{
+                            formattedMonth = String.valueOf(monthOfYear + 1);
+                        }
+                        if(dayOfMonth < 10){
+                            formattedDay = "0" + dayOfMonth;
+                        }else{
+                            formattedDay = String.valueOf(dayOfMonth);
+                        }
+                        individualTaskDateDeadline_TextInputEdit.setText(formattedDay + "-" + formattedMonth + "-" + year);
                     }
                 }, mYear,mMonth, mDay);
                 datePickerDialog.show();
