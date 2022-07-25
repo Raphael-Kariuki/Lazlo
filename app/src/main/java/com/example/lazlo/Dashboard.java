@@ -1,40 +1,39 @@
 package com.example.lazlo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import android.widget.Button;
+
 import android.database.Cursor;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Dashboard extends AppCompatActivity {
     TextInputEditText startDuration_choice,endDuration_choice;
     String selectedStart_duration,selectedEnd_duration;
     DatePickerDialog datePickerDialog,datePickerDialog2;
-    Button btnshowPredictedSpending;
+    MaterialButton btnShowPredictedSpending;
     DBHelper dbHelper = new DBHelper(this);
     LocalDate selectedStart_duration_String,selectedEnd_duration_String;
     TextView sumTotalView;
     SimpleCursorAdapter simpleCursorAdapter;
     ListView showSpendingListView;
+    TextInputLayout startDateLayout,endDateLayout;
 
 
     public void onBackPressed(){
@@ -54,10 +53,13 @@ public class Dashboard extends AppCompatActivity {
 
         //process dates
 
-        startDuration_choice = (TextInputEditText) findViewById(R.id.startDateInput);
-        endDuration_choice = (TextInputEditText) findViewById(R.id.endDateInput);
-        sumTotalView = (TextView) findViewById(R.id.SumTotalView);
+        startDuration_choice = findViewById(R.id.startDateInput);
+        endDuration_choice =  findViewById(R.id.endDateInput);
+        sumTotalView =  findViewById(R.id.SumTotalView);
         showSpendingListView = findViewById(R.id.showSpendingListView);
+
+        startDateLayout = findViewById(R.id.startDateLayout);
+        endDateLayout = findViewById(R.id.endDateLayout);
 
         final Calendar calendar = Calendar.getInstance();
         int sYear = calendar.get(Calendar.YEAR);
@@ -96,9 +98,9 @@ public class Dashboard extends AppCompatActivity {
         });
 
         //show sum
-        btnshowPredictedSpending = (Button) findViewById(R.id.btnShowPredictedSpending);
+        btnShowPredictedSpending = findViewById(R.id.btnShowPredictedSpending);
 
-        btnshowPredictedSpending.setOnClickListener(new View.OnClickListener() {
+        btnShowPredictedSpending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -106,26 +108,46 @@ public class Dashboard extends AppCompatActivity {
                 try {
                     selectedStart_duration = startDuration_choice.getText().toString().trim();
                     selectedEnd_duration = endDuration_choice.getText().toString().trim();
-                    selectedStart_duration_String = getDateFromString(selectedStart_duration,dateTimeFormatter);
-                    selectedEnd_duration_String = getDateFromString(selectedEnd_duration,dateTimeFormatter);
+                    if (!selectedStart_duration.isEmpty()){
+                        if (!selectedEnd_duration.isEmpty()){
+
+                            startDateLayout.setErrorEnabled(false);
+                            endDateLayout.setErrorEnabled(false);
+
+                            selectedStart_duration_String = getDateFromString(selectedStart_duration,dateTimeFormatter);
+                            selectedEnd_duration_String = getDateFromString(selectedEnd_duration,dateTimeFormatter);
+
+                            try {
+                                Cursor cursor = dbHelper.getSum(selectedStart_duration_String, selectedEnd_duration_String);
+                                Cursor cursor1 = dbHelper.getSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
+                                spendingListViewPopulate(cursor1);
+                                if (cursor.getCount() == 0){
+                                    sumTotalView.setText(R.string.No_entries_found);
+                                }
+                                if (cursor.moveToFirst()){
+                                    sumTotalView.setText(getString(R.string.money) + " " + cursor.getString(cursor.getColumnIndexOrThrow("sumTotal")));
+                                }
+                                cursor.close();
+                            }catch (Exception e){
+                                System.out.println("Error occurred: " + e);
+                            }
+                        }else{
+                            startDateLayout.setErrorEnabled(false);
+                            endDateLayout.setErrorEnabled(true);
+                            endDateLayout.setError("Select end date");
+                        }
+                    }else{
+                        endDateLayout.setErrorEnabled(false);
+                        startDateLayout.setErrorEnabled(true);
+                        startDateLayout.setError("Select end date");
+                    }
+
+
                 }catch (IllegalArgumentException e){
                     System.out.println("Exception" + e);
                 }
 
-                try {
-                    Cursor cursor = dbHelper.getSum(selectedStart_duration_String, selectedEnd_duration_String);
-                    Cursor cursor1 = dbHelper.getSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
-                    spendingListViewPopulate(cursor1);
-                    if (cursor.getCount() == 0){
-                        sumTotalView.setText("No entries found");
-                    }
-                    if (cursor.moveToFirst()){
-                        sumTotalView.setText("Kshs " + cursor.getString(cursor.getColumnIndexOrThrow("sumTotal")));
-                    }
-                    cursor.close();
-                }catch (Exception e){
-                    System.out.println("Error occurred: " + e);
-                }
+
 
             }
         });

@@ -29,6 +29,18 @@
     <string name="select_the_time">Select the time</string>
     <string name="select_time">Select time</string>
     <string name="select_date">Select date</string>
+    <string name="home">Home</string>
+    <string name="shopping">Shopping</string>
+    <string name="school">School</string>
+    <string name="business">Business</string>
+    <string name="work">Work</string>
+    <string name="menu">Menu</string>
+    <string name="view_predicted_spending">View predicted spending</string>
+    <string name="select_start_date">Select start date</string>
+    <string name="select_end_date">Select end date</string>
+    <string name="show_spending">Show spending</string>
+    <string name="No_entries_found">No entries found</string>
+    <string name="money">Kshs </string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>
