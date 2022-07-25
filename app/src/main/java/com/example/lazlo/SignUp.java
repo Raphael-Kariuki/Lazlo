@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 /* added code */
 import android.content.Intent;
 import android.util.Patterns;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +12,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 /**/
 import android.os.Bundle;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
@@ -33,12 +35,26 @@ public class SignUp extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp_signUpPage);
         dbHelper = new DBHelper(this);
 
-        SignupUsername_inputLayout = (TextInputLayout) findViewById(R.id.SignupUsername_inputLayout);
-        SignupEmail_inputLayout = (TextInputLayout) findViewById(R.id.SignupEmail_inputLayout);
-        SignupPassword_inputLayout = (TextInputLayout) findViewById(R.id.SignupPassword_inputLayout);
-        SignupPasswordConfirm_inputLayout = (TextInputLayout) findViewById(R.id.SignupPasswordConfirm_inputLayout);
+        SignupUsername_inputLayout = findViewById(R.id.SignupUsername_inputLayout);
+        SignupEmail_inputLayout = findViewById(R.id.SignupEmail_inputLayout);
+        SignupPassword_inputLayout = findViewById(R.id.SignupPassword_inputLayout);
+        SignupPasswordConfirm_inputLayout = findViewById(R.id.SignupPasswordConfirm_inputLayout);
 
         SignupUsername_inputLayout.requestFocus();
+
+        password.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus){
+                if (password.getText().toString().trim().length() < 8){
+                    SignupPassword_inputLayout.setCounterEnabled(true);
+                    SignupPassword_inputLayout.setErrorEnabled(true);
+                    SignupPassword_inputLayout.setError("Password must be at-least 8 characters long");
+                }
+
+            }else{
+                SignupPassword_inputLayout.setErrorEnabled(false);
+                SignupPassword_inputLayout.setCounterEnabled(false);
+            }
+        });
 
         btnSignUp.setOnClickListener(view -> {
             String username1 = username.getText().toString().trim();
@@ -51,19 +67,28 @@ public class SignUp extends AppCompatActivity {
                         if (!password1.isEmpty()){
                             if (!password2.isEmpty()){
                                 if (password1.equals(password2)){
-                                    try {
-                                       b = dbHelper.insertUserData(username1,email1,password1);
+                                    if (passwordCheck(password1)){
+                                        try {
+                                            b = dbHelper.insertUserData(username1,email1,password1);
 
-                                       if (b){
-                                            Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
-                                            Intent i = new Intent(SignUp.this, Login.class);
-                                            startActivity(i);
-                                       }else {
-                                            Toast.makeText(SignUp.this, "Failed to insert the data", Toast.LENGTH_SHORT).show();
-                                       }
-                                    }catch (Exception e){
-                                        Toast.makeText(SignUp.this,"Unique values error",Toast.LENGTH_SHORT).show();
+                                            if (b){
+                                                Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
+                                                Intent i = new Intent(SignUp.this, Login.class);
+                                                startActivity(i);
+                                            }else {
+                                                Toast.makeText(SignUp.this, "Failed to insert the data", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }catch (Exception e){
+                                            Toast.makeText(SignUp.this,"Unique values error",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else{
+                                        SignupEmail_inputLayout.setErrorEnabled(false);
+                                        SignupUsername_inputLayout.setErrorEnabled(false);
+                                        SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                                        SignupPassword_inputLayout.setErrorEnabled(true);
+                                        SignupPassword_inputLayout.setError("Passwords must contain uppercase. lowercase, symbols and numbers");
                                     }
+
                                 }else{
                                     SignupEmail_inputLayout.setErrorEnabled(false);
                                     SignupUsername_inputLayout.setErrorEnabled(false);
@@ -71,7 +96,6 @@ public class SignUp extends AppCompatActivity {
                                     SignupPasswordConfirm_inputLayout.setErrorEnabled(true);
                                     SignupPasswordConfirm_inputLayout.setError("Passwords don't match");
 
-                                    //Toast.makeText(SignUp.this,"passwords don't match",Toast.LENGTH_SHORT).show();
                                 }
 
                             }else{
@@ -126,5 +150,11 @@ public class SignUp extends AppCompatActivity {
             Intent i = new Intent(SignUp.this, Login.class);
             startActivity(i);
         });
+    }
+    public boolean passwordCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+<>?.;,:'|/`]).{8,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
     }
 }
