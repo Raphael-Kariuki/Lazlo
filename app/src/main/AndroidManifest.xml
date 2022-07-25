@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lazlo">
         <activity
-            android:name=".NOtificationMessage"
+            android:name=".forgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationMessage"
             android:exported="false" />
         <activity
             android:name=".entrySplash"

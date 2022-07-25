@@ -22,7 +22,7 @@ public class Login extends AppCompatActivity {
     String uname;
     EditText username, password;
     MaterialButton btnSubmitLoginCredentials;
-    TextView createAccount;
+    TextView createAccount, forgotPassword;
     DBHelper dbHelper;
     SharedPreferences sharedPreferences;
     TextInputLayout loginUserName_inputLayout,loginPassword_inputLayout;
@@ -63,27 +63,7 @@ public class Login extends AppCompatActivity {
                                     username.setText("");
                                     password.setText("");
                                     startActivity(intent);
-                                }/*else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                                builder.setCancelable(true);
-                                builder.setTitle("Wrong credentials");
-                                builder.setMessage("Username or password not found");
-                                builder.setPositiveButton("Login again", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent logIn = new Intent(getApplicationContext(), Login.class);
-                                        startActivity(logIn);
-                                    }
-                                });
-                                builder.setNegativeButton("Sign up", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent signUp = new Intent(getApplicationContext(), SignUp.class);
-                                        startActivity(signUp);
-                                    }
-                                });
-                                builder.show();
-                            }*/
+                                }
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
@@ -109,6 +89,11 @@ public class Login extends AppCompatActivity {
             Intent intent1 = new Intent(Login.this, SignUp.class);
             startActivity(intent1);
         });
+        forgotPassword = findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(view -> {
+            Intent resetPassword = new Intent(getApplicationContext(), com.example.lazlo.forgotPassword.class);
+            startActivity(resetPassword);
+        });
     }
     public boolean loginCheck(Cursor cursor, String unameCheck, String passCheck) throws NoSuchAlgorithmException {
         SignUp signUp = new SignUp();
@@ -132,5 +117,6 @@ public class Login extends AppCompatActivity {
         }
         return false;
     }
+
 
 }

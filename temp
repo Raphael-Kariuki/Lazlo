@@ -1,0 +1,40 @@
+/*else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                                builder.setCancelable(true);
+                                builder.setTitle("Wrong credentials");
+                                builder.setMessage("Username or password not found");
+                                builder.setPositiveButton("Login again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent logIn = new Intent(getApplicationContext(), Login.class);
+                                        startActivity(logIn);
+                                    }
+                                });
+                                builder.setNegativeButton("Sign up", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent signUp = new Intent(getApplicationContext(), SignUp.class);
+                                        startActivity(signUp);
+                                    }
+                                });
+                                builder.show();
+                            }*/
+                            --------------------------------
+
+
+                               //method to create an array of user tasks
+                                public ArrayList<HashMap<String, String>> getTasks(String userID){
+                                    SQLiteDatabase DB = this.getWritableDatabase();
+                                    ArrayList<HashMap<String,String>> tasksList = new ArrayList<>();
+                                    Cursor cursor = DB.rawQuery("Select * from TaskList where UserName = ?",new String[]{userID});
+                                    while (cursor.moveToNext()){
+                                        HashMap<String,String> task = new HashMap<>();
+                                        task.put("task_title", cursor.getString(1));
+                                        task.put("task_description", cursor.getString(2));
+                                        tasksList.add(task);
+                                    }
+                                    return tasksList;
+                                }
+                                ---------------
+
+

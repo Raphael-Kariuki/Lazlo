@@ -11,4 +11,5 @@
     <string name="show_tasks">Show Tasks</string>
     <string name="task_category">Task category</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="password_reset_success">Password reset success\nPassword has been reset to blah\nLogin and set your new password</string>
 </resources>

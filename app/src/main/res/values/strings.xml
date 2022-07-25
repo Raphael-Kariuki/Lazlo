@@ -20,6 +20,9 @@
     <string name="task_category">Task category</string>
     <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create account</string>
+    <string name="reset_password">Reset password</string>
+    <string name="password_reset_success">Password reset success\nPassword has been reset to blah\nLogin and set your new password</string>
+    <string name="forgot_password">Forgot password</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>

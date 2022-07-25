@@ -1,18 +1,15 @@
 package com.example.lazlo.Sql;
 
 /*added code*/
-import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -47,11 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (password != null && password.length() > 0) contentValues.put("password", password);
         long result = DB.insert("userDetails", null, contentValues);
         DB.close();
-        if(result == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return result != -1;
     }
     public long deleteTask(long id){
         return this.getWritableDatabase().delete("TaskList","_id=?",new String[]{String.valueOf(id)});
@@ -63,6 +56,18 @@ public class DBHelper extends SQLiteOpenHelper {
         //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
         return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
+    }
+    public Cursor getByEmail(String email){
+        //return this.getWritableDatabase().rawQuery("Select userName, password where email=?", new String[]{String.valueOf(email)});
+        return this.getWritableDatabase().query("userDetails",new String[]{"userName","password"},"email=?",new String[]{String.valueOf(email)},null,null,null);
+    }
+    public boolean updateByEmail(String email, String tempPassword){
+
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("password", tempPassword);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"email=?",new String[]{String.valueOf(email)});
+        return returnValue != -1;
     }
     public Cursor getAllDrafts(String uname) {
         //return this.getWritableDatabase().query("TaskListDrafts",null,null,null,null,null,null,null);
@@ -96,11 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();
-        if(result == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return result != -1;
     }
     public boolean insertDraftTasks(String userName, String taskTitle, String taskDescription,String taskCategory,
                                String taskAssociatedPrice, String taskDeadline){
@@ -114,11 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         long result = DB.insert("TaskListDrafts", null, contentValues);
         DB.close();
-        if(result == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return result != -1;
     }
 
     //create an array from userdata details from db to be used in populating a listview
@@ -139,28 +136,14 @@ public class DBHelper extends SQLiteOpenHelper {
     //method to obtain login credentials which are checked on login
     public Cursor getData(String login_Uname){
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select userName, password from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
         //cursor.close();
-        return cursor;
+        return DB.rawQuery("Select userName, password from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
     }
     public Cursor get_tasks(String userID){
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
-        return cursor;
+        return DB.rawQuery("Select TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
     }
-    //method to create an array of user tasks
-    public ArrayList<HashMap<String, String>> getTasks(String userID){
-        SQLiteDatabase DB = this.getWritableDatabase();
-        ArrayList<HashMap<String,String>> tasksList = new ArrayList<>();
-        Cursor cursor = DB.rawQuery("Select * from TaskList where UserName = ?",new String[]{userID});
-        while (cursor.moveToNext()){
-            HashMap<String,String> task = new HashMap<>();
-            task.put("task_title", cursor.getString(1));
-            task.put("task_description", cursor.getString(2));
-            tasksList.add(task);
-        }
-        return tasksList;
-    }
+
     public boolean update(long id, String UserName, String TaskTitle, String TaskDescription,String TaskCategory,
                           String TaskAssociatedPrice, String TaskDeadline) {
         long rv = 0;
@@ -173,11 +156,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (TaskDeadline != null && TaskDeadline.length() > 0 ) cv.put("TaskDeadline", TaskDeadline);
             if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
             this.getWritableDatabase().close();
-        if(rv == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return rv != -1;
 
     }
     public Cursor getTaskById(long id) {
