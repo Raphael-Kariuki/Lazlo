@@ -12,4 +12,7 @@
     <string name="task_category">Task category</string>
     <string name="confirm_password">Confirm password</string>
     <string name="password_reset_success">Password reset success\nPassword has been reset to blah\nLogin and set your new password</string>
+    <string name="Failed_password_reset">Failed to reset password, try again</string>
+    <string name="select_the_time">Select the time</string>
+    <string name="select_date">Select date</string>
 </resources>

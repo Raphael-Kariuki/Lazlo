@@ -58,8 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
     public Cursor getByEmail(String email){
-        //return this.getWritableDatabase().rawQuery("Select userName, password where email=?", new String[]{String.valueOf(email)});
-        return this.getWritableDatabase().query("userDetails",new String[]{"userName","password"},"email=?",new String[]{String.valueOf(email)},null,null,null);
+        return this.getWritableDatabase().query("userDetails",null,"email=?",new String[]{String.valueOf(email)},null,null,null);
     }
     public boolean updateByEmail(String email, String tempPassword){
 

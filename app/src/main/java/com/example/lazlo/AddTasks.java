@@ -1,21 +1,15 @@
 package com.example.lazlo;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,7 +18,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -32,7 +25,7 @@ import java.util.Calendar;
 public class AddTasks extends AppCompatActivity {
     TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView;
     DatePickerDialog datePickerDialog;
-    ImageButton btn_saveTasks, btn_cancelTaskCreation;
+    AppCompatButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
     LocalDateTime selected_date,date_now;
@@ -56,11 +49,11 @@ public class AddTasks extends AppCompatActivity {
         setContentView(R.layout.activity_add_tasks);
 
         //===================================================Variables===============================================================
-        task_title = (TextInputEditText) findViewById(R.id.taskTitleAutoCompleteView);
-        task_description = (TextInputEditText) findViewById(R.id.taskDescriptionAutoCompleteView);
-        select_date = (TextInputEditText) findViewById(R.id.selectDate_AutocompleteView);
-        priceAutocompleteView = (TextInputEditText) findViewById(R.id.priceAutoCompleteView);
-        tasksCategories = (AutoCompleteTextView) findViewById(R.id.tasksAutoCompleteView);
+        task_title =  findViewById(R.id.taskTitleAutoCompleteView);
+        task_description = findViewById(R.id.taskDescriptionAutoCompleteView);
+        select_date =  findViewById(R.id.selectDate_AutocompleteView);
+        priceAutocompleteView = findViewById(R.id.priceAutoCompleteView);
+        tasksCategories = findViewById(R.id.tasksAutoCompleteView);
         selectTime_AutocompleteView = findViewById(R.id.selectTime_AutocompleteView);
 
         taskTitle_TextLayout = findViewById(R.id.taskTitle_TextLayout);
@@ -70,7 +63,7 @@ public class AddTasks extends AppCompatActivity {
         selectedDate_TextInputLayout = findViewById(R.id.selectedDate_TextInputLayout);
         selectedTime_TextInputLayout = findViewById(R.id.selectedTime_TextInputLayout);
 
-        btn_saveTasks = (ImageButton) findViewById(R.id.btn_saveTask);
+        btn_saveTasks = findViewById(R.id.btn_saveTask);
         btn_cancelTaskCreation = findViewById(R.id.cancelTaskCreation);
 
         dbHelper = new DBHelper(this);
@@ -91,18 +84,10 @@ public class AddTasks extends AppCompatActivity {
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        select_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //date picker dialog
-                datePickerDialog = new DatePickerDialog(AddTasks.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        select_date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }
-                }, mYear,mMonth, mDay);
-                datePickerDialog.show();
-            }
+        select_date.setOnClickListener(view -> {
+            //date picker dialog
+            datePickerDialog = new DatePickerDialog(AddTasks.this, (view1, year, monthOfYear, dayOfMonth) -> select_date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear,mMonth, mDay);
+            datePickerDialog.show();
         });
         //==========================================================process time==========================================
         selectTime_AutocompleteView.setOnClickListener(new View.OnClickListener() {

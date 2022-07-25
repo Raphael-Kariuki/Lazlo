@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 
 public class individualTask extends AppCompatActivity {
   TextInputEditText individualTaskTitle_TextInputEdit, individualTaskDescription_TextInputEdit,
@@ -46,8 +45,8 @@ public class individualTask extends AppCompatActivity {
         individualTaskBills_TextInputEdit = findViewById(R.id.individualTaskBills_TextInputEdit);
         individualTaskDateDeadline_TextInputEdit = findViewById(R.id.individualTaskDateDeadline_TextInputEdit);
         individualTaskTimeDeadline_TextInputEdit = findViewById(R.id.individualTaskTimeDeadline_TextInputEdit);
-        Btnsave = findViewById(R.id.Btnsave);
-        Btnshow = findViewById(R.id.Btnshow);
+        Btnsave = findViewById(R.id.btnSave);
+        Btnshow = findViewById(R.id.btnShow);
         dbHelper = new DBHelper(this);
 
         //populate category dropdown

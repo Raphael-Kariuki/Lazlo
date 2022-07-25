@@ -2,6 +2,7 @@ package com.example.lazlo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,77 +15,90 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 public class forgotPassword extends AppCompatActivity {
     AppCompatButton btnResetPassword;
     TextInputEditText resetPasswordEmailInput;
-    TextInputLayout resetPasswordLayout;
+    TextInputLayout resetPasswordEmailInputLayout;
     DBHelper dbHelper;
     String uname, passkey;
+    AppCompatTextView resetSuccessText;
 
-    LinearLayout showToResetPassword,showOnPasswordReset;
+    LinearLayout showToResetPasswordLayout,showOnPasswordResetLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        showOnPasswordReset = findViewById(R.id.showOnPasswordReset);
-        showOnPasswordReset.setVisibility(View.INVISIBLE);
+        //show layout containing email input field
+        showToResetPasswordLayout = findViewById(R.id.showToResetPassword);
+        showToResetPasswordLayout.setVisibility(View.VISIBLE);
 
-        showToResetPassword = findViewById(R.id.showToResetPassword);
-        showToResetPassword.setVisibility(View.VISIBLE);
+        //display layout on success of password reset
+        showOnPasswordResetLayout = findViewById(R.id.showOnPasswordReset);
+        showOnPasswordResetLayout.setVisibility(View.INVISIBLE);
+
+        resetPasswordEmailInput = findViewById(R.id.resetPasswordEmailInput);
+        resetPasswordEmailInputLayout = findViewById(R.id.resetPasswordEmailInputLayout);
+
+
 
         btnResetPassword = findViewById(R.id.btnResetPassword);
-        btnResetPassword.setOnClickListener(view -> {
-            System.out.print("button clicked");
-            resetPasswordEmailInput = findViewById(R.id.resetPassword);
-            resetPasswordLayout = findViewById(R.id.resetPasswordLayout);
-            String resetEmail = resetPasswordEmailInput.getText().toString().trim();
-            System.out.print(resetEmail);
-           /* Cursor cursor = dbHelper.getByEmail(resetEmail);
+        btnResetPassword.setOnClickListener(view -> resetPassword());
 
-                if (!resetEmail.isEmpty()){
-                    if (Patterns.EMAIL_ADDRESS.matcher(resetEmail).matches()){
-                        if (cursor.getCount() != 0){
-                            try {
-                                SignUp signUp = new SignUp();
-                                boolean success = dbHelper.updateByEmail(resetEmail, signUp.crypto("blah"));
+    }
 
-                                if (success){
-                                    showOnPasswordReset.setVisibility(View.VISIBLE);
-                                    showToResetPassword.setVisibility(View.INVISIBLE);
+    //handle password reset button click
+    public void resetPassword(){
+        String emailAddress = resetPasswordEmailInput.getText().toString().trim();
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getByEmail(emailAddress);
+            
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
-                                }
-                            } catch (NoSuchAlgorithmException e) {
-                                e.printStackTrace();
-                            }
-                        }else {
-                            resetPasswordLayout.setErrorEnabled(true);
-                            resetPasswordLayout.setError("Enter an existing email address");
-                        }
-                    }else {
-                        resetPasswordLayout.setErrorEnabled(true);
-                        resetPasswordLayout.setError("Enter a valid email address");
+
+        if (!emailAddress.isEmpty()){
+            if (Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()){
+                if (emailExists(cursor,emailAddress)){
+                    if (!updateTempPassphrase(emailAddress)) {
+                        resetSuccessText = findViewById(R.id.resetSuccess);
+                        resetSuccessText.setText(R.string.Failed_password_reset);
                     }
+                    showOnPasswordResetLayout.setVisibility(View.VISIBLE);
+                }else{
+                    resetPasswordEmailInputLayout.setErrorEnabled(true);
+                    resetPasswordEmailInputLayout.setError("email address does not exist");
+                }
 
-                }else {
-                    resetPasswordLayout.setErrorEnabled(true);
-                    resetPasswordLayout.setError("Enter your email");
-                }*/
-        });
+            }else{
+                resetPasswordEmailInputLayout.setErrorEnabled(true);
+                resetPasswordEmailInputLayout.setError("Enter a valid email address");
+            }
+        }else{
+            resetPasswordEmailInputLayout.setErrorEnabled(true);
+            resetPasswordEmailInputLayout.setError("Enter an email address");
+        }
     }
     public boolean emailExists(Cursor cursor,String emailAddress){
-        while (cursor.moveToNext()){
-            if (!cursor.getString(cursor.getColumnIndexOrThrow("userName")).isEmpty()){
-                return true;
-            }else{
-                resetPasswordLayout.setErrorEnabled(true);
-                resetPasswordLayout.setError("Email does not exist");
-                return false;
-            }
+    if (cursor == null){
+        return false;
+    }
+     return true;
+    }
+
+    public boolean updateTempPassphrase(String emailAddress){
+        SignUp signUp = new SignUp();
+        try {
+            dbHelper.updateByEmail(emailAddress,signUp.crypto("gloriana"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         return false;
     }
+
 }

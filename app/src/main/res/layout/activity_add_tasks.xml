@@ -26,23 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btn_saveTask"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/save_task"
-        android:src="@drawable/ic_baseline_save_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/cancelTaskCreation"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/save_as_draft"
-        android:src="@drawable/ic_baseline_cancel_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,15 +36,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/createTasksLabel"
         android:layout_marginTop="40dp"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/taskTitleAutoCompleteView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Task title"
-
-            tools:ignore="TouchTargetSizeCheck" />
+            android:hint="@string/task_title"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,15 +59,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/taskDescriptionAutoCompleteView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Task Description"
-
-            tools:ignore="TouchTargetSizeCheck" />
+            android:hint="@string/task_description"
+          />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,14 +84,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
-
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
 
         <AutoCompleteTextView
             android:id="@+id/tasksAutoCompleteView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Select category"
+            android:hint="@string/select_category"
              />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +107,11 @@
         app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="5dp"
-
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -130,7 +130,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/price_TextLayout"
         android:orientation="horizontal"
-        >
+        android:baselineAligned="false">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/selectedDate_TextInputLayout"
@@ -139,13 +139,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_weight="1"
+            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="#ffffff"
+            app:hintTextColor="@color/black"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/selectDate_AutocompleteView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Select the date"
+                android:hint="@string/select_the_date"
                 android:inputType="text"
                 />
 
@@ -158,18 +163,57 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_weight="1"
+            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="#ffffff"
+            app:hintTextColor="@color/black"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/selectTime_AutocompleteView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Select the time"
+                android:hint="@string/select_the_time"
                 android:inputType="text"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/deadlineLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_saveTask"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/save_task"
+            android:drawableStart="@drawable/ic_baseline_save_24"
+            android:text="@string/save"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/white"
+            android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelTaskCreation"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/save_as_draft"
+            android:drawableStart="@drawable/ic_baseline_cancel_24"
+            android:text="@string/save_as_draft"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/white"
+            android:layout_weight="1"
+            />
     </LinearLayout>
 
 

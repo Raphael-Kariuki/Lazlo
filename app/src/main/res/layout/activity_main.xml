@@ -25,9 +25,8 @@
         android:textSize="40sp"
         android:fontFamily="cursive"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
         android:padding="@dimen/activity_horizontal_margin"
-        android:textColor="@color/white"/>
+        android:textColor="@color/black"/>
   <!--
 
 
@@ -39,26 +38,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Login"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        app:cornerRadius="20dp"
+        app:backgroundTint="@color/black"
 
         />
     <TextView
         android:id="@+id/login_or_signup_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_login"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="or"
+        android:text="@string/or"
         android:textSize="20sp"
         android:textColor="@color/white"
         />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_up"
-        android:text="Sign up"
+        android:text="@string/sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        app:cornerRadius="20dp"
+        app:backgroundTint="@color/black"
         />
 
 </LinearLayout>
