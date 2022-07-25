@@ -13,6 +13,9 @@ import com.google.android.material.textfield.TextInputLayout;
 /**/
 import android.os.Bundle;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +72,7 @@ public class SignUp extends AppCompatActivity {
                                 if (password1.equals(password2)){
                                     if (passwordCheck(password1)){
                                         try {
-                                            b = dbHelper.insertUserData(username1,email1,password1);
+                                            b = dbHelper.insertUserData(username1,email1,crypto(password1));
 
                                             if (b){
                                                 Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
@@ -156,5 +159,14 @@ public class SignUp extends AppCompatActivity {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(passphrase);
         return matcher.matches();
+    }
+    public String crypto(String passphrase) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        byte[] getBytes = md.digest(passphrase.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : getBytes){
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
     }
 }

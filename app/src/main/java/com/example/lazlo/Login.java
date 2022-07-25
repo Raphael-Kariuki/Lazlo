@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.TextView;
@@ -16,6 +15,8 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import android.os.Bundle;
+
+import java.security.NoSuchAlgorithmException;
 
 public class Login extends AppCompatActivity {
     String uname;
@@ -35,8 +36,8 @@ public class Login extends AppCompatActivity {
         btnSubmitLoginCredentials = findViewById(R.id.btnSubmit_login);
         dbHelper = new DBHelper(this);
         Intent intent = new Intent(Login.this, FinalPage.class);
-        loginUserName_inputLayout = (TextInputLayout) findViewById(R.id.loginUserName_inputLayout);
-        loginPassword_inputLayout = (TextInputLayout) findViewById(R.id.loginPassword_inputLayout);
+        loginUserName_inputLayout =findViewById(R.id.loginUserName_inputLayout);
+        loginPassword_inputLayout = findViewById(R.id.loginPassword_inputLayout);
         loginUserName_inputLayout.requestFocus();
         //shared preferences are used to store variables persistently, even
         //after uses closes the app. Only cleared when they logout.
@@ -54,34 +55,38 @@ public class Login extends AppCompatActivity {
                 if (!unameCheck.isEmpty()){
                     if (!passCheck.isEmpty()){
                         if (cursor.getCount() != 0){
-                            if (loginCheck(cursor, unameCheck, passCheck)){
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("username", uname);
-                                editor.apply();
-                                username.setText("");
-                                password.setText("");
-                                startActivity(intent);
-                            }/*else{
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                            builder.setCancelable(true);
-                            builder.setTitle("Wrong credentials");
-                            builder.setMessage("Username or password not found");
-                            builder.setPositiveButton("Login again", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent logIn = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(logIn);
-                                }
-                            });
-                            builder.setNegativeButton("Sign up", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent signUp = new Intent(getApplicationContext(), SignUp.class);
-                                    startActivity(signUp);
-                                }
-                            });
-                            builder.show();
-                        }*/
+                            try {
+                                if (loginCheck(cursor, unameCheck, passCheck)){
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("username", uname);
+                                    editor.apply();
+                                    username.setText("");
+                                    password.setText("");
+                                    startActivity(intent);
+                                }/*else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                                builder.setCancelable(true);
+                                builder.setTitle("Wrong credentials");
+                                builder.setMessage("Username or password not found");
+                                builder.setPositiveButton("Login again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent logIn = new Intent(getApplicationContext(), Login.class);
+                                        startActivity(logIn);
+                                    }
+                                });
+                                builder.setNegativeButton("Sign up", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent signUp = new Intent(getApplicationContext(), SignUp.class);
+                                        startActivity(signUp);
+                                    }
+                                });
+                                builder.show();
+                            }*/
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
                         }else{
                             loginUserName_inputLayout.setErrorEnabled(true);
                             loginUserName_inputLayout.setError("Invalid username");
@@ -105,16 +110,17 @@ public class Login extends AppCompatActivity {
             startActivity(intent1);
         });
     }
-    public boolean loginCheck(Cursor cursor, String unameCheck, String passCheck){
+    public boolean loginCheck(Cursor cursor, String unameCheck, String passCheck) throws NoSuchAlgorithmException {
+        SignUp signUp = new SignUp();
         while (cursor.moveToNext()){
             if (cursor.getString(cursor.getColumnIndexOrThrow("userName")).equals(unameCheck)){
-                if(cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(passCheck)){
+                if(cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(signUp.crypto(passCheck))){
                     uname = cursor.getString(cursor.getColumnIndexOrThrow("userName"));
                         return true;
                 }else{
-                    loginUserName_inputLayout = (TextInputLayout) findViewById(R.id.loginUserName_inputLayout);
+                    loginUserName_inputLayout =  findViewById(R.id.loginUserName_inputLayout);
                     loginUserName_inputLayout.setErrorEnabled(false);
-                    loginPassword_inputLayout = (TextInputLayout) findViewById(R.id.loginPassword_inputLayout);
+                    loginPassword_inputLayout = findViewById(R.id.loginPassword_inputLayout);
                     loginPassword_inputLayout.setErrorEnabled(true);
                     loginPassword_inputLayout.setError("Wrong password");
                     //Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
