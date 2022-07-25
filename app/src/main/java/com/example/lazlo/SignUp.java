@@ -154,12 +154,25 @@ public class SignUp extends AppCompatActivity {
             startActivity(i);
         });
     }
+    //function to ensure a secure password is set matching the specified regex
+    //Regex is as follows:
+    /*Must contain a digit in the range 0-9
+    Must contain uppercase and lowercase characters
+    Must contain a symbols
+    Must be between 8 and 20 characters
+    * */
     public boolean passwordCheck(String passphrase){
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+<>?.;,:'|/`]).{8,20}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(passphrase);
         return matcher.matches();
     }
+
+    /*
+    Function to encrypt the user provided password
+    SHA-512 is in play
+    The user provided password is converted to bytes, encrypted with sha-512 then converted to hex
+    * */
     public String crypto(String passphrase) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         byte[] getBytes = md.digest(passphrase.getBytes(StandardCharsets.UTF_8));

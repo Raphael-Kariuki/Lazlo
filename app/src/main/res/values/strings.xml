@@ -18,6 +18,8 @@
     <string name="save">Save</string>
     <string name="show_tasks">Show Tasks</string>
     <string name="task_category">Task category</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="create_account">Create account</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>

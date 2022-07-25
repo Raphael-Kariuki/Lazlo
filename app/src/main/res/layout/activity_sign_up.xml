@@ -26,7 +26,7 @@
         android:fontFamily="cursive"
         android:textStyle="bold"
         android:padding="@dimen/activity_horizontal_margin"
-        android:textColor="@color/white"/>
+        android:textColor="@color/black"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupUsername_inputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -34,6 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_username_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupUsername_input"
@@ -52,6 +57,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
 
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -72,6 +82,11 @@
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_password_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPassword_input"
@@ -90,40 +105,40 @@
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_password_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPasswordConfirm_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:autofillHints="password"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-  <!--  <Button
-        android:id="@+id/btnSignUp_signUpPage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/sign_up"
-        />-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignUp_signUpPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/sign_up"
-
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        app:cornerRadius="20dp"
+        app:backgroundTint="@color/black"
         />
     <TextView
         android:id="@+id/login_or_signup_label2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/or"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/Switch2login"
@@ -133,8 +148,7 @@
         android:clickable="true"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-android:textColor="@color/white"
+android:textColor="@color/black"
         />
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

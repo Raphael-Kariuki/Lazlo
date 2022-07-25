@@ -25,13 +25,19 @@
         android:textSize="40sp"
         android:fontFamily="cursive"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
         android:padding="@dimen/activity_horizontal_margin"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginUserName_inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:startIconDrawable="@drawable/ic_baseline_username_24">
+        app:startIconDrawable="@drawable/ic_baseline_username_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffff"
+        app:hintTextColor="@color/black"
+        >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginUserName_input"
             android:layout_width="match_parent"
@@ -48,12 +54,17 @@
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_password_24"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#ffffffff"
+        app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginPassword_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:autofillHints="password"
             />
@@ -63,7 +74,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:text="Login"
+    android:text="@string/login"
+    app:cornerRadius="20dp"
+    app:backgroundTint="@color/black"
     />
 
     <TextView
@@ -71,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="or"
+        android:text="@string/or"
         android:textSize="20sp"
         android:textColor="@color/black"
         />
@@ -79,10 +92,11 @@
         android:id="@+id/createAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create account"
+        android:text="@string/create_account"
         android:clickable="true"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:textColor="@color/black"
         />
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
