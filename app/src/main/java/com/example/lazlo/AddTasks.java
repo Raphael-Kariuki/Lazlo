@@ -302,11 +302,18 @@ private void selectTime(){
     TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            String formattedHour = null, formattedMinute = null;
             if (hour < 10){
-                selected_time = "0" + hour + ":" + minute;
+                formattedHour = "0" + hour;
             }else{
-                selected_time = hour + ":" + minute;
+                formattedHour = "" + hour;
             }
+            if (minute < 10 ){
+                formattedMinute = "0" + minute;
+            }else{
+                formattedMinute = "" + minute;
+            }
+            selected_time = formattedHour + ":" + formattedMinute;
             selectTime_AutocompleteView.setText(FormatTime(hour, minute));
         }
     },hour, minute,false);
