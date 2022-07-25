@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -48,7 +49,8 @@ public class AddTasks extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tasks);
 
-        //===================================================Variables===============================================================
+
+
         task_title =  findViewById(R.id.taskTitleAutoCompleteView);
         task_description = findViewById(R.id.taskDescriptionAutoCompleteView);
         select_date =  findViewById(R.id.selectDate_AutocompleteView);
@@ -72,31 +74,58 @@ public class AddTasks extends AppCompatActivity {
         tasks_sharedPrefs = getSharedPreferences("user_details",MODE_PRIVATE);
 
 
-        //===================================================process dropdown=========================================================
+
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
         tasksCategories.setAdapter(adapter);
         tasksCategories.setOnItemClickListener((adapterView, view, i, l) -> selected_category = (String) adapterView.getItemAtPosition(i));
 
 
-        //======================================================process date picker=======================================================
+
+
+
         final Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        select_date.setOnClickListener(view -> {
-            //date picker dialog
-            datePickerDialog = new DatePickerDialog(AddTasks.this, (view1, year, monthOfYear, dayOfMonth) -> select_date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear,mMonth, mDay);
-            datePickerDialog.show();
+        select_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //date picker dialog
+                datePickerDialog = new DatePickerDialog(AddTasks.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String formattedMonth = null,formattedDay = null;
+                        if (monthOfYear + 1 <= 9){
+                            formattedMonth = "0" + (monthOfYear + 1) ;
+                        }else{
+                            formattedMonth = String.valueOf(monthOfYear + 1);
+                        }
+                        if(dayOfMonth < 10){
+                            formattedDay = "0" + dayOfMonth;
+                        }else{
+                            formattedDay = String.valueOf(dayOfMonth);
+                        }
+                        select_date.setText(formattedDay + "-" + formattedMonth + "-" + year);
+                    }
+                }, mYear,mMonth, mDay);
+                datePickerDialog.show();
+            }
         });
-        //==========================================================process time==========================================
+
+
+
         selectTime_AutocompleteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectTime();
             }
         });
-        //================================================save inputs=======================================================
+
+
+
 
         btn_saveTasks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +244,7 @@ public class AddTasks extends AppCompatActivity {
         });
     }
     private boolean willDateFormat(String selectedDate){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
             return true;

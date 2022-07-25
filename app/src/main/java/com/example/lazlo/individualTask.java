@@ -27,7 +27,7 @@ public class individualTask extends AppCompatActivity {
   TextInputEditText individualTaskTitle_TextInputEdit, individualTaskDescription_TextInputEdit,
           individualTaskBills_TextInputEdit,individualTaskDateDeadline_TextInputEdit,individualTaskTimeDeadline_TextInputEdit;
   AutoCompleteTextView individualTaskCategory_TextInputEdit;
-  AppCompatButton Btnsave, Btnshow;
+  AppCompatButton btnSave, btnShow;
   DBHelper dbHelper;
   long currentId;
   Cursor cursor;
@@ -39,14 +39,17 @@ public class individualTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
+
         individualTaskTitle_TextInputEdit = findViewById(R.id.individualTaskTitle_TextInputEdit);
         individualTaskDescription_TextInputEdit = findViewById(R.id.individualTaskDescription_TextInputEdit);
         individualTaskCategory_TextInputEdit = findViewById(R.id.individualTaskCategory_TextInputEdit);
         individualTaskBills_TextInputEdit = findViewById(R.id.individualTaskBills_TextInputEdit);
         individualTaskDateDeadline_TextInputEdit = findViewById(R.id.individualTaskDateDeadline_TextInputEdit);
         individualTaskTimeDeadline_TextInputEdit = findViewById(R.id.individualTaskTimeDeadline_TextInputEdit);
-        Btnsave = findViewById(R.id.btnSave);
-        Btnshow = findViewById(R.id.btnShow);
+
+        btnSave = findViewById(R.id.btnSave);
+        btnShow = findViewById(R.id.btnShow);
+
         dbHelper = new DBHelper(this);
 
         //populate category dropdown
@@ -66,13 +69,13 @@ public class individualTask extends AppCompatActivity {
                 System.out.println("Error: " + e);
             }
         }
-        Btnshow.setOnClickListener(new View.OnClickListener() {
+        btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        Btnsave.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String updateTitle = individualTaskTitle_TextInputEdit.getText().toString().trim();
@@ -91,7 +94,7 @@ public class individualTask extends AppCompatActivity {
                 }else{
                     new_hour = timeDeh[0];
                 }
-                new_minute = timeDeh[1];
+                new_minute = timeDeh[1].split(" ", 2)[0];
                 //===============================
                 String new_date = parseDate(updateDate);
 //==========================================================================
@@ -152,7 +155,7 @@ public class individualTask extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(individualTask.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        individualTaskDateDeadline_TextInputEdit.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        individualTaskDateDeadline_TextInputEdit.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                     }
                 }, mYear,mMonth, mDay);
                 datePickerDialog.show();
@@ -173,11 +176,16 @@ public class individualTask extends AppCompatActivity {
             System.out.println("Setting text...");
             individualTaskTitle_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
             System.out.println("TaskTitle" + cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
+
             individualTaskDescription_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
             System.out.println("TaskDescription" + cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+
             individualTaskCategory_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory")));
+
             individualTaskBills_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice")));
+
             String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
+
             if(timeDateToFormat.contains("T")){
                 regex = "T";
             }else{
@@ -238,7 +246,7 @@ public class individualTask extends AppCompatActivity {
         return time;
     }
     private boolean willDateFormat(String selectedDate){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/L/yyyy HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
             return true;
@@ -280,7 +288,7 @@ public class individualTask extends AppCompatActivity {
             new_month = date[1];
             new_year = date[2];
         }
-        new_date = new_day + "/" + new_month + "/" + new_year;
+        new_date = new_day + "-" + new_month + "-" + new_year;
         return new_date;
     }
 
