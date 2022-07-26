@@ -8,10 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Lazlo">
+        android:theme="@style/Lazlo">
         <activity
             android:name=".performTask"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".forgotPassword"
             android:exported="false" />

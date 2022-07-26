@@ -48,4 +48,5 @@
                                                                                                         if (willPriceFormat(TaskAssociatedPrice)){
 
 
-
+----------------
+parent="Theme.MaterialComponents.DayNight.NoActionBar"
