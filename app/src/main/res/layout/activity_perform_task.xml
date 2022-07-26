@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".performTask">
+    tools:context=".performTask"
+    >
 
 
     <LinearLayout
@@ -20,6 +21,16 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnStartTask2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/pie"
+                android:backgroundTint="@color/black"
+                android:gravity="bottom"
+                android:src="@drawable/ic_baseline_play_arrow_24"
+                app:backgroundTint="@color/black" />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnResumeTask"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="5dp"
