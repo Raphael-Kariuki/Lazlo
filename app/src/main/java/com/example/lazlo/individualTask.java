@@ -4,9 +4,11 @@ import static com.example.lazlo.AddTasks.getDateFromString;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -22,13 +24,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class individualTask extends AppCompatActivity {
   TextInputEditText individualTaskTitle_TextInputEdit, individualTaskDescription_TextInputEdit,
           individualTaskBills_TextInputEdit,individualTaskDateDeadline_TextInputEdit,individualTaskTimeDeadline_TextInputEdit;
   AutoCompleteTextView individualTaskCategory_TextInputEdit;
   AppCompatButton btnSave, btnShow;
+  AppCompatImageButton btnStartTask;
   DBHelper dbHelper;
   long currentId;
   Cursor cursor;
@@ -53,6 +55,19 @@ public class individualTask extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
+
+
+        btnStartTask = findViewById(R.id.btnStartTask);
+
+
+        btnStartTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent startTask = new Intent(getApplicationContext(), performTask.class );
+                startActivity(startTask);
+            }
+        });
+
         //populate category dropdown
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
         individualTaskCategory_TextInputEdit.setAdapter(adapter);
@@ -70,82 +85,8 @@ public class individualTask extends AppCompatActivity {
                 System.out.println("Error: " + e);
             }
         }
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String updateTitle = individualTaskTitle_TextInputEdit.getText().toString().trim();
-                String updateDescription = individualTaskDescription_TextInputEdit.getText().toString().trim();
-                String updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
-                String updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
-                String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
-                String updateTime = Objects.requireNonNull(individualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
-                System.out.println(updateDate + updateTime);
 
 
-                /*
-                * Formatting dates are tricky. What the code below does is take the time section
-                * HH:ss PM/AM split it first to obtain "HH" and "mm PM".
-                * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
-                * */
-                String[] timeDeh = updateTime.split(":", 2);
-
-                String new_hour, new_minute;
-                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 2){
-                    new_hour = "0" + timeDeh[0];
-                }else{
-                    new_hour = timeDeh[0];
-                }
-                new_minute = timeDeh[1].split(" ", 2)[0];
-                //===============================
-                String new_date = parseDate(updateDate);
-
-
-
-                String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
-                System.out.println(updateDateTime);
-                if (!updateTitle.isEmpty()){
-                    if (!updateDescription.isEmpty()){
-                        if (!updateCategory.isEmpty() && (updateCategory.equals("Shopping") || updateCategory.equals("Work") || updateCategory.equals("School") || updateCategory.equals("Business") || updateCategory.equals("Home") )){
-                            AddTasks addTasks = new AddTasks();
-                            if (!updatePrice.isEmpty() && addTasks.willPriceFormat(updatePrice)){
-                                if (!updateDate.isEmpty() && addTasks.willDateFormat(updateDateTime)){
-                                    LocalDateTime date_now = LocalDateTime.now();
-                                    if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
-                                        try {
-                                            f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,updateDateTime);
-                                            Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
-                                        }catch (Exception e){
-                                            Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
-                                            System.out.println("Db update error: " + e);
-                                        }
-                                    }
-                                }else{
-                                    Toast.makeText(getApplicationContext(), "Wrong date", Toast.LENGTH_LONG).show();
-                                }
-                            }else{
-                                Toast.makeText(getApplicationContext(), "Wrong price syntax", Toast.LENGTH_LONG).show();
-                            }
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Empty category", Toast.LENGTH_LONG).show();
-                        }
-                    }else {
-                        Toast.makeText(getApplicationContext(), "Empty description", Toast.LENGTH_LONG).show();
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "Empty title", Toast.LENGTH_LONG).show();
-                }
-
-
-
-
-            }
-        });
         individualTaskTimeDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,6 +122,83 @@ public class individualTask extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String updateTitle = individualTaskTitle_TextInputEdit.getText().toString().trim();
+                String updateDescription = individualTaskDescription_TextInputEdit.getText().toString().trim();
+                String updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
+                String updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
+                String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
+                String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
+                System.out.println(updateDate + updateTime);
+
+
+                /*
+                * Formatting dates are tricky. What the code below does is take the time section
+                * HH:ss PM/AM split it first to obtain "HH" and "mm PM".
+                * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
+                * */
+                String[] timeDeh = updateTime.split(":", 2);
+
+                String new_hour, new_minute;
+                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 2){
+                    new_hour = "0" + timeDeh[0];
+                }else{
+                    new_hour = timeDeh[0];
+                }
+                new_minute = timeDeh[1].split(" ", 2)[0];
+                //===============================
+                String new_date = parseDate(updateDate);
+
+
+
+                String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
+                System.out.println(updateDateTime);
+                if (!updateTitle.isEmpty()){
+                    if (!updateDescription.isEmpty()){
+                        if (!updateCategory.isEmpty() && (updateCategory.equals("Shopping") || updateCategory.equals("Work") || updateCategory.equals("School") || updateCategory.equals("Business") || updateCategory.equals("Home") )){
+                            AddTasks addTasks = new AddTasks();
+                            if (!updatePrice.isEmpty() && addTasks.willPriceFormat(updatePrice)){
+                                if (!updateDate.isEmpty() && willDateFormat(updateDateTime)){
+                                    LocalDateTime date_now = LocalDateTime.now();
+                                    if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
+                                        try {
+                                            f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,updateDateTime);
+                                            Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
+                                        }catch (Exception e){
+                                            Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
+                                            System.out.println("Db update error: " + e);
+                                        }
+                                    }
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Wrong date", Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Wrong price syntax", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Empty category", Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Empty description", Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), "Empty title", Toast.LENGTH_LONG).show();
+                }
+
+
+
+
+            }
+        });
+        btnShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
     public void showData(){
         String regex;
@@ -237,6 +255,17 @@ public class individualTask extends AppCompatActivity {
             }
         },hour, minute,false);
         timePickerDialog.show();
+    }
+
+    private boolean willDateFormat(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+        try {
+            selected_date = getDateFromString(selectedDate, dateTimeFormatter);
+            return true;
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+            return false;
+        }
     }
 
 

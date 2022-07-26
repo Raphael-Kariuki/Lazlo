@@ -36,6 +36,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
         <entry key="app/src/main/res/layout/activity_my_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_notification.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/activity_perfom_task.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />
