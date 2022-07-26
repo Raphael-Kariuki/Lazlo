@@ -10,6 +10,7 @@ import android.database.Cursor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -20,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline DATETIME NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 

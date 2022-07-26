@@ -19,9 +19,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTasks extends AppCompatActivity {
     TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView;
@@ -42,6 +45,7 @@ public class AddTasks extends AppCompatActivity {
     public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
         return LocalDateTime.parse(string, dateTimeFormatter);
     }
+
 
 
     @Override
@@ -247,6 +251,7 @@ public class AddTasks extends AppCompatActivity {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
+            System.out.print("get date from string " + selected_date);
             return true;
         }catch (IllegalArgumentException e){
             System.out.println("Date Exception" + e);

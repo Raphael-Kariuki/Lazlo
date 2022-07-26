@@ -85,11 +85,15 @@ public class individualTask extends AppCompatActivity {
                 String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
                 String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
                 System.out.println(updateDate + updateTime);
-// format the date and time straight from input ===========================================
+
+
+                /*
+                * Formatting dates are tricky. for this case date is populated
+                * */
                 String[] timeDeh = updateTime.split(":", 2);
 
                 String new_hour, new_minute;
-                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 1){
+                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 2){
                     new_hour = "0" + timeDeh[0];
                 }else{
                     new_hour = timeDeh[0];
