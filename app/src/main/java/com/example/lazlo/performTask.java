@@ -6,8 +6,16 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.AbstractCursor;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.textview.MaterialTextView;
+
 import java.util.Date;
 
 public class performTask extends AppCompatActivity {
@@ -17,7 +25,11 @@ public class performTask extends AppCompatActivity {
     Date startTaskDate, pauseTaskDate,resumeTaskDate,cancelTaskDate, completeTaskDate;
     int taskState;
     AlertDialog.Builder builder;
-    long totalTaskDuration;
+    long totalTaskDuration, taskId;
+    DBHelper dbHelper;
+    Cursor cursor;
+    MaterialTextView runningTaskTitle,runningTaskDescription,runningTaskCategory,runningTaskBills,runningTaskDeadline;
+
 
 
     @Override
@@ -25,12 +37,37 @@ public class performTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perform_task);
 
+        dbHelper = new DBHelper(this);
+
+        runningTaskTitle = findViewById(R.id.runningTaskTitle);
+        runningTaskDescription = findViewById(R.id.runningTaskDescription);
+        runningTaskCategory = findViewById(R.id.runningTaskCategory);
+        runningTaskBills = findViewById(R.id.runningTaskBills);
+        runningTaskDeadline = findViewById(R.id.runningTaskDeadline);
+
+
         //Handle button to process task durations
         btnStartTask2 = findViewById(R.id.btnStartTask2);
         btnPauseTask = findViewById(R.id.btnPauseTask);
         btnResumeTask = findViewById(R.id.btnResumeTask);
         btnCancelDoingTask = findViewById(R.id.btnCancelDoingTask);
         btnCompleteDoingTask = findViewById(R.id.btnCompleteDoingTask);
+
+        btnStartTask2.setVisibility(View.VISIBLE);
+        btnPauseTask.setVisibility(View.INVISIBLE);
+        btnResumeTask.setVisibility(View.INVISIBLE);
+        btnCancelDoingTask.setVisibility(View.VISIBLE);
+        btnCompleteDoingTask.setVisibility(View.INVISIBLE);
+
+        try {
+            populateViews();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        taskId = this.getIntent().getLongExtra("taskId", -1);
+
 
 
 
@@ -117,12 +154,28 @@ public class performTask extends AppCompatActivity {
                     long seconds = totalTaskDuration/1000;
                     System.out.println("Time taken: " + hours + ":" + minutes + ":" + seconds);
                 }
-                finish();
+                Intent backToTasks = new Intent(getApplicationContext(), FinalPage.class);
+                startActivity(backToTasks);
             }
         });
 
 
 
+    }
+
+
+    public void populateViews(){
+        String Title = this.getIntent().getStringExtra("taskTitle");
+        String Description = this.getIntent().getStringExtra("taskDescription");
+        String Category = this.getIntent().getStringExtra("taskCategory");
+        String Bills = this.getIntent().getStringExtra("taskBills");
+        String Deadline = this.getIntent().getStringExtra("taskDeadline");
+
+        runningTaskTitle.setText(Title);
+        runningTaskDescription.setText(Description);
+        runningTaskCategory.setText(Category);
+        runningTaskBills.setText("Kshs " + Bills);
+        runningTaskDeadline.setText(Deadline);
     }
 
 
