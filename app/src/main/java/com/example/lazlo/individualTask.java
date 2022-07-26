@@ -34,7 +34,7 @@ public class individualTask extends AppCompatActivity {
   DBHelper dbHelper;
   long currentId;
   Cursor cursor;
-  String selectedCategory,timeDate2update;
+  String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline;
   LocalDateTime selected_date;
   Double Price;
   boolean f;
@@ -60,13 +60,7 @@ public class individualTask extends AppCompatActivity {
         btnStartTask = findViewById(R.id.btnStartTask);
 
 
-        btnStartTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startTask = new Intent(getApplicationContext(), performTask.class );
-                startActivity(startTask);
-            }
-        });
+
 
         //populate category dropdown
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
@@ -86,6 +80,20 @@ public class individualTask extends AppCompatActivity {
             }
         }
 
+        //needs to be below obtaining the currentId from final page else we'll be sending blanks
+        btnStartTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent startTask = new Intent(getApplicationContext(), performTask.class );
+                startTask.putExtra("taskId", currentId);
+                startTask.putExtra("taskTitle", Titre);
+                startTask.putExtra("taskDescription", Description);
+                startTask.putExtra("taskCategory", Category);
+                startTask.putExtra("taskBills", Bills);
+                startTask.putExtra("taskDeadline", Deadline);
+                startActivity(startTask);
+            }
+        });
 
         individualTaskTimeDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,15 +220,20 @@ public class individualTask extends AppCompatActivity {
         System.out.println("done...");
         if (cursor.moveToFirst()){
             System.out.println("Setting text...");
-            individualTaskTitle_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
+            Titre = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle"));
+            individualTaskTitle_TextInputEdit.setText(Titre);
             System.out.println("TaskTitle" + cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));
 
-            individualTaskDescription_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
+
+            Description = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
+            individualTaskDescription_TextInputEdit.setText(Description);
             System.out.println("TaskDescription" + cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription")));
 
-            individualTaskCategory_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory")));
+            Category = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+            individualTaskCategory_TextInputEdit.setText(Category);
 
-            individualTaskBills_TextInputEdit.setText(cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice")));
+            Bills = cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
+            individualTaskBills_TextInputEdit.setText(Bills);
 
             String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
 
@@ -232,6 +245,8 @@ public class individualTask extends AppCompatActivity {
             String[] dateTime = timeDateToFormat.split(regex, 2);
             individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
             individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
+
+            Deadline = dateTime[0] + " " + dateTime[1];
 
         }
         cursor.close();
