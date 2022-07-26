@@ -57,6 +57,7 @@ public class AddTasks extends AppCompatActivity {
 
 
         task_title =  findViewById(R.id.taskTitleAutoCompleteView);
+        task_title.requestFocus();
         task_description = findViewById(R.id.taskDescriptionAutoCompleteView);
         select_date =  findViewById(R.id.selectDate_AutocompleteView);
         priceAutocompleteView = findViewById(R.id.priceAutoCompleteView);

@@ -29,15 +29,13 @@
         android:textColor="@color/black"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupUsername_inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_username_24"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -52,15 +50,13 @@
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupEmail_inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
 
         >
@@ -76,16 +72,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupPassword_inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_password_24"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -99,16 +93,14 @@
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupPasswordConfirm_inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         android:layout_marginTop="10dp"
         app:startIconDrawable="@drawable/ic_baseline_password_24"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -131,14 +123,6 @@
         android:layout_gravity="center_horizontal"
         app:cornerRadius="20dp"
         app:backgroundTint="@color/black"
-        />
-    <TextView
-        android:id="@+id/login_or_signup_label2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:textSize="20sp"
-        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/Switch2login"

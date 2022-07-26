@@ -36,15 +36,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/taskTitle_TextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/createTasksLabel"
         android:layout_marginTop="40dp"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
 
@@ -59,15 +57,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/taskDescription_TextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle_TextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
 
@@ -84,15 +80,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tasksCategoryTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
 
@@ -106,16 +100,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_TextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tasksCategoryTextLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="5dp"
-        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="#ffffff"
+        app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         >
 
@@ -139,15 +131,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/selectedDate_TextInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_weight="1"
-            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
             app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="#ffffff"
+            app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             >
 
@@ -163,15 +153,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/selectedTime_TextInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_weight="1"
-            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
-            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
             app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="#ffffff"
+            app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             >
 
