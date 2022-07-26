@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -148,44 +149,56 @@ public class AddTasks extends AppCompatActivity {
                 if (!taskTitle_String.isEmpty()){
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
-                            if (!selectedDate_String.isEmpty() && willDateFormat(selectedDateTime)){
-                                if (willPriceFormat(TaskAssociatedPrice)){
-                                    date_now = LocalDateTime.now();
-                                    if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
-                                        try {
-                                            //insert task to db if dates are cool
-                                            b = dbHelper.insertTasks(USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date);
+                            if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
+                                if ( willPriceFormat(TaskAssociatedPrice)){
+                                    if (!selectedDate_String.isEmpty() && willDateFormat(selectedDateTime)){
+                                        date_now = LocalDateTime.now();
+                                        if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
+                                            try {
+                                                //insert task to db if dates are cool
+                                                b = dbHelper.insertTasks(USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date);
 
-                                        }catch(Exception e){
-                                            System.out.println("Db insertion error: " + e);
+                                            }catch(Exception e){
+                                                System.out.println("Db insertion error: " + e);
+                                            }
+                                            if (b){
+                                                Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
+                                                finish();
+                                            }else {
+                                                Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
+                                            select_date.setText("");
                                         }
-                                        if (b){
-                                            Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
-                                            finish();
-                                        }else {
-                                            Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
-                                        }
+
                                     }else{
-                                        Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
-                                        select_date.setText("");
+                                        selectedDate_TextInputLayout.setErrorEnabled(true);
+                                        selectedDate_TextInputLayout.setError("Blank deadline");
+                                        taskTitle_TextLayout.setErrorEnabled(false);
+                                        taskDescription_TextLayout.setErrorEnabled(false);
+                                        price_TextLayout.setErrorEnabled(false);
+                                        tasksCategoryTextLayout.setErrorEnabled(false);
                                     }
                                 }else{
                                     price_TextLayout.setErrorEnabled(true);
-                                    price_TextLayout.setError("Wrong price");
+                                    price_TextLayout.setError("Enter a money figure");
                                     taskTitle_TextLayout.setErrorEnabled(false);
                                     taskDescription_TextLayout.setErrorEnabled(false);
                                     price_TextLayout.setErrorEnabled(false);
                                     tasksCategoryTextLayout.setErrorEnabled(false);
                                     selectedDate_TextInputLayout.setErrorEnabled(false);
                                 }
-                            }else{
-                                selectedDate_TextInputLayout.setErrorEnabled(true);
-                                selectedDate_TextInputLayout.setError("Blank deadline");
+
+                            }  else{
+                                tasksCategoryTextLayout.setErrorEnabled(true);
+                                tasksCategoryTextLayout.setError("Choose a category from the dropdown");
                                 taskTitle_TextLayout.setErrorEnabled(false);
                                 taskDescription_TextLayout.setErrorEnabled(false);
                                 price_TextLayout.setErrorEnabled(false);
-                                tasksCategoryTextLayout.setErrorEnabled(false);
+                                selectedDate_TextInputLayout.setErrorEnabled(false);
                             }
+
 
                         }else{
                             tasksCategoryTextLayout.setErrorEnabled(true);
@@ -247,7 +260,7 @@ public class AddTasks extends AppCompatActivity {
             }
         });
     }
-    private boolean willDateFormat(String selectedDate){
+    public boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
@@ -258,18 +271,21 @@ public class AddTasks extends AppCompatActivity {
             return false;
         }
     }
-    private boolean willPriceFormat(String priceToParse){
-            try {
+    public boolean willPriceFormat(String priceToParse){
+//TODO: check for wrong input on price
                 if (!priceToParse.isEmpty()){
-                    Price = Double.parseDouble(priceToParse);
+                    try {
+                        Price = Double.parseDouble(priceToParse);
+                        return true;
+                    }catch(java.lang.NumberFormatException e){
+                        System.out.println("Price Exception" + e);
+                        return false;
+                    }
                 }else {
                     Price = 0.0;
                 }
                 return true;
-            }catch(Exception e){
-                System.out.println("Price Exception" + e);
-                return false;
-            }
+
 
     }
     //this method converts the time into 12hr format and assigns am or pm

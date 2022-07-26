@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class individualTask extends AppCompatActivity {
   TextInputEditText individualTaskTitle_TextInputEdit, individualTaskDescription_TextInputEdit,
@@ -83,12 +84,14 @@ public class individualTask extends AppCompatActivity {
                 String updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
                 String updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
                 String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
-                String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
+                String updateTime = Objects.requireNonNull(individualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
                 System.out.println(updateDate + updateTime);
 
 
                 /*
-                * Formatting dates are tricky. for this case date is populated
+                * Formatting dates are tricky. What the code below does is take the time section
+                * HH:ss PM/AM split it first to obtain "HH" and "mm PM".
+                * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
                 * */
                 String[] timeDeh = updateTime.split(":", 2);
 
@@ -101,15 +104,17 @@ public class individualTask extends AppCompatActivity {
                 new_minute = timeDeh[1].split(" ", 2)[0];
                 //===============================
                 String new_date = parseDate(updateDate);
-//==========================================================================
+
+
 
                 String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
                 System.out.println(updateDateTime);
                 if (!updateTitle.isEmpty()){
                     if (!updateDescription.isEmpty()){
-                        if (!updateCategory.isEmpty()){
-                            if (!updatePrice.isEmpty() && willPriceFormat(updatePrice)){
-                                if (!updateDate.isEmpty() && willDateFormat(updateDateTime)){
+                        if (!updateCategory.isEmpty() && (updateCategory.equals("Shopping") || updateCategory.equals("Work") || updateCategory.equals("School") || updateCategory.equals("Business") || updateCategory.equals("Home") )){
+                            AddTasks addTasks = new AddTasks();
+                            if (!updatePrice.isEmpty() && addTasks.willPriceFormat(updatePrice)){
+                                if (!updateDate.isEmpty() && addTasks.willDateFormat(updateDateTime)){
                                     LocalDateTime date_now = LocalDateTime.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                         try {
@@ -159,7 +164,7 @@ public class individualTask extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(individualTask.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String formattedMonth = null,formattedDay = null;
+                        String formattedMonth,formattedDay;
                         if (monthOfYear + 1 <= 9){
                             formattedMonth = "0" + (monthOfYear + 1) ;
                         }else{
@@ -227,63 +232,15 @@ public class individualTask extends AppCompatActivity {
                 }else{
                     timeDate2update = hour + ":" + minute;
                 }
-                individualTaskTimeDeadline_TextInputEdit.setText(FormatTime(hour, minute));
+                AddTasks addTasks = new AddTasks();
+                individualTaskTimeDeadline_TextInputEdit.setText(addTasks.FormatTime(hour, minute));
             }
         },hour, minute,false);
         timePickerDialog.show();
     }
-    //this method converts the time into 12hr format and assigns am or pm
-    public String FormatTime(int hour, int minute) {
-
-        String time;
-        time = "";
-        String formattedMinute;
-
-        if (minute / 10 == 0) {
-            formattedMinute = "0" + minute;
-        } else {
-            formattedMinute = "" + minute;
-        }
 
 
-        if (hour == 0) {
-            time = "12" + ":" + formattedMinute + " AM";
-        } else if (hour < 12) {
-            time = hour + ":" + formattedMinute + " AM";
-        } else if (hour == 12) {
-            time = "12" + ":" + formattedMinute + " PM";
-        } else {
-            int temp = hour - 12;
-            time = temp + ":" + formattedMinute + " PM";
-        }
 
-
-        return time;
-    }
-    private boolean willDateFormat(String selectedDate){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
-        try {
-            selected_date = getDateFromString(selectedDate, dateTimeFormatter);
-            return true;
-        }catch (IllegalArgumentException e){
-            System.out.println("Date Exception" + e);
-            return false;
-        }
-    }
-    private boolean willPriceFormat(String priceToParse){
-        try {
-            if (!priceToParse.isEmpty()){
-                Price = Double.parseDouble(priceToParse);
-            }else {
-                Price = 0.0;
-            }
-            return true;
-        }catch(Exception e){
-            System.out.println("Price Exception" + e);
-            return false;
-        }
-
-    }
     private String parseDate(String toDecideOn){
       String regex = "";
       String new_day = "",new_month = "",new_year = "",new_date;

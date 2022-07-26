@@ -36,5 +36,16 @@
                                     return tasksList;
                                 }
                                 ---------------
+                                   }else{
+                                                                        price_TextLayout.setErrorEnabled(true);
+                                                                        price_TextLayout.setError("Wrong price");
+                                                                        taskTitle_TextLayout.setErrorEnabled(false);
+                                                                        taskDescription_TextLayout.setErrorEnabled(false);
+                                                                        price_TextLayout.setErrorEnabled(false);
+                                                                        tasksCategoryTextLayout.setErrorEnabled(false);
+                                                                        selectedDate_TextInputLayout.setErrorEnabled(false);
+                                                                    }
+                                                                                                        if (willPriceFormat(TaskAssociatedPrice)){
+
 
 
