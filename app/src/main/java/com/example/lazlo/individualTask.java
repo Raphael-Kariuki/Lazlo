@@ -36,7 +36,7 @@ public class individualTask extends AppCompatActivity {
   Cursor cursor;
   String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline;
   LocalDateTime selected_date;
-  Double Price;
+  Double randomTaskId;
   boolean f;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class individualTask extends AppCompatActivity {
             public void onClick(View view) {
                 Intent startTask = new Intent(getApplicationContext(), performTask.class );
                 startTask.putExtra("taskId", currentId);
+                startTask.putExtra("randomTaskId", randomTaskId);
                 startTask.putExtra("taskTitle", Titre);
                 startTask.putExtra("taskDescription", Description);
                 startTask.putExtra("taskCategory", Category);
@@ -220,6 +221,8 @@ public class individualTask extends AppCompatActivity {
         System.out.println("done...");
         if (cursor.moveToFirst()){
             System.out.println("Setting text...");
+            randomTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
+
             Titre = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle"));
             individualTaskTitle_TextInputEdit.setText(Titre);
             System.out.println("TaskTitle" + cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle")));

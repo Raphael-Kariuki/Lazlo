@@ -7,11 +7,13 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
+
 
 import java.util.Date;
 
@@ -25,13 +27,22 @@ public class performTask extends AppCompatActivity {
     long totalTaskDuration;
     DBHelper dbHelper;
     MaterialTextView runningTaskTitle,runningTaskDescription,runningTaskCategory,runningTaskBills,runningTaskDeadline;
-
+    SharedPreferences spf;
+    Double randomUserId;
+    Double randomTaskId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perform_task);
+
+        //obtain currentTaskId from Intent passed from IndividualTask. Here coz of obtaining context
+        randomTaskId = this.getIntent().getDoubleExtra("randomTaskId", -1);
+
+        //obtain randomUserId from sharedPreferences. Obtained as string, converted to double
+        spf = getSharedPreferences("user_details", MODE_PRIVATE);
+        randomUserId = Double.parseDouble(spf.getString("randomUserId",null));
 
         dbHelper = new DBHelper(this);
 
@@ -77,6 +88,10 @@ public class performTask extends AppCompatActivity {
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 1;
                 startTaskDate = new Date();
+
+                //insert to db
+                insertDetailsOnTaskStart(randomUserId, randomTaskId,startTaskDate,null,null,null,null,null,null,1,1);
+
             }
         });
         btnPauseTask.setOnClickListener(new View.OnClickListener() {
@@ -136,19 +151,33 @@ public class performTask extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 completeTaskDate = new Date();
+                //setup to determine whether the task was completed in one run or not
+                String typeOfCompletion;
+
                 if(taskState == 1){
+                    typeOfCompletion = "oneShot";
                     totalTaskDuration = completeTaskDate.getTime() - startTaskDate.getTime();
                     long hours = totalTaskDuration/3600000;
                     long minutes = totalTaskDuration/60000;
                     long seconds = totalTaskDuration/1000;
                     System.out.println("Time taken: " + hours + ":" + minutes + ":" + seconds);
                 }else if(taskState == 3){
+                    typeOfCompletion = "doubleShot";
                     totalTaskDuration = (pauseTaskDate.getTime() - startTaskDate.getTime()) + (completeTaskDate.getTime() - resumeTaskDate.getTime());
                     long hours = totalTaskDuration/3600000;
                     long minutes = totalTaskDuration/60000;
                     long seconds = totalTaskDuration/1000;
                     System.out.println("Time taken: " + hours + ":" + minutes + ":" + seconds);
                 }
+                //setup taskState for completed tasks
+                taskState = 5;
+
+
+
+                //currentTaskId from up above
+                //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
+
+
                 Intent backToTasks = new Intent(getApplicationContext(), FinalPage.class);
                 startActivity(backToTasks);
             }
@@ -171,6 +200,21 @@ public class performTask extends AppCompatActivity {
         runningTaskCategory.setText(Category);
         runningTaskBills.setText(getString(R.string.money) + " " + Bills);
         runningTaskDeadline.setText(Deadline);
+    }
+
+    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, Date taskStartTime,
+                                            Date taskPauseTime, Date taskResumeTime, Date taskCancelTime,
+                                            Date taskCompleteTime, Long taskDuration, String taskType,
+                                            Integer taskTrial, Integer taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.insertTaskStatus(randUserId,randTaskId,taskStartTime,taskPauseTime,
+                    taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial,taskState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
     }
 
 

@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Login extends AppCompatActivity {
     String uname;
+    Double randomUserId;
     EditText username, password;
     MaterialButton btnSubmitLoginCredentials;
     TextView createAccount, forgotPassword;
@@ -59,6 +60,7 @@ public class Login extends AppCompatActivity {
                                 if (loginCheck(cursor, unameCheck, passCheck)){
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString("username", uname);
+                                    editor.putString("randomUserId", String.valueOf(randomUserId));
                                     editor.apply();
                                     username.setText("");
                                     password.setText("");
@@ -101,6 +103,7 @@ public class Login extends AppCompatActivity {
             if (cursor.getString(cursor.getColumnIndexOrThrow("userName")).equals(unameCheck)){
                 if(cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(signUp.crypto(passCheck))){
                     uname = cursor.getString(cursor.getColumnIndexOrThrow("userName"));
+                    randomUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));
                         return true;
                 }else{
                     loginUserName_inputLayout =  findViewById(R.id.loginUserName_inputLayout);
