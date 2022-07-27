@@ -55,6 +55,8 @@ Double randUserId;
                 monthIndex = i;
                 //getSumOfTasksPerMonthForDashBoard
                 totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId,monthIndex + 1));
+                totalCompletedTasksPerMonth.setText("" + populateTotalCompletedTasksPerMonthView(randUserId, monthIndex + 1));
+
 
             }
         });
@@ -98,6 +100,17 @@ Double randUserId;
         return cursor;
     }
 
+    public Cursor getTotalCompletedTasksCountPerMonth(Double randUserid,LocalDate startDate, LocalDate endDate){
+        Cursor cursor = null;
+        try {
+            cursor   = dbHelper.getSumOfCompletedTasksPerMonthForDashBoard(randUserid,startDate,endDate);
+            System.out.println("Success getting count");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
+
     public Cursor getTotalTasksCount(Double randUserid){
         Cursor cursor = null;
         try {
@@ -125,6 +138,18 @@ Double randUserId;
         Cursor cursor = getTotalTasksCountPerMonth(randUserId,startDate, endDate);
         if (cursor.moveToFirst()){
             totalTasksPerMonth_int = cursor.getInt(cursor.getColumnIndexOrThrow("sumTotalTasksPerMonth"));
+        }
+        return totalTasksPerMonth_int;
+    }
+
+    public int populateTotalCompletedTasksPerMonthView(Double randUserId, int monthIndex){
+        LocalDate[] range = getMonthBasedStats(monthIndex);
+        LocalDate startDate, endDate;
+        startDate = range[0];
+        endDate = range[1];
+        Cursor cursor = getTotalCompletedTasksCountPerMonth(randUserId,startDate, endDate);
+        if (cursor.moveToFirst()){
+            totalTasksPerMonth_int = cursor.getInt(cursor.getColumnIndexOrThrow("sumTotalCompletedTasksPerMonth"));
         }
         return totalTasksPerMonth_int;
     }

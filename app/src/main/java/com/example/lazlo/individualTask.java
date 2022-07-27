@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -35,7 +36,7 @@ public class individualTask extends AppCompatActivity {
   long currentId;
   Cursor cursor;
   String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline;
-  LocalDateTime selected_date;
+  LocalDate selected_date;
   Double randomTaskId;
   boolean f;
     @Override
@@ -170,7 +171,7 @@ public class individualTask extends AppCompatActivity {
                             AddTasks addTasks = new AddTasks();
                             if (!updatePrice.isEmpty() && addTasks.willPriceFormat(updatePrice)){
                                 if (!updateDate.isEmpty() && willDateFormat(updateDateTime)){
-                                    LocalDateTime date_now = LocalDateTime.now();
+                                    LocalDate date_now = LocalDate.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                         try {
                                             f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,updateDateTime);

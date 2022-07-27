@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
-        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
+        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,TaskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
         DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
     }
 
@@ -191,18 +191,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalTasksPerMonth from TaskList where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(randUserId),String.valueOf(startDate),String.valueOf(endDate)});
     }
 
+    //completedTasks per Month
+    public Cursor getSumOfCompletedTasksPerMonthForDashBoard(Double randUserId,LocalDate startDate, LocalDate endDate){
+        return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalCompletedTasksPerMonth from Completed_N_DeletedTasks where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(randUserId),String.valueOf(startDate),String.valueOf(endDate)});
+    }
+    //completed Total Tasks
+    public Cursor getSumOfCompletedTasksForDashBoard(Double randUserId){
+        return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalTasks from Completed_N_DeletedTasks where randUserId = ?", new String[]{String.valueOf(randUserId)});
+    }
     //used to obtain no of all user tasks
     public Cursor getSumOfTasksForDashBoard(Double randUserId){
         return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalTasks from TaskList where randUserId = ?", new String[]{String.valueOf(randUserId)});
     }
+
     public Cursor getSpendingDetails(LocalDate startDate, LocalDate endDate){
         return this.getWritableDatabase().query("TaskList",new String[]{"_id","TaskTitle","TaskAssociatedPrice"},"TaskDeadline > ? and TaskDeadline < ?",new String[]{String.valueOf(startDate),String.valueOf(endDate)},null,null,"TaskAssociatedPrice DESC");
     }
 
 
     //method to insert task, executed on addtasks.java
-    public boolean insertTasks(Double randTaskId, Double randUserId,String userName, String taskTitle, String taskDescription, String taskCategory,
-                               Double taskAssociatedPrice, LocalDateTime taskDeadline){
+    public boolean insertTasks(Double randTaskId, Double randUserId, String userName, String taskTitle, String taskDescription, String taskCategory,
+                               Double taskAssociatedPrice, LocalDate taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (randTaskId != null && String.valueOf(randTaskId).length() > 0) contentValues.put("randTaskId", randTaskId);

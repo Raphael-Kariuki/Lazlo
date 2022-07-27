@@ -19,9 +19,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class AddTasks extends AppCompatActivity {
@@ -30,7 +32,7 @@ public class AddTasks extends AppCompatActivity {
     AppCompatButton btn_saveTasks, btn_cancelTaskCreation;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
-    LocalDateTime selected_date,date_now;
+    LocalDate selected_date,date_now;
     AutoCompleteTextView tasksCategories;
     String selected_category, selected_time;
     Double Price;
@@ -40,8 +42,8 @@ public class AddTasks extends AppCompatActivity {
 
 //method to parse date input from adding task
 
-    public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
-        return LocalDateTime.parse(string, dateTimeFormatter);
+    public static LocalDate getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
+        return LocalDate.parse(string, dateTimeFormatter);
     }
 
 
@@ -151,7 +153,7 @@ public class AddTasks extends AppCompatActivity {
                             if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
                                 if ( willPriceFormat(TaskAssociatedPrice)){
                                     if (!selectedDate_String.isEmpty() && willDateFormat(selectedDateTime)){
-                                        date_now = LocalDateTime.now();
+                                        date_now = getDateFromString(String.valueOf(new Date()), DateTimeFormatter.ofPattern("d-L-yyyy HH:mm"));
                                         if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
                                             try {
                                                 //insert task to db if dates are cool
