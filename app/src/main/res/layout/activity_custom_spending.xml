@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Dashboard"
+        tools:context=".customSpending"
 
         >
         <RelativeLayout
@@ -24,7 +24,7 @@
         android:id="@+id/SpendingViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/view_predicted_spending"
+        android:text="@string/predicted_custom_range_spending"
         android:clickable="false"
         android:textStyle="bold"
         android:textSize="20sp"

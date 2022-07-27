@@ -1,7 +1,6 @@
 package com.example.lazlo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class Dashboard extends AppCompatActivity {
+public class customSpending extends AppCompatActivity {
     TextInputEditText startDuration_choice,endDuration_choice;
     String selectedStart_duration,selectedEnd_duration;
     DatePickerDialog datePickerDialog,datePickerDialog2;
@@ -39,7 +38,7 @@ public class Dashboard extends AppCompatActivity {
     public void onBackPressed(){
         Intent intent = new Intent(getApplicationContext(), FinalPage.class);
         startActivity(intent);
-        //Dashboard.this.finish();
+        //customSpending.this.finish();
     }
     public static LocalDate getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
         LocalDate date = LocalDate.parse(string, dateTimeFormatter);
@@ -49,7 +48,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_custom_spending);
 
         //process dates
 
@@ -73,7 +72,7 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //set startDatePicker dialog
-                datePickerDialog = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(customSpending.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         startDuration_choice.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
@@ -87,7 +86,7 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //set endDatePicker dialog
-                datePickerDialog2 = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog2 = new DatePickerDialog(customSpending.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         endDuration_choice.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
