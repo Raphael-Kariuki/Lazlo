@@ -5,6 +5,8 @@
       <map>
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/black_border.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/deux.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/ic_baseline_business_24.xml" value="0.2125" />
@@ -21,12 +23,16 @@
         <entry key="app/src/main/res/drawable/ic_baseline_username_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/month_bg.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/pie.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/trois.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/uno.xml" value="0.1025" />
+        <entry key="app/src/main/res/layout-v28/activity_dashboard.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/layout-v28/fragment_work.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_alarm_broadcast.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_entry_splash.xml" value="0.20625" />

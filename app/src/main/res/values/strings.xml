@@ -51,9 +51,19 @@
         <item>School</item>
         <item>Business</item>
     </string-array>
-    <string-array name="Durations">
-        <item>Monthly</item>
-        <item>Custom</item>
 
+    <string-array name="Months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
     </string-array>
 </resources>
