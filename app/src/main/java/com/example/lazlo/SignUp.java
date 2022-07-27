@@ -72,7 +72,10 @@ public class SignUp extends AppCompatActivity {
                                 if (password1.equals(password2)){
                                     if (passwordCheck(password1)){
                                         try {
-                                            b = dbHelper.insertUserData(username1,email1,crypto(password1));
+                                            //import class with common methods
+                                            houseOfCommons commons = new houseOfCommons();
+                                            Double randomUserId = commons.generateRandomId();
+                                            b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1));
 
                                             if (b){
                                                 Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
@@ -182,4 +185,5 @@ public class SignUp extends AppCompatActivity {
         }
         return sb.toString();
     }
+
 }

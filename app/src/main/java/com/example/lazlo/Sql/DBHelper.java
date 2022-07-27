@@ -21,9 +21,9 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB){
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY , UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
-        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
     }
 
@@ -37,10 +37,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Method to insert userdata on sign up, returning true if successful and otherwise
     //executed on signup.java
-    public boolean insertUserData(String userName, String email, String password){
+    public boolean insertUserData(String userName,Double randUserId, String email, String password){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if(userName != null && userName.length() > 0) contentValues.put("userName", userName);
+        if (randUserId != null && String.valueOf(randUserId).length() > 0) contentValues.put("randUserId", randUserId);
         if(email != null && email.length() > 0) contentValues.put("email", email);
         if (password != null && password.length() > 0) contentValues.put("password", password);
         long result = DB.insert("userDetails", null, contentValues);
@@ -89,10 +90,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //method to insert task, executed on addtasks.java
-    public boolean insertTasks(String userName, String taskTitle, String taskDescription, String taskCategory,
+    public boolean insertTasks(Double randTaskId, String userName, String taskTitle, String taskDescription, String taskCategory,
                                Double taskAssociatedPrice, LocalDateTime taskDeadline){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        if (randTaskId != null && String.valueOf(randTaskId).length() > 0) contentValues.put("randTaskId", randTaskId);
         if (userName != null && userName.length() > 0)  contentValues.put("UserName", userName);
         if (taskTitle != null && taskTitle.length() > 0)contentValues.put("TaskTitle", taskTitle);
         if (taskDescription != null && taskDescription.length() > 0) contentValues.put("TaskDescription", taskDescription);
