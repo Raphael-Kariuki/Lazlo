@@ -11,7 +11,7 @@
         android:theme="@style/Lazlo">
         <activity
             android:name=".performTask"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".forgotPassword"
             android:exported="false" />
@@ -31,7 +31,7 @@
             android:name=".Drafts"
             android:exported="false" />
         <activity
-            android:name=".Dashboard"
+            android:name=".customSpending"
             android:exported="true">
 
             <!--
