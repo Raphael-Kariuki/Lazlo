@@ -7,11 +7,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.AbstractCursor;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
@@ -25,9 +22,8 @@ public class performTask extends AppCompatActivity {
     Date startTaskDate, pauseTaskDate,resumeTaskDate,cancelTaskDate, completeTaskDate;
     int taskState;
     AlertDialog.Builder builder;
-    long totalTaskDuration, taskId;
+    long totalTaskDuration;
     DBHelper dbHelper;
-    Cursor cursor;
     MaterialTextView runningTaskTitle,runningTaskDescription,runningTaskCategory,runningTaskBills,runningTaskDeadline;
 
 
@@ -66,7 +62,6 @@ public class performTask extends AppCompatActivity {
         }
 
 
-        taskId = this.getIntent().getLongExtra("taskId", -1);
 
 
 
@@ -174,7 +169,7 @@ public class performTask extends AppCompatActivity {
         runningTaskTitle.setText(Title);
         runningTaskDescription.setText(Description);
         runningTaskCategory.setText(Category);
-        runningTaskBills.setText("Kshs " + Bills);
+        runningTaskBills.setText(getString(R.string.money) + " " + Bills);
         runningTaskDeadline.setText(Deadline);
     }
 

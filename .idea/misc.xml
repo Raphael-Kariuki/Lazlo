@@ -46,10 +46,12 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.15718418514946964" />
         <entry key="app/src/main/res/layout/fragment_school.xml" value="0.2869791666666667" />
         <entry key="app/src/main/res/layout/fragment_work.xml" value="0.19056261343012704" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/spending_listview.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tasks_dropdown.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/userdata_listrow.xml" value="0.33" />
+        <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/splash_Image.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/trial_image.xml" value="0.1165" />
       </map>

@@ -41,6 +41,9 @@
     <string name="show_spending">Show spending</string>
     <string name="No_entries_found">No entries found</string>
     <string name="money">Kshs </string>
+    <string name="task_deadline">Task deadline</string>
+    <string name="cancel">Cancel</string>
+    <string name="complete">Complete</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>
