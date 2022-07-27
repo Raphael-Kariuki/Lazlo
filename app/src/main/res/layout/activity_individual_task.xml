@@ -187,6 +187,18 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_baseline_list_24"
+                        android:text="@string/show_tasks"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/black"
+                        app:cornerRadius="20dp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -198,17 +210,7 @@
                         app:backgroundTint="@color/black"
                         app:cornerRadius="20dp" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnShow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_baseline_list_24"
-                        android:text="@string/show_tasks"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@color/black"
-                        app:cornerRadius="20dp" />
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
