@@ -8,8 +8,10 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
@@ -88,9 +90,38 @@ public class performTask extends AppCompatActivity {
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 1;
                 startTaskDate = new Date();
+                Cursor cursor = null;
+                Integer trial;
+                boolean b = false;
+                boolean c = false;
 
-                //insert to db
-                insertDetailsOnTaskStart(randomUserId, randomTaskId,startTaskDate,null,null,null,null,null,null,1,1);
+                //check for previous trial in performing the task
+                try {
+                    cursor = dbHelper.getTaskTrialsById(randomTaskId);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if (cursor.moveToFirst()){
+                    trial = cursor.getInt(cursor.getColumnIndexOrThrow("taskTrial"));
+                    System.out.println("trial " + trial);
+                    Integer trials = trial + 1;
+                    b = updateTaskStatusOnStartButtonPress(randomTaskId,startTaskDate,trials );
+                    System.out.println("trials " + trials);
+                }else{
+                    //insert to db
+                    c = insertDetailsOnTaskStart(randomUserId, randomTaskId,startTaskDate,null,null,null,null,null,null,1,1);
+                }
+                if (b){
+                    Toast.makeText(performTask.this, "update success", Toast.LENGTH_SHORT).show();
+                }else if(c){
+                    Toast.makeText(performTask.this, "Insert success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
 
             }
         });
@@ -104,6 +135,15 @@ public class performTask extends AppCompatActivity {
                 btnCompleteDoingTask.setVisibility(View.INVISIBLE);
                 taskState = 2;
                 pauseTaskDate = new Date();
+
+                //update db
+
+                boolean b = updateTaskStatusOnPauseButtonPress(randomTaskId,pauseTaskDate,"doubleShot",2);
+                if (b){
+                    Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnResumeTask.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +156,15 @@ public class performTask extends AppCompatActivity {
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 3;
                 resumeTaskDate = new Date();
+
+                //update db
+                boolean b = updateTaskStatusOnResumeButtonPress(randomTaskId,resumeTaskDate,3);
+                if (b){
+                    Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -131,7 +180,18 @@ public class performTask extends AppCompatActivity {
                 builder.setPositiveButton("Yes,Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         finish();
+                        //update db
+                        boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,4);
+                        if (b){
+                            Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -210,6 +270,47 @@ public class performTask extends AppCompatActivity {
         try {
             success = dbHelper.insertTaskStatus(randUserId,randTaskId,taskStartTime,taskPauseTime,
                     taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial,taskState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+
+    public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,Date taskStartTime,Integer taskTrial){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskStatusOnStartByTaskId(randTaskId,taskStartTime,taskTrial);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+    public boolean updateTaskStatusOnPauseButtonPress(Double randTaskId,Date taskPauseTime, String taskType, Integer taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskStatusOnPauseByTaskId(randTaskId,taskPauseTime, taskType,taskState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+    public boolean updateTaskStatusOnResumeButtonPress(Double randTaskId,Date taskResumeTime, Integer taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskStatusOnResumeByTaskId(randTaskId,taskResumeTime,taskState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+    public boolean updateTaskStatusOnCancelButtonPress(Double randTaskId,Date taskCancelTime, Integer taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskStatusOnCancelByTaskId(randTaskId,taskCancelTime,taskState);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -54,6 +54,46 @@ public class DBHelper extends SQLiteOpenHelper {
         this.getWritableDatabase().close();
         return result != -1;
     }
+    public Cursor getTaskTrialsById(Double randomTaskId){
+        return this.getWritableDatabase().query("TaskStatus",null,"randTaskId=?",new String[]{String.valueOf(randomTaskId)},null,null,null);
+    }
+    public boolean updateTaskStatusOnStartByTaskId(Double randomTaskId, Date taskStartTime,Integer taskTrial){
+        ContentValues cv = new ContentValues();
+        cv.put("taskStartTime", String.valueOf(taskStartTime));
+        if (taskTrial != null && taskTrial >= 1) cv.put("taskTrial", taskTrial);
+        long returnValue;
+        returnValue = this.getWritableDatabase().update("TaskStatus", cv,"randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+
+    }
+    public boolean updateTaskStatusOnPauseByTaskId(Double randomTaskId, Date taskPauseTime,String taskType, Integer taskState){
+        ContentValues cv = new ContentValues();
+        cv.put("taskPauseTime", String.valueOf(taskPauseTime));
+        cv.put("taskType", taskType);
+        if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
+        long returnValue;
+        returnValue = this.getWritableDatabase().update("TaskStatus", cv,"randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+
+    }
+    public boolean updateTaskStatusOnResumeByTaskId(Double randomTaskId, Date taskResumeTime,Integer taskState){
+        ContentValues cv = new ContentValues();
+        cv.put("taskResumeTime", String.valueOf(taskResumeTime));
+        if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
+        long returnValue;
+        returnValue = this.getWritableDatabase().update("TaskStatus", cv,"randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+
+    }
+    public boolean updateTaskStatusOnCancelByTaskId(Double randomTaskId, Date taskCancelTime,Integer taskState){
+        ContentValues cv = new ContentValues();
+        cv.put("taskCancelTime", String.valueOf(taskCancelTime));
+        if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
+        long returnValue;
+        returnValue = this.getWritableDatabase().update("TaskStatus", cv,"randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+
+    }
 
     //Method to insert userdata on sign up, returning true if successful and otherwise
     //executed on signup.java
