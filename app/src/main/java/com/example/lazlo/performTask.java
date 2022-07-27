@@ -17,6 +17,8 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class performTask extends AppCompatActivity {
@@ -232,6 +234,54 @@ public class performTask extends AppCompatActivity {
                 boolean b = updateTaskStatusOnCompleteButtonPress(randomTaskId,completeTaskDate,totalTaskDuration,typeOfCompletion,taskState);
                 if (b){
                     Toast.makeText(performTask.this, "Completion success", Toast.LENGTH_SHORT).show();
+                    Cursor cursor = dbHelper.getCompletedTaskById(randomTaskId);
+                    if (cursor.moveToFirst() ){
+                        Double randTaskId,randUserId;
+                        Date taskStartTime = null,taskPauseTime = null,taskResumeTime = null,taskCancelTime = null,taskCompleteTime = null;
+                        long taskDuration;
+                        String taskType;
+                        Integer taskTrial;
+                        if (taskState == 3){
+                            taskPauseTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskPauseTime")));
+                            taskResumeTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskResumeTime")));
+                            taskCancelTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCancelTime")));
+                            taskCompleteTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                        }else if(taskState == 1){
+                            taskCompleteTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                        }
+
+                        taskStartTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskStartTime")));
+                        randUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));
+                        randTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
+                        taskDuration = cursor.getLong(cursor.getColumnIndexOrThrow("taskDuration"));
+                        taskType = cursor.getString(cursor.getColumnIndexOrThrow("taskType"));
+                        taskTrial = cursor.getInt(cursor.getColumnIndexOrThrow("taskTrial"));
+                        
+
+
+                        boolean d = insertCompletedTaskOnComplete(randUserId,randTaskId,taskStartTime,taskPauseTime,
+                                taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial);
+
+                                if (d){
+                                    Toast.makeText(performTask.this, "Properly transferred", Toast.LENGTH_SHORT).show();
+                                    boolean e = deleteTaskOnCompletedNButtonPress(randomTaskId);
+                                    boolean f = deleteTaskOnCompletedButtonPress(randomTaskId);
+
+                                    if (e){
+                                        Toast.makeText(performTask.this, "Properly trashed", Toast.LENGTH_SHORT).show();
+                                    }else if(f){
+                                        Toast.makeText(performTask.this, "Properly trashed original task", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(performTask.this, "Trashing failure", Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                }else{
+                                    Toast.makeText(performTask.this, "transfer Fail", Toast.LENGTH_SHORT).show();
+                                }
+
+                    }
                 }else{
                     Toast.makeText(performTask.this, "Completion Fail", Toast.LENGTH_SHORT).show();
                 }
@@ -277,6 +327,38 @@ public class performTask extends AppCompatActivity {
         }
         return success;
 
+    }
+    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime,
+                                                 Date taskResumeTime, Date taskCancelTime,
+                                                 Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
+        boolean success = false;
+        try {
+            success = dbHelper.insertCompleted_N_DeletedTasks(randUserId,randTaskId,taskStartTime,taskPauseTime,
+                    taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+    public boolean deleteTaskOnCompletedNButtonPress(Double randomTaskId){
+        boolean success = false;
+        try {
+            success = dbHelper.deleteCompletedTaskByTaskId(randomTaskId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  success;
+    }
+
+    public boolean deleteTaskOnCompletedButtonPress(Double randomTaskId){
+        boolean success = false;
+        try {
+            success = dbHelper.deleteTaskByTaskId(randomTaskId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  success;
     }
 
     public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,Date taskStartTime,Integer taskTrial){
@@ -330,8 +412,17 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    //Double randomTaskId, Date taskCompleteTime,long taskDuration,String taskType,Integer taskTrial,Integer taskState
 
+    public Date stringToDate(String date){
+        Date newDate = null;
+        DateFormat format = new SimpleDateFormat("EEE LLL dd HH:mm:ss z yyyy");
+        try{
+           newDate = format.parse(date);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return newDate;
+    }
 
 
 }

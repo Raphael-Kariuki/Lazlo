@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
+        DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
     }
 
     //method run when there's a db upgrade
@@ -54,8 +55,37 @@ public class DBHelper extends SQLiteOpenHelper {
         this.getWritableDatabase().close();
         return result != -1;
     }
+    public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial) {
+        ContentValues cv = new ContentValues();
+        if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
+        if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
+        if (taskStartTime != null ) cv.put("taskStartTime", String.valueOf(taskStartTime));
+        cv.put("taskPauseTime", String.valueOf(taskPauseTime));
+        cv.put("taskResumeTime", String.valueOf(taskResumeTime));
+        cv.put("taskCancelTime", String.valueOf(taskCancelTime));
+        cv.put("taskCompleteTime", String.valueOf(taskCompleteTime));
+        cv.put("taskDuration", String.valueOf(taskDuration));
+        cv.put("taskType", taskType);
+        if (taskTrial != null && taskTrial >= 1) cv.put("taskTrial", taskTrial);
+        long result = this.getWritableDatabase().insert("Completed_N_DeletedTasks",null, cv);
+        this.getWritableDatabase().close();
+        return result != -1;
+    }
     public Cursor getTaskTrialsById(Double randomTaskId){
         return this.getWritableDatabase().query("TaskStatus",null,"randTaskId=?",new String[]{String.valueOf(randomTaskId)},null,null,null);
+    }
+    public Cursor getCompletedTaskById(Double randomTaskId){
+        return this.getWritableDatabase().query("TaskStatus",null,"randTaskId=?",new String[]{String.valueOf(randomTaskId)},null,null,null);
+    }
+    public boolean deleteCompletedTaskByTaskId(Double randomTaskId){
+        int returnValue;
+        returnValue = this.getWritableDatabase().delete("TaskStatus","randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+    }
+    public boolean deleteTaskByTaskId(Double randomTaskId){
+        int returnValue;
+        returnValue = this.getWritableDatabase().delete("TaskList","randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
     }
     public boolean updateTaskStatusOnStartByTaskId(Double randomTaskId, Date taskStartTime,Integer taskTrial){
         ContentValues cv = new ContentValues();
