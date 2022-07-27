@@ -42,7 +42,7 @@ public class myAccount extends AppCompatActivity {
         btnDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), customSpending.class);
+                Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                 startActivity(intent);
             }
         });

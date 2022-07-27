@@ -24,7 +24,7 @@
         android:id="@+id/SpendingViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/predicted_custom_range_spending"
+        android:text="Predicted custom range spending"
         android:clickable="false"
         android:textStyle="bold"
         android:textSize="20sp"

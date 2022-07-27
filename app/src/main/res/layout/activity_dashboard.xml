@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Dashboard">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/le_titre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="Dashboard"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/monthSelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/le_titre">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/quickStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monthSelection"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/uno"
+                        android:gravity="center"
+                        android:text="12"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/black_border"
+                        android:gravity="center"
+                        android:text="Total tasks"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/deux"
+                        android:gravity="center"
+                        android:text="12"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/black_border"
+                        android:gravity="center"
+                        android:text="Completed tasks"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/trois"
+                        android:gravity="center"
+                        android:text="12"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/black_border"
+                        android:gravity="center"
+                        android:text="Pending tasks"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/spendingView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quickStats"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:text="Spending view"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/monthlySpendingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_baseline_date_range_24"
+                        android:text="Monthly"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+
+                        />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/customSpendingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_baseline_date_range_24"
+                        android:text="Custom"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TableLayout
+                android:id="@+id/monthlyTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spendingView">
+
+                <TableRow>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Jan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Jan\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Feb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Feb\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Mar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Mar\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Apr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Apr\nKshs "
+                        android:textColor="@color/black" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/May"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="May\nKshs "
+                        android:textColor="@color/black"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Jun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Jun\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Jul"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Jul\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Aug"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Aug\nKshs "
+                        android:textColor="@color/black" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Sept"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Sept\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Oct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Oct\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Nov"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Nov\nKshs "
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/Dec"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Dec\nKshs "
+                        android:textColor="@color/black" />
+
+                </TableRow>
+            </TableLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
