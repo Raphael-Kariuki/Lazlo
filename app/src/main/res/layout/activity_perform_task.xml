@@ -11,20 +11,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
-        >
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskTitle"
             android:layout_width="match_parent"
@@ -35,10 +30,7 @@
             android:textStyle="bold"
             android:gravity="center"
             />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskDescription"
             android:layout_width="match_parent"
@@ -48,10 +40,7 @@
             android:textSize="20sp"
             android:gravity="center"
             />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskCategory"
             android:layout_width="match_parent"
@@ -61,10 +50,7 @@
             android:textSize="20sp"
             android:gravity="center"
             />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskBills"
             android:layout_width="match_parent"
@@ -74,20 +60,16 @@
             android:textSize="20sp"
             android:gravity="center"
             />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskDeadline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task deadline"
+            android:text="@string/task_deadline"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:gravity="center"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
 
         <LinearLayout
@@ -151,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
                     android:drawableStart="@drawable/ic_baseline_close_24"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/white" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -160,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
                     android:drawableStart="@drawable/ic_baseline_check_24"
-                    android:text="Complete"
+                    android:text="@string/complete"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
