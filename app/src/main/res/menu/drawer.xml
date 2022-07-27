@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Dashboard"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:iconTint="@color/black"
+
+        android:title="Dashboard"
+        android:visible="true" />
+    <item
+        android:id="@+id/Dashboard1"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:title="Dashboard"
+        android:iconTint="@color/black"
+
+        />
+    <item
+        android:id="@+id/Dashboard2"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:title="Dashboard"
+        android:iconTint="@color/black"
+
+        />
+    <item
+        android:id="@+id/Dashboard3"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:title="Dashboard"
+        android:iconTint="@color/black"
+
+        />
+</menu>
