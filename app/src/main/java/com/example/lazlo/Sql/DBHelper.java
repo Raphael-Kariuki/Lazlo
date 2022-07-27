@@ -25,6 +25,8 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
+        //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
+        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
     }
 
     //method run when there's a db upgrade
@@ -33,6 +35,24 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("drop Table if exists TaskList");
         //recreate the db
         onCreate(DB);
+    }
+
+    public boolean insertTaskStatus(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
+        ContentValues cv = new ContentValues();
+        if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
+        if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
+        if (taskStartTime != null ) cv.put("taskStartTime", String.valueOf(taskStartTime));
+        cv.put("taskPauseTime", String.valueOf(taskPauseTime));
+        cv.put("taskResumeTime", String.valueOf(taskResumeTime));
+        cv.put("taskCancelTime", String.valueOf(taskCancelTime));
+        cv.put("taskCompleteTime", String.valueOf(taskCompleteTime));
+        cv.put("taskDuration", String.valueOf(taskDuration));
+        cv.put("taskType", taskType);
+        if (taskTrial != null && taskTrial >= 1) cv.put("taskTrial", taskTrial);
+        if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
+        long result = this.getWritableDatabase().insert("TaskStatus",null, cv);
+        this.getWritableDatabase().close();
+        return result != -1;
     }
 
     //Method to insert userdata on sign up, returning true if successful and otherwise
@@ -139,7 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getData(String login_Uname){
         SQLiteDatabase DB = this.getWritableDatabase();
         //cursor.close();
-        return DB.rawQuery("Select userName, password from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
+        return DB.rawQuery("Select userName, password, randUserId from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
     }
     public Cursor get_tasks(String userID){
         SQLiteDatabase DB = this.getWritableDatabase();
