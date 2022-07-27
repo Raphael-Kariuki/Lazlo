@@ -94,6 +94,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return returnValue != -1;
 
     }
+    public boolean updateTaskStatusOnCompleteByTaskId(Double randomTaskId, Date taskCompleteTime,long taskDuration,String taskType,Integer taskState){
+        ContentValues cv = new ContentValues();
+        cv.put("taskCompleteTime", String.valueOf(taskCompleteTime));
+        cv.put("taskType", taskType);
+        if (taskDuration >= 1) cv.put("taskDuration", taskDuration);
+        if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
+        long returnValue;
+        returnValue = this.getWritableDatabase().update("TaskStatus", cv,"randTaskId=?",new String[]{String.valueOf(randomTaskId)});
+        return returnValue != -1;
+
+    }
 
     //Method to insert userdata on sign up, returning true if successful and otherwise
     //executed on signup.java

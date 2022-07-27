@@ -189,9 +189,6 @@ public class performTask extends AppCompatActivity {
                         }else{
                             Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
-
-
-
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -201,8 +198,6 @@ public class performTask extends AppCompatActivity {
                     }
                 });
                 builder.show();
-
-
                 taskState = 4;
                 cancelTaskDate = new Date();
             }
@@ -212,7 +207,7 @@ public class performTask extends AppCompatActivity {
             public void onClick(View view) {
                 completeTaskDate = new Date();
                 //setup to determine whether the task was completed in one run or not
-                String typeOfCompletion;
+                String typeOfCompletion = null;
 
                 if(taskState == 1){
                     typeOfCompletion = "oneShot";
@@ -233,6 +228,13 @@ public class performTask extends AppCompatActivity {
                 taskState = 5;
 
 
+
+                boolean b = updateTaskStatusOnCompleteButtonPress(randomTaskId,completeTaskDate,totalTaskDuration,typeOfCompletion,taskState);
+                if (b){
+                    Toast.makeText(performTask.this, "Completion success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(performTask.this, "Completion Fail", Toast.LENGTH_SHORT).show();
+                }
 
                 //currentTaskId from up above
                 //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
@@ -317,6 +319,18 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
+
+    public boolean updateTaskStatusOnCompleteButtonPress(Double randTaskId,Date taskCompleteTime, long taskDuration,String taskType,Integer taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskStatusOnCompleteByTaskId(randTaskId,taskCompleteTime,taskDuration,taskType,taskState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success;
+
+    }
+    //Double randomTaskId, Date taskCompleteTime,long taskDuration,String taskType,Integer taskTrial,Integer taskState
 
 
 
