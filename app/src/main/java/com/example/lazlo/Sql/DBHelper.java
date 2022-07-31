@@ -22,21 +22,27 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         //TODO: remove username from tasklist completely replace with userId
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
-        DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
+        DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
     }
 
     //method run when there's a db upgrade
     public void onUpgrade(SQLiteDatabase DB, int i, int i1){
         DB.execSQL("drop Table if exists userDetails");
         DB.execSQL("drop Table if exists TaskList");
+        DB.execSQL("drop Table if exists TaskListDrafts");
+        DB.execSQL("drop Table if exists TaskStatus");
+        DB.execSQL("drop Table if exists Completed_N_DeletedTasks");
         //recreate the db
         onCreate(DB);
+    }
+    public Cursor getCountOfCompletedTasksPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate ){
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as completedTasksPerMonth from Completed_N_DeletedTasks where randUserId = ? and taskDeadline > ? and taskDeadline < ?", new String[]{String.valueOf(randUserId), String.valueOf(startDate), String.valueOf(endDate)});
     }
 
     public boolean insertTaskStatus(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
@@ -57,11 +63,12 @@ public class DBHelper extends SQLiteOpenHelper {
         this.getWritableDatabase().close();
         return result != -1;
     }
-    public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial) {
+    public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId,LocalDateTime taskDeadline, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial) {
         ContentValues cv = new ContentValues();
         if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
         if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
         if (taskStartTime != null ) cv.put("taskStartTime", String.valueOf(taskStartTime));
+        if (taskDeadline != null ) cv.put("taskDeadline", String.valueOf(taskDeadline));
         cv.put("taskPauseTime", String.valueOf(taskPauseTime));
         cv.put("taskResumeTime", String.valueOf(taskResumeTime));
         cv.put("taskCancelTime", String.valueOf(taskCancelTime));
@@ -190,7 +197,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //get sum of spending per month for dashboard
     public Cursor getSumPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
-        return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotalSpendingPerMonth from TaskList where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
+        return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotalSpendingPerMonth from TaskList where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(randUserId),String.valueOf(startDate),String.valueOf(endDate)});
     }
 
     public Cursor getSumOfTasksPerMonthForDashBoard(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
@@ -279,6 +286,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return rv != -1;
 
     }
+
     public Cursor getTaskById(long id) {
         return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);
     }

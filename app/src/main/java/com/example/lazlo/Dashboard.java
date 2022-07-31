@@ -34,10 +34,12 @@ TableLayout monthlyTable;
 MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         dbHelper = new DBHelper(this);
 
         //obtain monthly textViews
@@ -75,6 +77,16 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
             public void onClick(View view) {
                 monthlyTable.setVisibility(View.VISIBLE);
                 getSumOfSpendingPerMonth(randUserId);
+
+            }
+        });
+
+        btnCustomSpendingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                monthlyTable.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -96,6 +108,7 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
                 monthIndex = i;
                 //getSumOfTasksPerMonthForDashBoard
                 totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId,monthIndex + 1));
+                totalCompletedTasksPerMonth.setText("" + populateCompletedTasksPerMonthView(randUserId, monthIndex + 1));
 
             }
         });
@@ -128,6 +141,16 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         return dateRanges;
 
     }
+    public Cursor getCompletedTasksPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getCountOfCompletedTasksPerMonth(randUserId,startDate,endDate);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
+
     public Cursor getTotalTasksCountPerMonth(Double randUserid,LocalDateTime startDate, LocalDateTime endDate){
         Cursor cursor = null;
         try {
@@ -169,6 +192,17 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         }
         return totalTasksPerMonth_int;
     }
+    public int populateCompletedTasksPerMonthView(Double randUserId, int monthIndex){
+        LocalDateTime[] range = getMonthBasedStats(monthIndex);
+        LocalDateTime startDate, endDate;
+        startDate = range[0];
+        endDate = range[1];
+        Cursor cursor = getCompletedTasksPerMonth(randUserId,startDate,endDate);
+        if (cursor.moveToNext()){
+            totalCompletedTasksPerMonth_int = cursor.getInt(cursor.getColumnIndexOrThrow("completedTasksPerMonth"));
+        }
+        return totalCompletedTasksPerMonth_int;
+    }
     public LocalDateTime stringToDate(String date){
         LocalDateTime newDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
@@ -204,11 +238,10 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
 
             if (monthLySumCursor.moveToFirst()){
                 Integer monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
+                System.out.println("Total spending: " + monthlySpendingSum);
 
                 //set text to view
-                CharSequence defaultTextOnVIew = monthlyTextViews[i-1].getText();
-                //TODO: Issue: on click of the button set text continuously, check that.
-                monthlyTextViews[i-1].setText(String.valueOf(defaultTextOnVIew) + monthlySpendingSum);
+                monthlyTextViews[i-1].setText("Kshs " + monthlySpendingSum);
             }
         }
     }

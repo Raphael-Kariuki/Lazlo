@@ -47,7 +47,7 @@ public class performTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perform_task);
 
-        //obtain currentTaskId from Intent passed from IndividualTask. Here coz of obtaining context
+        //obtain randomTaskId from Intent passed from IndividualTask. Here coz of obtaining context
         randomTaskId = this.getIntent().getDoubleExtra("randomTaskId", -1);
 
         //obtain randomUserId from sharedPreferences. Obtained as string, converted to double
@@ -121,7 +121,6 @@ public class performTask extends AppCompatActivity {
                     System.out.println("trials " + trials);
                 }else{
                     //insert to db
-                    individualTask individualTask = new individualTask();
 
                     //have to format deadline from string to localDatTime coz it was sent via intent as string
                     c = insertDetailsOnTaskStart(randomUserId, randomTaskId,LocalDateTimeFormat(Deadline),startTaskDate,null,null,null,null,null,null,1,1);
@@ -272,7 +271,7 @@ public class performTask extends AppCompatActivity {
                         
 
 
-                        boolean d = insertCompletedTaskOnComplete(randUserId,randTaskId,taskStartTime,taskPauseTime,
+                        boolean d = insertCompletedTaskOnComplete(randUserId,randTaskId,LocalDateTimeFormat(Deadline),taskStartTime,taskPauseTime,
                                 taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial);
 
                                 if (d){
@@ -341,12 +340,12 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime,
+    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime,
                                                  Date taskResumeTime, Date taskCancelTime,
                                                  Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
         boolean success = false;
         try {
-            success = dbHelper.insertCompleted_N_DeletedTasks(randUserId,randTaskId,taskStartTime,taskPauseTime,
+            success = dbHelper.insertCompleted_N_DeletedTasks(randUserId,randTaskId,taskDeadline,taskStartTime,taskPauseTime,
                     taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial);
         }catch (Exception e){
             e.printStackTrace();
@@ -354,6 +353,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
+    //delete from taskStatus
     public boolean deleteTaskOnCompletedNButtonPress(Double randomTaskId){
         boolean success = false;
         try {
@@ -363,7 +363,7 @@ public class performTask extends AppCompatActivity {
         }
         return  success;
     }
-
+    //delete from taskList
     public boolean deleteTaskOnCompletedButtonPress(Double randomTaskId){
         boolean success = false;
         try {
@@ -447,6 +447,8 @@ public class performTask extends AppCompatActivity {
         }
     }
 //TODO:obtain deadline from db as can be changed, then task perform in which case the task will still show the old deadline
+
+    //function that receives a date string returns a localDateTime
     private LocalDateTime LocalDateTimeFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-L-d HH:mm");
         try {
