@@ -219,168 +219,357 @@
 
                 <TableRow>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Jan"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Jan\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"/>
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Feb"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Feb\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Jan"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Jan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Mar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Mar\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"/>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Apr"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Apr\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Feb"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Feb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Mar"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Mar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+
 
                 </TableRow>
 
                 <TableRow>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/May"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="May\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Jun"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Jun\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Apr"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Apr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Jul"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Jul\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Aug"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="May"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/May"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Aug\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="June"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Jun"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+
 
                 </TableRow>
 
                 <TableRow>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Sept"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Sept\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Oct"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="July"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Jul"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Oct\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Nov"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Aug"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Aug"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Nov\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/Dec"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Sept"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Sept"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+
+
+                </TableRow>
+                <TableRow>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Dec\nKshs "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/month_bg"
-                        />
+                        android:orientation="vertical"
+                        >
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Oct"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Oct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Nov"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Nov"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Dec"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/Dec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Kshs "
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:background="@drawable/month_bg"/>
+                    </LinearLayout>
                 </TableRow>
             </TableLayout>
 
