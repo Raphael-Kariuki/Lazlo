@@ -173,7 +173,7 @@ public class individualTask extends AppCompatActivity {
                                     LocalDateTime date_now = LocalDateTime.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                         try {
-                                            f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,updateDateTime);
+                                            f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,selected_date);
                                             Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
                                         }catch (Exception e){
                                             Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();

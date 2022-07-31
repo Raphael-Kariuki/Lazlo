@@ -1,6 +1,7 @@
 package com.example.lazlo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,12 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -26,11 +29,30 @@ Integer totalTasksPerMonth_int, totalCompletedTasksPerMonth_int, totalPendingTas
 DBHelper dbHelper;
 SharedPreferences spf;
 Double randUserId;
+AppCompatButton btnMonthlySpendingView, btnCustomSpendingView;
+TableLayout monthlyTable;
+MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         dbHelper = new DBHelper(this);
+
+        //obtain monthly textViews
+        Jan = findViewById(R.id.Jan);
+        Feb = findViewById(R.id.Feb);
+        Mar = findViewById(R.id.Mar);
+        Apr = findViewById(R.id.Apr);
+        May = findViewById(R.id.May);
+        Jun = findViewById(R.id.Jun);
+        Jul = findViewById(R.id.Jul);
+        Aug = findViewById(R.id.Aug);
+        Sept = findViewById(R.id.Sept);
+        Oct = findViewById(R.id.Oct);
+        Nov = findViewById(R.id.Nov);
+        Dec = findViewById(R.id.Dec);
 
 
 
@@ -38,6 +60,25 @@ Double randUserId;
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
 
+        //obtain button for monthly and custom spending view
+        btnCustomSpendingView = findViewById(R.id.btnCustomSpendingView);
+        btnMonthlySpendingView = findViewById(R.id.btnMonthlySpendingView);
+
+        //obtain monthly spending table layout
+        monthlyTable = findViewById(R.id.monthlyTable);
+        //set to invisible on load
+        monthlyTable.setVisibility(View.INVISIBLE);
+
+        //set table layout visible on monthly view button click
+        btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                monthlyTable.setVisibility(View.VISIBLE);
+                getSumOfSpendingPerMonth(randUserId);
+            }
+        });
+
+        //obtain views to populate monthly stats
         totalTasksPerMonth = findViewById(R.id.totalTasksPerMonth);
         totalCompletedTasksPerMonth = findViewById(R.id.totalTasksCompletedPerMonth);
         totalPendingTasksPerMonth = findViewById(R.id.totalTasksPendingPerMonth);
@@ -60,9 +101,9 @@ Double randUserId;
         });
 
     }
-    public LocalDate[] getMonthBasedStats(int indexOfMonth){
+    public LocalDateTime[] getMonthBasedStats(int indexOfMonth){
         String newMonthIndex;
-        LocalDate[] dateRanges = new LocalDate[2];
+        LocalDateTime[] dateRanges = new LocalDateTime[2];
 
         //for proper date formatting, add zero before month
         if(indexOfMonth <= 9){
@@ -83,11 +124,11 @@ Double randUserId;
 
         dateRanges[0] = stringToDate(rangeStart);
         dateRanges[1] = stringToDate(rangeEnd);
-        System.out.println(dateRanges[0] + " : " + dateRanges[1]);
+        System.out.println(dateRanges[0] + " :: " + dateRanges[1]);
         return dateRanges;
 
     }
-    public Cursor getTotalTasksCountPerMonth(Double randUserid,LocalDate startDate, LocalDate endDate){
+    public Cursor getTotalTasksCountPerMonth(Double randUserid,LocalDateTime startDate, LocalDateTime endDate){
         Cursor cursor = null;
         try {
             cursor   = dbHelper.getSumOfTasksPerMonthForDashBoard(randUserid,startDate,endDate);
@@ -118,8 +159,8 @@ Double randUserId;
     }
 
     public int populateTotalTasksPerMonthView(Double randUserId, int monthIndex){
-        LocalDate[] range = getMonthBasedStats(monthIndex);
-        LocalDate startDate, endDate;
+        LocalDateTime[] range = getMonthBasedStats(monthIndex);
+        LocalDateTime startDate, endDate;
         startDate = range[0];
         endDate = range[1];
         Cursor cursor = getTotalTasksCountPerMonth(randUserId,startDate, endDate);
@@ -128,8 +169,8 @@ Double randUserId;
         }
         return totalTasksPerMonth_int;
     }
-    public LocalDate stringToDate(String date){
-        LocalDate newDate = null;
+    public LocalDateTime stringToDate(String date){
+        LocalDateTime newDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try{
             newDate = getDateFromString(date, dateTimeFormatter);
@@ -138,9 +179,38 @@ Double randUserId;
         }
         return newDate;
     }
-    public static LocalDate getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
-        LocalDate date = LocalDate.parse(string, dateTimeFormatter);
+    public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
+        LocalDateTime date = LocalDateTime.parse(string, dateTimeFormatter);
         return date;
+    }
+    public void getSumOfSpendingPerMonth(Double randUserId){
+
+        MaterialTextView[] monthlyTextViews = {Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec};
+        Cursor monthLySumCursor = null;
+
+        for (int i = 1; i <= 12; i++) {
+            //obtain monthly date ranges
+            LocalDateTime[] monthlyRange = getMonthBasedStats(i);
+
+            System.out.println(monthlyRange[0] + " ::: " + monthlyRange[1]);
+            //obtain monthly sum
+            try {
+                monthLySumCursor = dbHelper.getSumPerMonth(randUserId,monthlyRange[0],monthlyRange[1]);
+                
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            
+
+            if (monthLySumCursor.moveToFirst()){
+                Integer monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
+
+                //set text to view
+                CharSequence defaultTextOnVIew = monthlyTextViews[i-1].getText();
+                //TODO: Issue: on click of the button set text continuously, check that.
+                monthlyTextViews[i-1].setText(String.valueOf(defaultTextOnVIew) + monthlySpendingSum);
+            }
+        }
     }
 
 }

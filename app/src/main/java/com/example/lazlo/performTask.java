@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import static com.example.lazlo.AddTasks.getDateFromString;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -19,6 +21,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class performTask extends AppCompatActivity {
@@ -34,6 +38,8 @@ public class performTask extends AppCompatActivity {
     SharedPreferences spf;
     Double randomUserId;
     Double randomTaskId;
+    String Title ,Description, Category, Bills,Deadline;
+    LocalDateTime formattedLocalDateTime;
 
 
     @Override
@@ -69,6 +75,10 @@ public class performTask extends AppCompatActivity {
         btnResumeTask.setVisibility(View.INVISIBLE);
         btnCancelDoingTask.setVisibility(View.VISIBLE);
         btnCompleteDoingTask.setVisibility(View.INVISIBLE);
+
+
+
+
 
         try {
             populateViews();
@@ -111,7 +121,10 @@ public class performTask extends AppCompatActivity {
                     System.out.println("trials " + trials);
                 }else{
                     //insert to db
-                    c = insertDetailsOnTaskStart(randomUserId, randomTaskId,startTaskDate,null,null,null,null,null,null,1,1);
+                    individualTask individualTask = new individualTask();
+
+                    //have to format deadline from string to localDatTime coz it was sent via intent as string
+                    c = insertDetailsOnTaskStart(randomUserId, randomTaskId,LocalDateTimeFormat(Deadline),startTaskDate,null,null,null,null,null,null,1,1);
                 }
                 if (b){
                     Toast.makeText(performTask.this, "update success", Toast.LENGTH_SHORT).show();
@@ -301,11 +314,11 @@ public class performTask extends AppCompatActivity {
 
 
     public void populateViews(){
-        String Title = this.getIntent().getStringExtra("taskTitle");
-        String Description = this.getIntent().getStringExtra("taskDescription");
-        String Category = this.getIntent().getStringExtra("taskCategory");
-        String Bills = this.getIntent().getStringExtra("taskBills");
-        String Deadline = this.getIntent().getStringExtra("taskDeadline");
+        Title = this.getIntent().getStringExtra("taskTitle");
+        Description = this.getIntent().getStringExtra("taskDescription");
+        Category = this.getIntent().getStringExtra("taskCategory");
+        Bills = this.getIntent().getStringExtra("taskBills");
+        Deadline = this.getIntent().getStringExtra("taskDeadline");
 
         runningTaskTitle.setText(Title);
         runningTaskDescription.setText(Description);
@@ -314,13 +327,13 @@ public class performTask extends AppCompatActivity {
         runningTaskDeadline.setText(Deadline);
     }
 
-    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, Date taskStartTime,
+    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, Date taskStartTime,
                                             Date taskPauseTime, Date taskResumeTime, Date taskCancelTime,
                                             Date taskCompleteTime, Long taskDuration, String taskType,
                                             Integer taskTrial, Integer taskState){
         boolean success = false;
         try {
-            success = dbHelper.insertTaskStatus(randUserId,randTaskId,taskStartTime,taskPauseTime,
+            success = dbHelper.insertTaskStatus(randUserId,randTaskId,taskDeadline,taskStartTime,taskPauseTime,
                     taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial,taskState);
         }catch (Exception e){
             e.printStackTrace();
@@ -422,6 +435,30 @@ public class performTask extends AppCompatActivity {
             e.printStackTrace();
         }
         return newDate;
+    }
+    private boolean willDateFormat(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+        try {
+            formattedLocalDateTime = getDateFromString(selectedDate, dateTimeFormatter);
+            return true;
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+            return false;
+        }
+    }
+//TODO:obtain deadline from db as can be changed, then task perform in which case the task will still show the old deadline
+    private LocalDateTime LocalDateTimeFormat(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-L-d HH:mm");
+        try {
+            formattedLocalDateTime = getDateFromString(selectedDate, dateTimeFormatter);
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+        }
+        return formattedLocalDateTime;
+    }
+
+    public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
+        return LocalDateTime.parse(string, dateTimeFormatter);
     }
 
 

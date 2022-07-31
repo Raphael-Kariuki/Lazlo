@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
-        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
+        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
         DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
     }
 
@@ -39,11 +39,12 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(DB);
     }
 
-    public boolean insertTaskStatus(Double randUserId, Double randTaskId, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
+    public boolean insertTaskStatus(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
         ContentValues cv = new ContentValues();
         if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
         if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
         if (taskStartTime != null ) cv.put("taskStartTime", String.valueOf(taskStartTime));
+        if (taskDeadline != null ) cv.put("taskDeadline", String.valueOf(taskDeadline));
         cv.put("taskPauseTime", String.valueOf(taskPauseTime));
         cv.put("taskResumeTime", String.valueOf(taskResumeTime));
         cv.put("taskCancelTime", String.valueOf(taskCancelTime));
@@ -187,7 +188,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotal from TaskList where TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
     }
 
-    public Cursor getSumOfTasksPerMonthForDashBoard(Double randUserId,LocalDate startDate, LocalDate endDate){
+    //get sum of spending per month for dashboard
+    public Cursor getSumPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
+        return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotalSpendingPerMonth from TaskList where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
+    }
+
+    public Cursor getSumOfTasksPerMonthForDashBoard(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
         return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalTasksPerMonth from TaskList where randUserId = ? and TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(randUserId),String.valueOf(startDate),String.valueOf(endDate)});
     }
 
@@ -259,7 +265,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean update(long id, String UserName, String TaskTitle, String TaskDescription,String TaskCategory,
-                          String TaskAssociatedPrice, String TaskDeadline) {
+                          String TaskAssociatedPrice, LocalDateTime TaskDeadline) {
         long rv = 0;
         ContentValues cv = new ContentValues();
             if (UserName != null && UserName.length() > 0) cv.put("UserName",UserName);
@@ -267,7 +273,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (TaskDescription != null && TaskDescription.length() > 0) cv.put("TaskDescription",TaskDescription);
             if (TaskCategory != null && TaskCategory.length() > 0 ) cv.put("TaskCategory", TaskCategory);
             if (TaskAssociatedPrice != null && TaskAssociatedPrice.length() > 0 ) cv.put("TaskAssociatedPrice", TaskAssociatedPrice);
-            if (TaskDeadline != null && TaskDeadline.length() > 0 ) cv.put("TaskDeadline", TaskDeadline);
+            if (TaskDeadline != null && String.valueOf(TaskDeadline).length() > 0 ) cv.put("TaskDeadline", String.valueOf(TaskDeadline));
             if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
             this.getWritableDatabase().close();
         return rv != -1;

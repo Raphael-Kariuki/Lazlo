@@ -265,7 +265,7 @@ public class AddTasks extends AppCompatActivity {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
-            System.out.print("get date from string " + selected_date);
+            System.out.println("get date from string " + selected_date);
             return true;
         }catch (IllegalArgumentException e){
             System.out.println("Date Exception" + e);
