@@ -172,7 +172,7 @@ public class Dashboard extends AppCompatActivity {
                         selectedStart_duration_String = getDateFromString(selectedStart_duration + " 23:59", dateTimeFormatter);
                         selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 23:59", dateTimeFormatter);
 
-                        sumTotalView.setText("Kshs " + populateSpendingView(selectedStart_duration_String, selectedEnd_duration_String));
+                        sumTotalView.setText("Kshs " + populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String));
                         populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
 
                     } else {
@@ -223,18 +223,15 @@ public class Dashboard extends AppCompatActivity {
       //  monthlyTable.setVisibility(View.INVISIBLE);
         customViewLayout.setVisibility(View.INVISIBLE);
 
-        //set table layout visible on monthly view button click
+        setupData(getPieData());
+
         btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                // monthlyTable.setVisibility(View.VISIBLE);
 
-                pieChart.invalidate();
                 setupPieChart();
-                setupData(randUserId);
-                pieChart.animateY(1400, Easing.EaseInOutQuad);
-
-                pieChart.invalidate();
+                setupData(getPieData());
 
 
                 pieChartLayout.setVisibility(View.VISIBLE);
@@ -291,12 +288,13 @@ public class Dashboard extends AppCompatActivity {
             simpleCursorAdapter = new SimpleCursorAdapter(Dashboard.this, R.layout.spending_listview, cursor, new String[]{"TaskTitle", "TaskAssociatedPrice"}, new int[]{R.id.spendingViewTitle_textView, R.id.spendingViewPrice_textView}, 0);
             showSpendingListView.setAdapter(simpleCursorAdapter);
         }
+        simpleCursorAdapter.swapCursor(cursor);
     }
 
-    public Cursor getSpendingSumCursor(LocalDateTime startDate, LocalDateTime endDate) {
+    public Cursor getSpendingSumCursor(Double randUserId, LocalDateTime startDate, LocalDateTime endDate) {
         Cursor cursor = null;
         try {
-            cursor = dbHelper.getSum(startDate, endDate);
+            cursor = dbHelper.getSumPerMonth(randUserId,startDate, endDate);
         } catch (Exception e) {
             System.out.println("Error getting sum " + e);
         }
@@ -319,13 +317,13 @@ public class Dashboard extends AppCompatActivity {
         spendingListViewPopulate(cursor);
     }
 
-    public int populateSpendingView(LocalDateTime startDate, LocalDateTime endDate) {
+    public int populateSpendingView(Double randUserId,LocalDateTime startDate, LocalDateTime endDate) {
         int spendingSum = 0;
-        Cursor cursor = getSpendingSumCursor(startDate, endDate);
+        Cursor cursor = getSpendingSumCursor(randUserId, startDate, endDate);
 
         if (cursor.moveToFirst()) {
             try {
-                spendingSum = cursor.getInt(cursor.getColumnIndexOrThrow("sumTotal"));
+                spendingSum = cursor.getInt(cursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
             } catch (Exception e) {
                 System.out.println("Error getting sum " + e);
             }
@@ -352,8 +350,8 @@ public class Dashboard extends AppCompatActivity {
         int mYear = calendar.get(Calendar.YEAR);
 
         //setup date ranges
-        String rangeStart = "01-" + newMonthIndex + "-" + mYear + " 23:59";
-        String rangeEnd = "31-" + newMonthIndex + "-" + mYear + " 23:59";
+        String rangeStart = "01-" + newMonthIndex + "-" + mYear + " 00:01";
+        String rangeEnd = "31-" + newMonthIndex + "-" + mYear + " 00:01";
         System.out.println(rangeStart + " : " + rangeEnd);
 
 
@@ -539,83 +537,84 @@ public class Dashboard extends AppCompatActivity {
             pieChart.setCenterText("Bills");
             pieChart.setCenterTextColor(R.color.black);
             pieChart.setCenterTextSize(13);
-            pieChart.invalidate();
 
         }
     public long[] getSumOfSpendingPerMonthForPieChart(Double randUserId) {
         long spendingPerMonth[] = new long[12];
-
         Cursor monthLySumCursor = null;
+        int monthlySpendingSum = 0;
 
         for (int i = 0; i < 12; i++) {
             //obtain monthly date ranges
             LocalDateTime[] monthlyRange = getMonthBasedStats(i + 1);
 
-            System.out.println(monthlyRange[0] + " ::: " + monthlyRange[1]);
             //obtain monthly sum
             try {
                 monthLySumCursor = dbHelper.getSumPerMonth(randUserId, monthlyRange[0], monthlyRange[1]);
 
+                if (monthLySumCursor.moveToNext()) {
+                    monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
+                    monthLySumCursor.close();
+
+                    spendingPerMonth[i] = monthlySpendingSum;
+                    System.out.println(i + ": " + spendingPerMonth[i]);
+                }else{
+                    spendingPerMonth[i] = 0;
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-
-            if (monthLySumCursor.moveToNext()) {
-                int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
-                spendingPerMonth[i] = monthlySpendingSum;
-            }else{
-                spendingPerMonth[i] = 0;
             }
         }
         return spendingPerMonth;
     }
 
-        public void setupData(Double randUserId) {
-            String[] months = {"Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
-            long[] bills = getSumOfSpendingPerMonthForPieChart(randUserId);
 
-            ArrayList<PieEntry> pieDatum = new ArrayList<>();
+    public  ArrayList<PieEntry> getPieData(){
+        String[] months = {"Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+        long[] bills = getSumOfSpendingPerMonthForPieChart(randUserId);
+        ArrayList<PieEntry> pieDatum = new ArrayList<>();
 
-            for (int i = 0; i <= 11; i++) {
-                pieDatum.add(new PieEntry(bills[i],months[i]));
-            }
+        for (int i = 0; i <= 11; i++) {
+            pieDatum.add(new PieEntry(bills[i],months[i]));
+            System.out.println(bills[i] + "" + months[i]);
+        }
+        return pieDatum;
+    }
+    public void setupData(ArrayList<PieEntry> pieDataArrayList) {
 
-            PieDataSet pieDataSet = new PieDataSet(pieDatum,"");
-            pieDataSet.setSliceSpace(2);
-            pieDataSet.setValueTextSize(18);
-            pieDataSet.setValueTextColor(Color.rgb(255,255,255));
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int color : ColorTemplate.MATERIAL_COLORS) {
+            colors.add(color);
+        }
+        for (int color : ColorTemplate.VORDIPLOM_COLORS) {
+            colors.add(color);
+        }
+        for (int color : ColorTemplate.LIBERTY_COLORS) {
+            colors.add(color);
+        }
 
-            //add colors to dataset
-            ArrayList<Integer> colors = new ArrayList<>();
-            for (int color : ColorTemplate.MATERIAL_COLORS) {
-                colors.add(color);
-            }
+        PieDataSet pieDataSet = new PieDataSet(pieDataArrayList,"");
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(15);
+        pieDataSet.setValueTextColor(Color.rgb(0,0,0));
 
-            for (int color : ColorTemplate.VORDIPLOM_COLORS) {
-                colors.add(color);
-            }
-            for (int color : ColorTemplate.LIBERTY_COLORS) {
-                colors.add(color);
-            }
-            pieDataSet.setColors(colors);
+        //add colors to dataset
+        pieDataSet.setColors(colors);
 
-            //add legend to chart
-            Legend legend = pieChart.getLegend();
-            legend.setForm(Legend.LegendForm.CIRCLE);
-            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-            legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-            legend.setDrawInside(false);
-
-
-            //create pieChart object
-            PieData pieData = new PieData(pieDataSet);
-            pieChart.setData(pieData);
-
+        //add legend to chart
+        Legend legend = pieChart.getLegend();
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
 
 
-
-
+        //create pieChart object
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
         }
 
     }

@@ -176,7 +176,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public Cursor getAll(String uname) {
         //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
-        return this.getWritableDatabase().query("TaskList",null,"UserName=?",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
+        return this.getWritableDatabase().query("TaskList",null,"UserName=? and taskState != 5",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
     public Cursor getByEmail(String email){
