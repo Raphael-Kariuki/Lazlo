@@ -201,7 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
 
-    public Cursor getSum(LocalDate startDate, LocalDate endDate){
+    public Cursor getSum(LocalDateTime startDate, LocalDateTime endDate){
         return this.getWritableDatabase().rawQuery("Select sum(TaskAssociatedPrice) as sumTotal from TaskList where TaskDeadline > ? and TaskDeadline < ?", new String[]{String.valueOf(startDate),String.valueOf(endDate)});
     }
 
@@ -218,7 +218,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getSumOfTasksForDashBoard(Double randUserId){
         return this.getWritableDatabase().rawQuery("Select count(randTaskId) as sumTotalTasks from TaskList where randUserId = ?", new String[]{String.valueOf(randUserId)});
     }
-    public Cursor getSpendingDetails(LocalDate startDate, LocalDate endDate){
+    public Cursor getSpendingDetails(LocalDateTime startDate, LocalDateTime endDate){
         return this.getWritableDatabase().query("TaskList",new String[]{"_id","TaskTitle","TaskAssociatedPrice"},"TaskDeadline > ? and TaskDeadline < ?",new String[]{String.valueOf(startDate),String.valueOf(endDate)},null,null,"TaskAssociatedPrice DESC");
     }
 

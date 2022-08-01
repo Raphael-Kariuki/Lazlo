@@ -3,16 +3,26 @@ package com.example.lazlo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.time.LocalDateTime;
@@ -30,9 +40,22 @@ SharedPreferences spf;
 Double randUserId;
 AppCompatButton btnMonthlySpendingView, btnCustomSpendingView;
 TableLayout monthlyTable;
+LinearLayout customViewLayout;
 MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
+TextInputEditText startDuration_choice,endDuration_choice;
+TextInputLayout startDateLayout,endDateLayout;
+DatePickerDialog datePickerDialog,datePickerDialog2;
 
+String selectedStart_duration,selectedEnd_duration;
+MaterialButton btnShowPredictedSpending;
+LocalDateTime selectedStart_duration_String,selectedEnd_duration_String;
+TextView sumTotalView;
+SimpleCursorAdapter simpleCursorAdapter;
+ListView showSpendingListView;
 
+    public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
+        return LocalDateTime.parse(string, dateTimeFormatter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,82 +64,244 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
 
         dbHelper = new DBHelper(this);
 
-        //obtain monthly textViews
-        Jan = findViewById(R.id.Jan);
-        Feb = findViewById(R.id.Feb);
-        Mar = findViewById(R.id.Mar);
-        Apr = findViewById(R.id.Apr);
-        May = findViewById(R.id.May);
-        Jun = findViewById(R.id.Jun);
-        Jul = findViewById(R.id.Jul);
-        Aug = findViewById(R.id.Aug);
-        Sept = findViewById(R.id.Sept);
-        Oct = findViewById(R.id.Oct);
-        Nov = findViewById(R.id.Nov);
-        Dec = findViewById(R.id.Dec);
+        //custom view processing
+        startDuration_choice = findViewById(R.id.startDateInput);
+        endDuration_choice =  findViewById(R.id.endDateInput);
 
+        startDateLayout = findViewById(R.id.startDateLayout);
+        endDateLayout = findViewById(R.id.endDateLayout);
 
+        sumTotalView = findViewById(R.id.SumTotalView);
+        showSpendingListView = findViewById(R.id.showSpendingListView);
 
-        //obtain userId to be used in obtain user task stats
-        spf = getSharedPreferences("user_details", MODE_PRIVATE);
-        randUserId = Double.parseDouble(spf.getString("randomUserId", null));
+        final Calendar calendar = Calendar.getInstance();
+        int sYear = calendar.get(Calendar.YEAR);
+        int sMonth = calendar.get(Calendar.MONTH);
+        int sDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int eYear = calendar.get(Calendar.YEAR);
+        int eMonth = calendar.get(Calendar.MONTH);
+        int eDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        //obtain button for monthly and custom spending view
-        btnCustomSpendingView = findViewById(R.id.btnCustomSpendingView);
-        btnMonthlySpendingView = findViewById(R.id.btnMonthlySpendingView);
-
-        //obtain monthly spending table layout
-        monthlyTable = findViewById(R.id.monthlyTable);
-        //set to invisible on load
-        monthlyTable.setVisibility(View.INVISIBLE);
-
-        //set table layout visible on monthly view button click
-        btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
+        startDuration_choice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                monthlyTable.setVisibility(View.VISIBLE);
-                getSumOfSpendingPerMonth(randUserId);
+                //set startDatePicker dialog
+                datePickerDialog = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                        String formattedMonth,formattedDay;
+                        if (monthOfYear + 1 <= 9){
+                            formattedMonth = "0" + (monthOfYear + 1) ;
+                        }else{
+                            formattedMonth = String.valueOf(monthOfYear + 1);
+                        }
+                        if(dayOfMonth < 10){
+                            formattedDay = "0" + dayOfMonth;
+                        }else{
+                            formattedDay = String.valueOf(dayOfMonth);
+                        }
+                        startDuration_choice.setText(formattedDay + "-" + formattedMonth + "-" + year);
+                    }
+                },sYear,sMonth,sDay);
+                datePickerDialog.show();
 
             }
         });
-
-        btnCustomSpendingView.setOnClickListener(new View.OnClickListener() {
+        endDuration_choice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //set endDatePicker dialog
+                datePickerDialog2 = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+
+                        String formattedMonth,formattedDay;
+                        if (monthOfYear + 1 <= 9){
+                            formattedMonth = "0" + (monthOfYear + 1) ;
+                        }else{
+                            formattedMonth = String.valueOf(monthOfYear + 1);
+                        }
+                        if(dayOfMonth < 10){
+                            formattedDay = "0" + dayOfMonth;
+                        }else{
+                            formattedDay = String.valueOf(dayOfMonth);
+                        }
+                        endDuration_choice.setText(formattedDay + "-" + formattedMonth + "-" + year);
+                    }
+                },eYear,eMonth,eDay);
+                datePickerDialog2.show();
+            }
+        });
+
+        btnShowPredictedSpending = findViewById(R.id.btnShowPredictedSpending);
+
+        btnShowPredictedSpending.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+
+                                                            selectedStart_duration = startDuration_choice.getText().toString().trim();
+                                                            selectedEnd_duration = endDuration_choice.getText().toString().trim();
+
+                                                            if (!selectedStart_duration.isEmpty()) {
+                                                                if (!selectedEnd_duration.isEmpty()) {
+                                                                    startDateLayout.setErrorEnabled(false);
+                                                                    endDateLayout.setErrorEnabled(false);
+
+                                                                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+
+                                                                    selectedStart_duration_String = getDateFromString(selectedStart_duration + " 23:59", dateTimeFormatter);
+                                                                    selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 23:59", dateTimeFormatter);
+
+                                                                    sumTotalView.setText("Kshs " + populateSpendingView(selectedStart_duration_String, selectedEnd_duration_String));
+                                                                    populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
+
+                                                                } else {
+                                                                    endDateLayout.setErrorEnabled(true);
+                                                                    startDateLayout.setErrorEnabled(false);
+                                                                    endDateLayout.setError("Select start date");
+                                                                }
+
+                                                            } else {
+                                                                startDateLayout.setErrorEnabled(true);
+                                                                endDateLayout.setErrorEnabled(false);
+                                                                startDateLayout.setError("Select start date");
+                                                            }
+                                                        }
+                                                    });
 
 
+                //obtain monthly textViews
+                Jan = findViewById(R.id.Jan);
+                Feb = findViewById(R.id.Feb);
+                Mar = findViewById(R.id.Mar);
+                Apr = findViewById(R.id.Apr);
+                May = findViewById(R.id.May);
+                Jun = findViewById(R.id.Jun);
+                Jul = findViewById(R.id.Jul);
+                Aug = findViewById(R.id.Aug);
+                Sept = findViewById(R.id.Sept);
+                Oct = findViewById(R.id.Oct);
+                Nov = findViewById(R.id.Nov);
+                Dec = findViewById(R.id.Dec);
+
+
+                //obtain userId to be used in obtain user task stats
+                spf = getSharedPreferences("user_details", MODE_PRIVATE);
+                randUserId = Double.parseDouble(spf.getString("randomUserId", null));
+
+                //obtain button for monthly and custom spending view
+                btnCustomSpendingView = findViewById(R.id.btnCustomSpendingView);
+                btnMonthlySpendingView = findViewById(R.id.btnMonthlySpendingView);
+
+                //obtain custom view layout
+                customViewLayout = findViewById(R.id.customViewLayout);
+
+                //obtain monthly spending table layout
+                monthlyTable = findViewById(R.id.monthlyTable);
+
+                //set layouts to invisible on load
                 monthlyTable.setVisibility(View.INVISIBLE);
+                customViewLayout.setVisibility(View.INVISIBLE);
+
+                //set table layout visible on monthly view button click
+                btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        monthlyTable.setVisibility(View.VISIBLE);
+                        customViewLayout.setVisibility(View.INVISIBLE);
+                        getSumOfSpendingPerMonth(randUserId);
+
+                    }
+                });
+
+                btnCustomSpendingView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        customViewLayout.setVisibility(View.VISIBLE);
+                        monthlyTable.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+                //obtain views to populate monthly stats
+                totalTasksPerMonth = findViewById(R.id.totalTasksPerMonth);
+                totalCompletedTasksPerMonth = findViewById(R.id.totalTasksCompletedPerMonth);
+                totalPendingTasksPerMonth = findViewById(R.id.totalTasksPendingPerMonth);
+
+                totalTasksPerMonth.setText("" + populateTotalTasksView(randUserId));
+                totalCompletedTasksPerMonth.setText("" + populateCompletedTasksView(randUserId));
+                totalPendingTasksPerMonth.setText("" + populatePendingTasksView(randUserId));
+
+
+                monthsSelectionDropDownOnDashBoard = findViewById(R.id.monthsSelectionDropDownOnDashBoard);
+
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.Months, android.R.layout.simple_dropdown_item_1line);
+                monthsSelectionDropDownOnDashBoard.setAdapter(adapter);
+                monthsSelectionDropDownOnDashBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        selectedMonth = (String) adapterView.getItemAtPosition(i);
+                        monthIndex = i;
+                        //getSumOfTasksPerMonthForDashBoard
+                        totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId, monthIndex + 1));
+                        totalCompletedTasksPerMonth.setText("" + populateCompletedTasksPerMonthView(randUserId, monthIndex + 1));
+                        totalPendingTasksPerMonth.setText("" + populatePendingTasksPerMonthView(randUserId, monthIndex + 1));
+
+
+                    }
+                });
+
             }
-        });
-
-        //obtain views to populate monthly stats
-        totalTasksPerMonth = findViewById(R.id.totalTasksPerMonth);
-        totalCompletedTasksPerMonth = findViewById(R.id.totalTasksCompletedPerMonth);
-        totalPendingTasksPerMonth = findViewById(R.id.totalTasksPendingPerMonth);
-
-        totalTasksPerMonth.setText("" + populateTotalTasksView(randUserId));
-        totalCompletedTasksPerMonth.setText("" + populateCompletedTasksView(randUserId));
-        totalPendingTasksPerMonth.setText("" + populatePendingTasksView(randUserId));
 
 
-        monthsSelectionDropDownOnDashBoard = findViewById(R.id.monthsSelectionDropDownOnDashBoard);
+    private void spendingListViewPopulate(Cursor cursor){
+        if (simpleCursorAdapter == null){
+            simpleCursorAdapter = new SimpleCursorAdapter(Dashboard.this,R.layout.spending_listview,cursor,new String[]{"TaskTitle","TaskAssociatedPrice"},new int[]{R.id.spendingViewTitle_textView,R.id.spendingViewPrice_textView},0);
+            showSpendingListView.setAdapter(simpleCursorAdapter);
+        }
+    }
+    public Cursor getSpendingSumCursor(LocalDateTime startDate, LocalDateTime endDate){
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getSum(startDate,endDate);
+        }catch (Exception e){
+            System.out.println("Error getting sum " + e);
+        }
+        return cursor;
+    }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.Months, android.R.layout.simple_dropdown_item_1line);
-        monthsSelectionDropDownOnDashBoard.setAdapter(adapter);
-        monthsSelectionDropDownOnDashBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedMonth = (String) adapterView.getItemAtPosition(i);
-                monthIndex = i;
-                //getSumOfTasksPerMonthForDashBoard
-                totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId,monthIndex + 1));
-                totalCompletedTasksPerMonth.setText("" + populateCompletedTasksPerMonthView(randUserId, monthIndex + 1));
-                totalPendingTasksPerMonth.setText("" + populatePendingTasksPerMonthView(randUserId, monthIndex + 1));
-
-
+    public Cursor getSpendingDetailsCursor(LocalDateTime startDate, LocalDateTime endDate){
+                Cursor cursor = null;
+                try {
+                    cursor = dbHelper.getSpendingDetails(startDate,endDate);
+                }catch (Exception e){
+                    System.out.println("Error getting spending details " + e);
+                }
+                return cursor;
             }
-        });
 
+
+    public void populateSpendingDetails(LocalDateTime startDate, LocalDateTime endDate){
+            Cursor cursor = getSpendingDetailsCursor(startDate,endDate);
+            spendingListViewPopulate(cursor);
+        }
+
+    public int populateSpendingView(LocalDateTime startDate, LocalDateTime endDate){
+        int spendingSum = 0;
+        Cursor cursor = getSpendingSumCursor(startDate,endDate);
+
+        if (cursor.moveToFirst()){
+            try {
+                spendingSum = cursor.getInt(cursor.getColumnIndexOrThrow("sumTotal"));
+            }catch (Exception e){
+                System.out.println("Error getting sum " + e);
+            }
+        }else{
+            spendingSum =0;
+        }
+
+        Toast.makeText(this, "" + spendingSum, Toast.LENGTH_SHORT).show();
+        return spendingSum;
     }
     public LocalDateTime[] getMonthBasedStats(int indexOfMonth){
         String newMonthIndex;
@@ -271,10 +456,7 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         }
         return newDate;
     }
-    public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
-        LocalDateTime date = LocalDateTime.parse(string, dateTimeFormatter);
-        return date;
-    }
+
     public void getSumOfSpendingPerMonth(Double randUserId){
 
         MaterialTextView[] monthlyTextViews = {Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec};
@@ -295,7 +477,7 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
             
 
             if (monthLySumCursor.moveToFirst()){
-                Integer monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
+                int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
                 System.out.println("Total spending: " + monthlySpendingSum);
 
                 //set text to view
@@ -305,3 +487,4 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
     }
 
 }
+

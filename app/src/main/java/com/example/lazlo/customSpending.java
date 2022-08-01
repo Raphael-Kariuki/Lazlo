@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -28,7 +29,7 @@ public class customSpending extends AppCompatActivity {
     DatePickerDialog datePickerDialog,datePickerDialog2;
     MaterialButton btnShowPredictedSpending;
     DBHelper dbHelper = new DBHelper(this);
-    LocalDate selectedStart_duration_String,selectedEnd_duration_String;
+    LocalDateTime selectedStart_duration_String,selectedEnd_duration_String;
     TextView sumTotalView;
     SimpleCursorAdapter simpleCursorAdapter;
     ListView showSpendingListView;
@@ -40,8 +41,8 @@ public class customSpending extends AppCompatActivity {
         startActivity(intent);
         //customSpending.this.finish();
     }
-    public static LocalDate getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
-        LocalDate date = LocalDate.parse(string, dateTimeFormatter);
+    public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter){
+        LocalDateTime date = LocalDateTime.parse(string, dateTimeFormatter);
         return date;
     }
 

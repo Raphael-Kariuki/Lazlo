@@ -573,6 +573,142 @@
                 </TableRow>
             </TableLayout>
 
+            <LinearLayout
+                android:id="@+id/customViewLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spendingView"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <!--          Duration Selection -->
+
+                <LinearLayout
+                    android:id="@+id/dates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/titre"
+                    android:baselineAligned="false">
+
+                    <!--StartDate-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/startDateLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="#ffffff"
+                        app:hintTextColor="@color/black"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/startDateInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/select_start_date"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <!--EndDate-->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/endDateLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="#ffffff"
+                        app:hintTextColor="@color/black">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/endDateInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/select_end_date"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <!--Month-->
+
+
+                </LinearLayout>
+
+                <!-- end of duration selection -->
+                <LinearLayout
+                    android:id="@+id/showSpendingSum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnShowPredictedSpending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/show_spending"
+                        android:backgroundTint="@color/black"
+                        android:textColor="@color/white"
+                        app:cornerRadius="@dimen/activity_vertical_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/SumTotalView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text=""
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/listViewTitle"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/month_bg"
+                    android:padding="5dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/task_title"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/bills"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/showSpendingListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/showSpendingSum"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    />
+
+            </LinearLayout>
+
 
         </RelativeLayout>
     </ScrollView>

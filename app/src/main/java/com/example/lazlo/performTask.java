@@ -283,9 +283,7 @@ public class performTask extends AppCompatActivity {
                                     ////delete from taskStatus:cool
                                     boolean e = deleteTaskOnCompletedNButtonPress(randomTaskId);
 
-                                    //delete from taskList:out
-                                    //TODO:delete this
-                                    //boolean f = deleteTaskOnCompletedButtonPress(randomTaskId);
+
 
                                     if (g){
                                         Toast.makeText(performTask.this, "Properly update with task state", Toast.LENGTH_SHORT).show();
