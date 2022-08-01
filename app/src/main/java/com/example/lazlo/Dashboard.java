@@ -15,7 +15,6 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -25,7 +24,7 @@ MaterialAutoCompleteTextView monthsSelectionDropDownOnDashBoard;
 String selectedMonth;
 Integer monthIndex;
 MaterialTextView totalTasksPerMonth, totalCompletedTasksPerMonth, totalPendingTasksPerMonth;
-Integer totalTasksPerMonth_int, totalCompletedTasksPerMonth_int, totalPendingTasksPerMonth_int,totalTasks;
+Integer totalTasksPerMonth_int, totalCompletedTasksPerMonth_int, totalPendingTasksPerMonth_int,totalTasks,totalCompletedTasks_int,totalPendingTasks_int;
 DBHelper dbHelper;
 SharedPreferences spf;
 Double randUserId;
@@ -96,6 +95,9 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         totalPendingTasksPerMonth = findViewById(R.id.totalTasksPendingPerMonth);
 
         totalTasksPerMonth.setText("" + populateTotalTasksView(randUserId));
+        totalCompletedTasksPerMonth.setText("" + populateCompletedTasksView(randUserId));
+        totalPendingTasksPerMonth.setText("" + populatePendingTasksView(randUserId));
+
 
         monthsSelectionDropDownOnDashBoard = findViewById(R.id.monthsSelectionDropDownOnDashBoard);
 
@@ -109,6 +111,8 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
                 //getSumOfTasksPerMonthForDashBoard
                 totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId,monthIndex + 1));
                 totalCompletedTasksPerMonth.setText("" + populateCompletedTasksPerMonthView(randUserId, monthIndex + 1));
+                totalPendingTasksPerMonth.setText("" + populatePendingTasksPerMonthView(randUserId, monthIndex + 1));
+
 
             }
         });
@@ -150,6 +154,15 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         }
         return cursor;
     }
+    public Cursor getCompletedTasks(Double randUserId){
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getCountOfCompletedTasks(randUserId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
 
     public Cursor getTotalTasksCountPerMonth(Double randUserid,LocalDateTime startDate, LocalDateTime endDate){
         Cursor cursor = null;
@@ -166,6 +179,25 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
         Cursor cursor = null;
         try {
             cursor   = dbHelper.getSumOfTasksForDashBoard(randUserid);
+            System.out.println("Success getting count");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
+    public Cursor getTotalPendingTasksPerMonth(Double randUserId, LocalDateTime startDate, LocalDateTime endDate){
+        Cursor cursor = null;
+        try {
+            cursor = dbHelper.getCountOfPendingTasksPerMonth(randUserId, startDate, endDate);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
+    public Cursor getTotalPendingTasksCount(Double randUserid){
+        Cursor cursor = null;
+        try {
+            cursor   = dbHelper.getCountOfPendingTasks(randUserid);
             System.out.println("Success getting count");
         }catch (Exception e){
             e.printStackTrace();
@@ -202,6 +234,32 @@ MaterialTextView Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sept, Oct, Nov, Dec;
             totalCompletedTasksPerMonth_int = cursor.getInt(cursor.getColumnIndexOrThrow("completedTasksPerMonth"));
         }
         return totalCompletedTasksPerMonth_int;
+    }
+
+    public int populatePendingTasksPerMonthView(Double randUserId, int monthIndex){
+        LocalDateTime[] range = getMonthBasedStats(monthIndex);
+        LocalDateTime startDate, endDate;
+        startDate = range[0];
+        endDate = range[1];
+        Cursor cursor = getTotalPendingTasksPerMonth(randUserId,startDate,endDate);
+        if (cursor.moveToNext()){
+            totalPendingTasksPerMonth_int = cursor.getInt(cursor.getColumnIndexOrThrow("pendingTasksPerMonth"));
+        }
+        return totalPendingTasksPerMonth_int;
+    }
+    public int populateCompletedTasksView(Double randUserId){
+        Cursor cursor = getCompletedTasks(randUserId);
+        if (cursor.moveToNext()){
+            totalCompletedTasks_int = cursor.getInt(cursor.getColumnIndexOrThrow("completedTasks"));
+        }
+        return totalCompletedTasks_int;
+    }
+    public int populatePendingTasksView(Double randUserId){
+        Cursor cursor = getTotalPendingTasksCount(randUserId);
+        if (cursor.moveToNext()){
+            totalPendingTasks_int = cursor.getInt(cursor.getColumnIndexOrThrow("totalPendingTasks"));
+        }
+        return totalPendingTasks_int;
     }
     public LocalDateTime stringToDate(String date){
         LocalDateTime newDate = null;

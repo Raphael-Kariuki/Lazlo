@@ -276,13 +276,21 @@ public class performTask extends AppCompatActivity {
 
                                 if (d){
                                     Toast.makeText(performTask.this, "Properly transferred", Toast.LENGTH_SHORT).show();
-                                    boolean e = deleteTaskOnCompletedNButtonPress(randomTaskId);
-                                    boolean f = deleteTaskOnCompletedButtonPress(randomTaskId);
 
-                                    if (e){
-                                        Toast.makeText(performTask.this, "Properly trashed", Toast.LENGTH_SHORT).show();
-                                    }else if(f){
-                                        Toast.makeText(performTask.this, "Properly trashed original task", Toast.LENGTH_SHORT).show();
+                                    //
+                                    boolean g = updateTaskListWithTaskState(randomTaskId, taskState);
+
+                                    ////delete from taskStatus:cool
+                                    boolean e = deleteTaskOnCompletedNButtonPress(randomTaskId);
+
+                                    //delete from taskList:out
+                                    //TODO:delete this
+                                    //boolean f = deleteTaskOnCompletedButtonPress(randomTaskId);
+
+                                    if (g){
+                                        Toast.makeText(performTask.this, "Properly update with task state", Toast.LENGTH_SHORT).show();
+                                    }else if(e){
+                                        Toast.makeText(performTask.this, "Properly trashed ", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
                                         Toast.makeText(performTask.this, "Trashing failure", Toast.LENGTH_SHORT).show();
@@ -358,6 +366,15 @@ public class performTask extends AppCompatActivity {
         boolean success = false;
         try {
             success = dbHelper.deleteCompletedTaskByTaskId(randomTaskId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  success;
+    }
+    public boolean updateTaskListWithTaskState(Double randTaskId, int taskState){
+        boolean success = false;
+        try {
+            success = dbHelper.updateTaskListWithTaskStateOnDashBoardCompleteBtnPress(randomTaskId, taskState);
         }catch (Exception e){
             e.printStackTrace();
         }

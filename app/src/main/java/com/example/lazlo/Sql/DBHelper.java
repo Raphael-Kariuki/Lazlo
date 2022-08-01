@@ -44,6 +44,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getCountOfCompletedTasksPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate ){
         return this.getWritableDatabase().rawQuery("select count(randTaskId) as completedTasksPerMonth from Completed_N_DeletedTasks where randUserId = ? and taskDeadline > ? and taskDeadline < ?", new String[]{String.valueOf(randUserId), String.valueOf(startDate), String.valueOf(endDate)});
     }
+    public Cursor getCountOfCompletedTasks(Double randUserId){
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as completedTasks from Completed_N_DeletedTasks where randUserId = ?", new String[]{String.valueOf(randUserId)});
+    }
+    public Cursor getCountOfPendingTasksPerMonth(Double randUserId,LocalDateTime startDate, LocalDateTime endDate){
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as pendingTasksPerMonth from TaskList where randUserId = ? and taskDeadline > ? and taskDeadline < ? and taskState = 0 " , new String[]{String.valueOf(randUserId),String.valueOf(startDate),String.valueOf(endDate)});
+    }
+    public Cursor getCountOfPendingTasks(Double randUserId){
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as totalPendingTasks from TaskList where randUserId = ? and taskState = 0", new String[]{String.valueOf(randUserId)});
+    }
+
 
     public boolean insertTaskStatus(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
         ContentValues cv = new ContentValues();
@@ -215,7 +225,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //method to insert task, executed on addtasks.java
     public boolean insertTasks(Double randTaskId, Double randUserId,String userName, String taskTitle, String taskDescription, String taskCategory,
-                               Double taskAssociatedPrice, LocalDateTime taskDeadline){
+                               Double taskAssociatedPrice, LocalDateTime taskDeadline, Integer taskState){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (randTaskId != null && String.valueOf(randTaskId).length() > 0) contentValues.put("randTaskId", randTaskId);
@@ -224,11 +234,20 @@ public class DBHelper extends SQLiteOpenHelper {
         if (taskTitle != null && taskTitle.length() > 0)contentValues.put("TaskTitle", taskTitle);
         if (taskDescription != null && taskDescription.length() > 0) contentValues.put("TaskDescription", taskDescription);
         if (taskCategory != null && taskCategory.length() > 0) contentValues.put("TaskCategory", taskCategory);
+        if (taskState != null && String.valueOf(taskState).length() > 0) contentValues.put("taskState", taskState);
         contentValues.put("TaskAssociatedPrice", taskAssociatedPrice);
         if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();
         return result != -1;
+    }
+    public boolean updateTaskListWithTaskStateOnDashBoardCompleteBtnPress(Double randTaskId, Integer taskState) {
+        long rv = 0;
+        ContentValues cv = new ContentValues();
+        if (taskState != null && String.valueOf(taskState).length() > 0 ) cv.put("taskState", String.valueOf(taskState));
+        if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"randTaskId=?",new String[]{String.valueOf(randTaskId)});
+        this.getWritableDatabase().close();
+        return rv != -1;
     }
     public boolean insertDraftTasks(String userName, String taskTitle, String taskDescription,String taskCategory,
                                String taskAssociatedPrice, String taskDeadline){
@@ -284,7 +303,6 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cv.size() > 0) rv = this.getWritableDatabase().update("TaskList",cv,"_id=?",new String[]{String.valueOf(id)});
             this.getWritableDatabase().close();
         return rv != -1;
-
     }
 
     public Cursor getTaskById(long id) {
