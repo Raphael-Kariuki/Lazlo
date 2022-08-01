@@ -27,6 +27,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -63,6 +64,7 @@ public class Dashboard extends AppCompatActivity {
     SimpleCursorAdapter simpleCursorAdapter;
     ListView showSpendingListView;
     PieChart pieChart;
+    String[] categories;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(string, dateTimeFormatter);
@@ -73,7 +75,6 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
 
 
         dbHelper = new DBHelper(this);
@@ -569,35 +570,54 @@ public class Dashboard extends AppCompatActivity {
         return spendingPerMonth;
     }
 
+    public long[] getSpendingTotalPerCategory(Double randUserId){
+        Cursor cursor = null;
+        long[] bills = new long[5];
+        String[] categories = {"Home","Shopping", "Business","Work","School"};
+
+        for (int i = 0; i < bills.length ; i++) {
+            try {
+                cursor = dbHelper.getSumPerCategory(randUserId, categories[i]);
+                if (cursor.moveToNext()){
+                    long sum = cursor.getLong(cursor.getColumnIndexOrThrow("sumTotalSpendingPerCategory"));
+                    bills[i] = sum;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return bills;
+    }
+
 
     public  ArrayList<PieEntry> getPieData(){
-        String[] months = {"Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
-        long[] bills = getSumOfSpendingPerMonthForPieChart(randUserId);
+        long[] bills = getSpendingTotalPerCategory(randUserId);
+        String[] categories = {"Home","Shopping", "Business","Work","School"};
         ArrayList<PieEntry> pieDatum = new ArrayList<>();
 
-        for (int i = 0; i <= 11; i++) {
-            pieDatum.add(new PieEntry(bills[i],months[i]));
-            System.out.println(bills[i] + "" + months[i]);
+        for (int i = 0; i < 5; i++) {
+            pieDatum.add(new PieEntry(bills[i],categories[i]));
+            System.out.println(bills[i] + "" + categories[i]);
         }
         return pieDatum;
     }
     public void setupData(ArrayList<PieEntry> pieDataArrayList) {
 
         ArrayList<Integer> colors = new ArrayList<>();
+
         for (int color : ColorTemplate.MATERIAL_COLORS) {
             colors.add(color);
         }
-        for (int color : ColorTemplate.VORDIPLOM_COLORS) {
-            colors.add(color);
-        }
-        for (int color : ColorTemplate.LIBERTY_COLORS) {
-            colors.add(color);
-        }
 
+        for (int color : ColorTemplate.PASTEL_COLORS) {
+            colors.add(color);
+        }
         PieDataSet pieDataSet = new PieDataSet(pieDataArrayList,"");
         pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(15);
-        pieDataSet.setValueTextColor(Color.rgb(0,0,0));
+        pieDataSet.setValueTextSize(15f);
+        pieDataSet.setValueTextColor(R.color.black);
+
 
         //add colors to dataset
         pieDataSet.setColors(colors);
@@ -612,6 +632,7 @@ public class Dashboard extends AppCompatActivity {
 
         //create pieChart object
         PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setData(pieData);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
