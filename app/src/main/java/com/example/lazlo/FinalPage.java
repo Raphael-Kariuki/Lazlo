@@ -6,6 +6,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -183,8 +186,29 @@ public class FinalPage extends AppCompatActivity {
             tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    dbHelper.deleteTask(l);
-                    SetOrRefreshListView();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FinalPage.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Delete task?");
+                    //TODO: get task title to aid user be sure of decision
+                    builder.setMessage("Are you sure you want to delete?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dbHelper.deleteTask(l);
+                            Toast.makeText(FinalPage.this, "task delete successfully", Toast.LENGTH_SHORT).show();
+                            SetOrRefreshListView();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.show();
+
+
                     return true;
                 }
             });
