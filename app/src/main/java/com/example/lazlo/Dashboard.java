@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -21,13 +23,21 @@ import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -39,6 +49,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
     MaterialAutoCompleteTextView monthsSelectionDropDownOnDashBoard;
@@ -64,7 +75,7 @@ public class Dashboard extends AppCompatActivity {
     SimpleCursorAdapter simpleCursorAdapter;
     ListView showSpendingListView;
     PieChart pieChart;
-    String[] categories;
+    BarChart barChart;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(string, dateTimeFormatter);
@@ -82,8 +93,9 @@ public class Dashboard extends AppCompatActivity {
         //obtain pieChart
         pieChart = findViewById(R.id.spendingViewPieChart);
         pieChartLayout = findViewById(R.id.pieChartLayout);
-        pieChartLayout.setVisibility(View.INVISIBLE);
 
+        //obtain barChart
+        barChart = findViewById(R.id.spendingViewBarChart);
 
         //custom view processing
         startDuration_choice = findViewById(R.id.startDateInput);
@@ -224,18 +236,22 @@ public class Dashboard extends AppCompatActivity {
       //  monthlyTable.setVisibility(View.INVISIBLE);
         customViewLayout.setVisibility(View.INVISIBLE);
 
+        setupPieChart();
+
         setupData(getPieData());
+
+        initializeBarChart();
+        setupBarChart();
 
         btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                // monthlyTable.setVisibility(View.VISIBLE);
 
-                setupPieChart();
-                setupData(getPieData());
 
 
-                pieChartLayout.setVisibility(View.VISIBLE);
+
+
                 customViewLayout.setVisibility(View.INVISIBLE);
                 //getSumOfSpendingPerMonth(randUserId);
 
@@ -528,19 +544,8 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        public void setupPieChart() {
-            Description description = new Description();
-            description.setText("Spending per month");
-            pieChart.setDescription(description);
-            pieChart.setRotationEnabled(true);
-            pieChart.setHoleRadius(35f);
-            pieChart.setTransparentCircleAlpha(0);
-            pieChart.setCenterText("Bills");
-            pieChart.setCenterTextColor(R.color.black);
-            pieChart.setCenterTextSize(13);
 
-        }
-    public long[] getSumOfSpendingPerMonthForPieChart(Double randUserId) {
+    public long[] getSumOfSpendingPerMonthForBarChart(Double randUserId) {
         long spendingPerMonth[] = new long[12];
         Cursor monthLySumCursor = null;
         int monthlySpendingSum = 0;
@@ -569,6 +574,70 @@ public class Dashboard extends AppCompatActivity {
         }
         return spendingPerMonth;
     }
+    public void initializeBarChart() {
+        barChart.getDescription().setEnabled(false);
+
+        XAxis xAxis = barChart.getXAxis();
+
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return months[(int) value];
+            }
+        });
+
+        xAxis.setEnabled(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getAxisLeft().setEnabled(true);
+
+        barChart.getLegend().setEnabled(false);
+        Description description = barChart.getDescription();
+        description.setText("Spending per month");
+
+
+
+    }
+
+
+    public void setupBarChart(){
+        long[] bills = getSumOfSpendingPerMonthForBarChart(randUserId);
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+
+        ArrayList<BarEntry> barDatum = new ArrayList<>();
+
+        for (int i = 0; i < 12; i++) {
+            barDatum.add(new BarEntry(i, bills[i]));
+        }
+        BarDataSet barDataSet = new BarDataSet(barDatum,"Spending");
+        barDataSet.setValueTextSize(8f);
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+
+        int startColor = rgb("#dd2c00");
+        int endColor = rgb("#000000");
+
+        List<GradientColor> gradientColors = new ArrayList<>();
+        gradientColors.add(new GradientColor(startColor, endColor));
+        barDataSet.setGradientColors(gradientColors);
+
+
+
+        BarData barData = new BarData(barDataSet);
+        barChart.setData(barData);
+        barChart.invalidate();
+        barChart.animateY(1400, Easing.EaseInOutSine);
+
+
+
+    }
+
 
     public long[] getSpendingTotalPerCategory(Double randUserId){
         Cursor cursor = null;
@@ -602,25 +671,14 @@ public class Dashboard extends AppCompatActivity {
         }
         return pieDatum;
     }
-    public void setupData(ArrayList<PieEntry> pieDataArrayList) {
+    public void setupPieChart() {
 
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int color : ColorTemplate.MATERIAL_COLORS) {
-            colors.add(color);
-        }
-
-        for (int color : ColorTemplate.PASTEL_COLORS) {
-            colors.add(color);
-        }
-        PieDataSet pieDataSet = new PieDataSet(pieDataArrayList,"");
-        pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(15f);
-        pieDataSet.setValueTextColor(R.color.black);
-
-
-        //add colors to dataset
-        pieDataSet.setColors(colors);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setRotationEnabled(true);
+        pieChart.setHoleRadius(35f);
+        pieChart.setTransparentCircleAlpha(0);
+        pieChart.setCenterText("Bills");
+        pieChart.setCenterTextSize(13f);
 
         //add legend to chart
         Legend legend = pieChart.getLegend();
@@ -629,13 +687,30 @@ public class Dashboard extends AppCompatActivity {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setDrawInside(false);
 
+    }
+    public void setupData(ArrayList<PieEntry> pieDataArrayList) {
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+
+
+
+
+        for (int color : ColorTemplate.COLORFUL_COLORS) {
+            colors.add(color);
+        }
+        PieDataSet pieDataSet = new PieDataSet(pieDataArrayList,"");
+        pieDataSet.setSliceSpace(2);
+
+
+        //add colors to dataset
+        pieDataSet.setColors(colors);
 
         //create pieChart object
         PieData pieData = new PieData(pieDataSet);
-        pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setData(pieData);
         pieChart.invalidate();
-        pieChart.animateY(1400, Easing.EaseInOutQuad);
+        pieChart.animateY(1400, Easing.EaseInOutSine);
         }
 
     }
