@@ -20,8 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 
 
 public class FinalPage extends AppCompatActivity {
@@ -39,6 +41,8 @@ public class FinalPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_page);
+
+
 
         tasks_listView = this.findViewById(R.id.task_listView);
 
@@ -72,6 +76,7 @@ public class FinalPage extends AppCompatActivity {
         school =findViewById(R.id.schoolTasks);
         business = findViewById(R.id.businessTasks);
         shopping = findViewById(R.id.shoppingTasks);
+
 
 
         home.setOnClickListener(new View.OnClickListener() {
@@ -126,13 +131,7 @@ public class FinalPage extends AppCompatActivity {
         //clean up
     }
 
-   /*private void populateLandingPageListView() {
-        DBHelper db = new DBHelper(this);
-        ArrayList<HashMap<String, String>> taskList = db.getTasks(s2);
-        tasks_listView = (ListView) findViewById(R.id.task_listView);
-        ListAdapter adapter = new SimpleAdapter(this,taskList,R.layout.userdata_listrow,new String[]{"task_title","task_description"}, new int[]{R.id.taskTitle,R.id.taskDescription});
-        tasks_listView.setAdapter(adapter);
-    }*/
+
 
 
     private void addNewTasks(){

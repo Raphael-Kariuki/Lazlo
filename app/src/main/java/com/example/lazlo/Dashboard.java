@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -40,16 +41,20 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class Dashboard extends AppCompatActivity {
     MaterialAutoCompleteTextView monthsSelectionDropDownOnDashBoard;
@@ -76,6 +81,8 @@ public class Dashboard extends AppCompatActivity {
     ListView showSpendingListView;
     PieChart pieChart;
     BarChart barChart;
+    FloatingActionButton hamburger_menu;
+    NumberFormat numberFormat;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(string, dateTimeFormatter);
@@ -87,6 +94,14 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
+
+
+        hamburger_menu = findViewById(R.id.hamburger_menu);
+        hamburger_menu.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), myAccount.class);
+            startActivity(intent);
+        });
 
         dbHelper = new DBHelper(this);
 
@@ -182,10 +197,10 @@ public class Dashboard extends AppCompatActivity {
 
                         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
 
-                        selectedStart_duration_String = getDateFromString(selectedStart_duration + " 23:59", dateTimeFormatter);
-                        selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 23:59", dateTimeFormatter);
+                        selectedStart_duration_String = getDateFromString(selectedStart_duration + " 00:01", dateTimeFormatter);
+                        selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 00:01", dateTimeFormatter);
 
-                        sumTotalView.setText("Kshs " + populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String));
+                        sumTotalView.setText("" + numberFormat.format(populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String)));
                         populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
 
                     } else {
@@ -202,7 +217,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-/*
+
         //obtain monthly textViews
         Jan = findViewById(R.id.Jan);
         Feb = findViewById(R.id.Feb);
@@ -216,7 +231,7 @@ public class Dashboard extends AppCompatActivity {
         Oct = findViewById(R.id.Oct);
         Nov = findViewById(R.id.Nov);
         Dec = findViewById(R.id.Dec);
-*/
+
 
         //obtain userId to be used in obtain user task stats
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
@@ -230,10 +245,10 @@ public class Dashboard extends AppCompatActivity {
         customViewLayout = findViewById(R.id.customViewLayout);
 
         //obtain monthly spending table layout
-      //  monthlyTable = findViewById(R.id.monthlyTable);
+        monthlyTable = findViewById(R.id.monthlyTable);
 
         //set layouts to invisible on load
-      //  monthlyTable.setVisibility(View.INVISIBLE);
+        monthlyTable.setVisibility(View.INVISIBLE);
         customViewLayout.setVisibility(View.INVISIBLE);
 
         setupPieChart();
@@ -246,14 +261,9 @@ public class Dashboard extends AppCompatActivity {
         btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // monthlyTable.setVisibility(View.VISIBLE);
-
-
-
-
-
+               monthlyTable.setVisibility(View.VISIBLE);
                 customViewLayout.setVisibility(View.INVISIBLE);
-                //getSumOfSpendingPerMonth(randUserId);
+                getSumOfSpendingPerMonth(randUserId);
 
             }
         });
@@ -261,10 +271,9 @@ public class Dashboard extends AppCompatActivity {
         btnCustomSpendingView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startDuration_choice.requestFocus();
                 customViewLayout.setVisibility(View.VISIBLE);
-                pieChartLayout.setVisibility(View.INVISIBLE);
-                //monthlyTable.setVisibility(View.INVISIBLE);
+                monthlyTable.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -535,9 +544,9 @@ public class Dashboard extends AppCompatActivity {
             if (monthLySumCursor.moveToFirst()) {
                 int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
                 System.out.println("Total spending: " + monthlySpendingSum);
-
                 //set text to view
-                monthlyTextViews[i - 1].setText("Kshs " + monthlySpendingSum);
+                monthlyTextViews[i -1].setTextSize(12);
+                monthlyTextViews[i - 1].setText("" +  numberFormat.format(monthlySpendingSum));
             }
         }
     }
@@ -590,7 +599,7 @@ public class Dashboard extends AppCompatActivity {
         xAxis.setEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-
+        xAxis.setTextColor(Color.parseColor("#000000"));
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getAxisRight().setDrawGridLines(false);
         barChart.getAxisRight().setEnabled(false);
@@ -673,12 +682,14 @@ public class Dashboard extends AppCompatActivity {
     }
     public void setupPieChart() {
 
-        pieChart.getDescription().setEnabled(false);
+        Description description = pieChart.getDescription();
+        description.setText("Spending by category");
+        description.setTextSize(10f);
         pieChart.setRotationEnabled(true);
-        pieChart.setHoleRadius(35f);
-        pieChart.setTransparentCircleAlpha(0);
+        pieChart.setHoleRadius(55f);
+        pieChart.setTransparentCircleAlpha(10);
         pieChart.setCenterText("Bills");
-        pieChart.setCenterTextSize(13f);
+        pieChart.setCenterTextSize(20f);
 
         //add legend to chart
         Legend legend = pieChart.getLegend();
@@ -696,15 +707,14 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        for (int color : ColorTemplate.COLORFUL_COLORS) {
+       for (int color : ColorTemplate.COLORFUL_COLORS) {
             colors.add(color);
         }
         PieDataSet pieDataSet = new PieDataSet(pieDataArrayList,"");
         pieDataSet.setSliceSpace(2);
-
-
         //add colors to dataset
         pieDataSet.setColors(colors);
+
 
         //create pieChart object
         PieData pieData = new PieData(pieDataSet);

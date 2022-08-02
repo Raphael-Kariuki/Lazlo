@@ -812,3 +812,12 @@ parent="Theme.MaterialComponents.DayNight.NoActionBar"
         for (int color : personalColors) {
             colors.add(color);
         }
+
+        --------------
+          /*private void populateLandingPageListView() {
+                DBHelper db = new DBHelper(this);
+                ArrayList<HashMap<String, String>> taskList = db.getTasks(s2);
+                tasks_listView = (ListView) findViewById(R.id.task_listView);
+                ListAdapter adapter = new SimpleAdapter(this,taskList,R.layout.userdata_listrow,new String[]{"task_title","task_description"}, new int[]{R.id.taskTitle,R.id.taskDescription});
+                tasks_listView.setAdapter(adapter);
+            }*/

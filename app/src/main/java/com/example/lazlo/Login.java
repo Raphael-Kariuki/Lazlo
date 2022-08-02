@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.loginPassword_input);
         btnSubmitLoginCredentials = findViewById(R.id.btnSubmit_login);
         dbHelper = new DBHelper(this);
-        Intent intent = new Intent(Login.this, FinalPage.class);
+        Intent intent = new Intent(Login.this, Dashboard.class);
         loginUserName_inputLayout =findViewById(R.id.loginUserName_inputLayout);
         loginPassword_inputLayout = findViewById(R.id.loginPassword_inputLayout);
         loginUserName_inputLayout.requestFocus();

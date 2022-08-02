@@ -3,7 +3,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dip" >
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    >
 
     <TextView
         android:id="@+id/taskTitle"
@@ -11,16 +19,19 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="17sp"
-        android:textStyle="bold" />
-        <TextView
-            android:id="@+id/taskDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/taskTitle"
-            android:layout_marginTop="7dp"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            />
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        />
+    <TextView
+        android:id="@+id/taskDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskTitle"
+        android:layout_marginTop="7dp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        />
 
     <TextView
         android:id="@+id/TaskAssociatedPrice"
@@ -33,5 +44,7 @@
         android:textSize="17sp"
         android:textStyle="bold"
         android:layout_alignBaseline="@id/taskTitle"/>
+</RelativeLayout>
+
 
 </RelativeLayout>

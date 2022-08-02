@@ -44,6 +44,27 @@
     <string name="task_deadline">Task deadline</string>
     <string name="cancel">Cancel</string>
     <string name="complete">Complete</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="choose_a_month">Choose a month</string>
+    <string name="pending_tasks">Pending tasks</string>
+    <string name="total_tasks">Total tasks</string>
+    <string name="completed_tasks">Completed tasks</string>
+    <string name="spending_view">Spending view</string>
+    <string name="monthly">Monthly</string>
+    <string name="custom">Custom</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="kshs">Kshs</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="aug">Aug</string>
+    <string name="sept">Sept</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>
