@@ -6,6 +6,8 @@
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/black_border.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/buttons_custom.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/cinq.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/deux.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1185" />

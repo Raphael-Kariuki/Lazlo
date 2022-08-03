@@ -3,6 +3,7 @@ package com.example.lazlo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
@@ -11,6 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -82,30 +85,85 @@ public class FinalPage extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateHomeTasks();
             }
         });
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateHomeShopping();
             }
         });
         work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateWorkTasks();
             }
         });
         school.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                school.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateSchoolTasks();
             }
         });
         business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateBusinessTasks();
             }
         });

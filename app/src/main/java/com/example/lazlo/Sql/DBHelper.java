@@ -291,9 +291,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return DB.query("userDetails",new String[]{"email"},null,null,null,null,null);
     }
 
-    public Cursor get_tasks(String userID){
+    public Cursor getTasks(Double randUserId){
         SQLiteDatabase DB = this.getWritableDatabase();
-        return DB.rawQuery("Select TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
+        return DB.query("TaskList",null,"randUserId = ?",new String[]{String.valueOf(randUserId)},null,null,null);
     }
 
     public boolean update(long id, String UserName, String TaskTitle, String TaskDescription,String TaskCategory,

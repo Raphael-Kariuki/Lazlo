@@ -122,6 +122,8 @@ public class SignUp extends AppCompatActivity {
                                                     Toast.makeText(SignUp.this, "Failed to create account", Toast.LENGTH_SHORT).show();
                                                 }
                                             }else{
+
+                                                //show error on non-existing email address
                                                 SignupEmail_inputLayout.setErrorEnabled(true);
                                                 SignupEmail_inputLayout.setError("Email exists");
                                                 SignupUsername_inputLayout.setErrorEnabled(false);
@@ -129,6 +131,8 @@ public class SignUp extends AppCompatActivity {
                                                 SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                                             }
                                         }else{
+
+                                            //show error on non-existing username
                                             SignupUsername_inputLayout.setErrorEnabled(true);
                                             SignupUsername_inputLayout.setError("user name exists");
                                             SignupEmail_inputLayout.setErrorEnabled(false);
@@ -136,6 +140,8 @@ public class SignUp extends AppCompatActivity {
                                             SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                                         }
                                     }else{
+
+                                        //show error on improperly setup password
                                         SignupEmail_inputLayout.setErrorEnabled(false);
                                         SignupUsername_inputLayout.setErrorEnabled(false);
                                         SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
@@ -143,6 +149,8 @@ public class SignUp extends AppCompatActivity {
                                         SignupPassword_inputLayout.setError("Passwords must contain uppercase. lowercase, symbols and numbers");
                                     }
                                 }else{
+
+                                    //show error on non-matching passwords
                                     SignupEmail_inputLayout.setErrorEnabled(false);
                                     SignupUsername_inputLayout.setErrorEnabled(false);
                                     SignupPassword_inputLayout.setErrorEnabled(false);
@@ -150,6 +158,8 @@ public class SignUp extends AppCompatActivity {
                                     SignupPasswordConfirm_inputLayout.setError("Passwords don't match");
                                 }
                             }else{
+
+                                //show error blank confirm password
                                 SignupEmail_inputLayout.setErrorEnabled(false);
                                 SignupUsername_inputLayout.setErrorEnabled(false);
                                 SignupPassword_inputLayout.setErrorEnabled(false);
@@ -157,6 +167,8 @@ public class SignUp extends AppCompatActivity {
                                 SignupPasswordConfirm_inputLayout.setError("Password2 can't be blank");
                             }
                         }else{
+
+                            //show error on blank password
                             SignupEmail_inputLayout.setErrorEnabled(false);
                             SignupUsername_inputLayout.setErrorEnabled(false);
                             SignupPassword_inputLayout.setErrorEnabled(true);
@@ -164,6 +176,8 @@ public class SignUp extends AppCompatActivity {
                             SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                         }
                     }else{
+
+                        //show error on an improper email address
                         SignupEmail_inputLayout.setErrorEnabled(true);
                         SignupEmail_inputLayout.setError("Incorrect email format");
                         SignupUsername_inputLayout.setErrorEnabled(false);
@@ -171,6 +185,8 @@ public class SignUp extends AppCompatActivity {
                         SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                     }
                 }else {
+
+                    //show error on missing/blank email address
                     SignupEmail_inputLayout.setErrorEnabled(true);
                     SignupEmail_inputLayout.setError("Email can't be blank");
                     SignupUsername_inputLayout.setErrorEnabled(false);
@@ -178,6 +194,8 @@ public class SignUp extends AppCompatActivity {
                     SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                 }
             }else{
+
+                //show error on a blank/missing username
                 SignupUsername_inputLayout.setErrorEnabled(true);
                 SignupUsername_inputLayout.setError("user name can't be blank");
                 SignupEmail_inputLayout.setErrorEnabled(false);

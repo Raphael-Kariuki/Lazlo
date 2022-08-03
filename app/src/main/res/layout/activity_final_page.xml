@@ -36,6 +36,8 @@
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_baseline_more2_vert_24"
                     android:layout_gravity="center"
+                    style="?android:attr/borderlessButtonStyle"
+                    app:backgroundTint="@color/white"
                     />
 
         </LinearLayout>
@@ -116,11 +118,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/menu"
+            />
+        <TextView
+            android:id="@+id/empty"
+            android:layout_below="@id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            >
-
-
-        </ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_addTasks"
