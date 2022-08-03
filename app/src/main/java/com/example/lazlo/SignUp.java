@@ -3,6 +3,7 @@ package com.example.lazlo;
 import androidx.appcompat.app.AppCompatActivity;
 /* added code */
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,24 +28,35 @@ public class SignUp extends AppCompatActivity {
     DBHelper dbHelper;
     boolean b;
     TextInputLayout SignupUsername_inputLayout,SignupEmail_inputLayout,SignupPassword_inputLayout,SignupPasswordConfirm_inputLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        //process the user input views
         username = findViewById(R.id.SignupUsername_input);
         email = findViewById(R.id.SignupEmail_input);
         password = findViewById(R.id.SignupPassword_input);
         confirmPassword = findViewById(R.id.SignupPasswordConfirm_input);
         btnSignUp = findViewById(R.id.btnSignUp_signUpPage);
+
+        //initialize the db class to be used in db transactions
         dbHelper = new DBHelper(this);
 
+
+
+        //process layout to be used in setting errors
         SignupUsername_inputLayout = findViewById(R.id.SignupUsername_inputLayout);
         SignupEmail_inputLayout = findViewById(R.id.SignupEmail_inputLayout);
         SignupPassword_inputLayout = findViewById(R.id.SignupPassword_inputLayout);
         SignupPasswordConfirm_inputLayout = findViewById(R.id.SignupPasswordConfirm_inputLayout);
 
+        //user name input layout should grab focus so that user can instantly enter input once the activity is rendered
         SignupUsername_inputLayout.requestFocus();
 
+        //realtime checking of whether the password entered meets the required length of 8 on focus change
         password.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus){
                 if (password.getText().toString().trim().length() < 8){
@@ -59,33 +71,69 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
+
+        //process sign up
         btnSignUp.setOnClickListener(view -> {
+
+            //obtain the user input
             String username1 = username.getText().toString().trim();
             String email1 = email.getText().toString().trim();
             String password1 = password.getText().toString().trim();
             String password2 = confirmPassword.getText().toString().trim();
-            if(!username1.isEmpty()){
-                if (!email1.isEmpty()){
-                    if (Patterns.EMAIL_ADDRESS.matcher(email1).matches()){
-                        if (!password1.isEmpty()){
-                            if (!password2.isEmpty()){
-                                if (password1.equals(password2)){
-                                    if (passwordCheck(password1)){
-                                        try {
-                                            //import class with common methods
-                                            houseOfCommons commons = new houseOfCommons();
-                                            Double randomUserId = commons.generateRandomId();
-                                            b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1));
 
-                                            if (b){
-                                                Toast.makeText(SignUp.this,"User created",Toast.LENGTH_SHORT).show();
-                                                Intent i = new Intent(SignUp.this, Login.class);
-                                                startActivity(i);
-                                            }else {
-                                                Toast.makeText(SignUp.this, "Failed to insert the data", Toast.LENGTH_SHORT).show();
+            //import class with common methods
+            houseOfCommons commons = new houseOfCommons();
+            Double randomUserId = commons.generateRandomId();
+
+
+
+            if(!username1.isEmpty()){ //if username is not empty, proceed
+                if (!email1.isEmpty()){     //if email is not empty, proceed
+                    if (Patterns.EMAIL_ADDRESS.matcher(email1).matches()){      //if email input matches a email syntax "**@**.**", proceed
+                        if (!password1.isEmpty()){      //if pass 1 is not empty, proceed
+                            if (!password2.isEmpty()){      //if pass 2 is not empty, proceed
+                                if (password1.equals(password2)){       //if pass 1 matches pass 2, proceed
+                                    if (passwordCheck(password1)){      //run password against function that checks that the password is in the required format
+                                        if (!isUserNameExist(username1)){
+                                            SignupUsername_inputLayout.setErrorEnabled(false);
+                                            SignupEmail_inputLayout.setErrorEnabled(false);
+                                            SignupPassword_inputLayout.setErrorEnabled(false);
+                                            SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                                            if (!emailExists(email1)){
+                                                SignupUsername_inputLayout.setErrorEnabled(false);
+                                                SignupEmail_inputLayout.setErrorEnabled(false);
+                                                SignupPassword_inputLayout.setErrorEnabled(false);
+                                                SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                                                try {
+                                                    //initialize the db insert function, return true if successful and otherwise
+                                                    b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1));
+                                                }catch (Exception e){
+                                                    Toast.makeText(SignUp.this, "Database error", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                if (b){
+                                                    //if true inform user then redirect to the login page
+                                                    Toast.makeText(SignUp.this,"Account created",Toast.LENGTH_SHORT).show();
+
+                                                    Intent i = new Intent(SignUp.this, Login.class);
+                                                    startActivity(i);
+                                                }else {
+                                                    //if db insert fails for one reason or the other inform user
+                                                    Toast.makeText(SignUp.this, "Failed to create account", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }else{
+                                                SignupEmail_inputLayout.setErrorEnabled(true);
+                                                SignupEmail_inputLayout.setError("Email exists");
+                                                SignupUsername_inputLayout.setErrorEnabled(false);
+                                                SignupPassword_inputLayout.setErrorEnabled(false);
+                                                SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                                             }
-                                        }catch (Exception e){
-                                            Toast.makeText(SignUp.this,"Unique values error",Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            SignupUsername_inputLayout.setErrorEnabled(true);
+                                            SignupUsername_inputLayout.setError("user name exists");
+                                            SignupEmail_inputLayout.setErrorEnabled(false);
+                                            SignupPassword_inputLayout.setErrorEnabled(false);
+                                            SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                                         }
                                     }else{
                                         SignupEmail_inputLayout.setErrorEnabled(false);
@@ -94,23 +142,19 @@ public class SignUp extends AppCompatActivity {
                                         SignupPassword_inputLayout.setErrorEnabled(true);
                                         SignupPassword_inputLayout.setError("Passwords must contain uppercase. lowercase, symbols and numbers");
                                     }
-
                                 }else{
                                     SignupEmail_inputLayout.setErrorEnabled(false);
                                     SignupUsername_inputLayout.setErrorEnabled(false);
                                     SignupPassword_inputLayout.setErrorEnabled(false);
                                     SignupPasswordConfirm_inputLayout.setErrorEnabled(true);
                                     SignupPasswordConfirm_inputLayout.setError("Passwords don't match");
-
                                 }
-
                             }else{
                                 SignupEmail_inputLayout.setErrorEnabled(false);
                                 SignupUsername_inputLayout.setErrorEnabled(false);
                                 SignupPassword_inputLayout.setErrorEnabled(false);
                                 SignupPasswordConfirm_inputLayout.setErrorEnabled(true);
                                 SignupPasswordConfirm_inputLayout.setError("Password2 can't be blank");
-                                //Toast.makeText(SignUp.this,"Password2 missing ",Toast.LENGTH_SHORT).show();
                             }
                         }else{
                             SignupEmail_inputLayout.setErrorEnabled(false);
@@ -118,7 +162,6 @@ public class SignUp extends AppCompatActivity {
                             SignupPassword_inputLayout.setErrorEnabled(true);
                             SignupPassword_inputLayout.setError("Missing password entry");
                             SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                            //Toast.makeText(SignUp.this,"Password1 can't be blank",Toast.LENGTH_SHORT).show();
                         }
                     }else{
                         SignupEmail_inputLayout.setErrorEnabled(true);
@@ -126,16 +169,13 @@ public class SignUp extends AppCompatActivity {
                         SignupUsername_inputLayout.setErrorEnabled(false);
                         SignupPassword_inputLayout.setErrorEnabled(false);
                         SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                        //Toast.makeText(SignUp.this,"Incorrect email format",Toast.LENGTH_SHORT).show();
                     }
-
                 }else {
                     SignupEmail_inputLayout.setErrorEnabled(true);
                     SignupEmail_inputLayout.setError("Email can't be blank");
                     SignupUsername_inputLayout.setErrorEnabled(false);
                     SignupPassword_inputLayout.setErrorEnabled(false);
                     SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                    //Toast.makeText(SignUp.this,"Email can't be blank",Toast.LENGTH_SHORT).show();
                 }
             }else{
                 SignupUsername_inputLayout.setErrorEnabled(true);
@@ -143,33 +183,33 @@ public class SignUp extends AppCompatActivity {
                 SignupEmail_inputLayout.setErrorEnabled(false);
                 SignupPassword_inputLayout.setErrorEnabled(false);
                 SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-
-
-                //Toast.makeText(SignUp.this,"user name can't be blank",Toast.LENGTH_SHORT).show();
             }
-
-
-
         });
+
+        //process view that when clicked redirects to the login page
         switch2login = findViewById(R.id.Switch2login);
         switch2login.setOnClickListener(view -> {
             Intent i = new Intent(SignUp.this, Login.class);
             startActivity(i);
         });
     }
+
+
     //function to ensure a secure password is set matching the specified regex
     //Regex is as follows:
-    /*Must contain a digit in the range 0-9
-    Must contain uppercase and lowercase characters
-    Must contain a symbols
-    Must be between 8 and 20 characters
-    * */
+        /*Must contain a digit in the range 0-9
+        Must contain uppercase and lowercase characters
+        Must contain a symbols
+        Must be between 8 and 20 characters
+        * */
     public boolean passwordCheck(String passphrase){
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+<>?.;,:'|/`]).{8,20}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(passphrase);
         return matcher.matches();
     }
+
+
 
     /*
     Function to encrypt the user provided password
@@ -184,6 +224,45 @@ public class SignUp extends AppCompatActivity {
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
+    }
+
+    //function to check whether the entered username exists in the db so as to provide feedback to the user
+    public boolean isUserNameExist(String username){
+        Cursor success = null;
+        try {
+            success = dbHelper.getUserDetailsByUserName(username);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if (success != null && success.getCount() == 0 ){
+            success.close();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    //function to check whether the email entered exists so as to provide a feedback to the user which would otherwise not be visible.
+    //Called when the signup button is pressed.
+    public boolean emailExists(String email){
+        Cursor success = null;
+        boolean a = false;
+        try {
+            success = dbHelper.getUserEmail();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        while(success != null && success.moveToNext()){
+            if(success.getString(success.getColumnIndexOrThrow("email")).equals(email)){
+                success.close();
+                Toast.makeText(this, "Email exists", Toast.LENGTH_SHORT).show();
+                a =  true;
+                break;
+            }
+        }
+        return a;
     }
 
 }

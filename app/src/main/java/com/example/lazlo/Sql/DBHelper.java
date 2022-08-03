@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -175,9 +174,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().delete("TaskListDrafts","_id=?",new String[]{String.valueOf(id)});
     }
     public Cursor getAll(String uname) {
-        //return this.getWritableDatabase().query("TaskList",null,null,null,null,null,null,null);
         return this.getWritableDatabase().query("TaskList",null,"UserName=? and taskState != 5",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
-        //return this.getWritableDatabase().rawQuery("Select * from TaskList where UserName = ?",new String[]{String.valueOf(uname)});
     }
     public Cursor getByEmail(String email){
         return this.getWritableDatabase().query("userDetails",null,"email=?",new String[]{String.valueOf(email)},null,null,null);
@@ -283,11 +280,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return userList;
     }
     //method to obtain login credentials which are checked on login
-    public Cursor getData(String login_Uname){
+    public Cursor getUserDetailsByUserName(String login_Uname){
         SQLiteDatabase DB = this.getWritableDatabase();
-        //cursor.close();
-        return DB.rawQuery("Select userName, password, randUserId from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
+        return DB.rawQuery("Select userName,email,password, randUserId from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
     }
+
+    //method to obtain login credentials which are checked on login
+    public Cursor getUserEmail(){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        return DB.query("userDetails",new String[]{"email"},null,null,null,null,null);
+    }
+
     public Cursor get_tasks(String userID){
         SQLiteDatabase DB = this.getWritableDatabase();
         return DB.rawQuery("Select TaskTitle, TaskDescription from TaskList where UserName = ?",new String[]{userID});
