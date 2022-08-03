@@ -30,6 +30,8 @@ import java.util.ArrayList;
 
 
 public class FinalPage extends AppCompatActivity {
+
+    //instantiate variables
     ListView tasks_listView,task1;
     FloatingActionButton btn_addTasks,hamburger_menu;
     String s2;
@@ -47,50 +49,61 @@ public class FinalPage extends AppCompatActivity {
 
 
 
+        //initialize views
         tasks_listView = this.findViewById(R.id.task_listView);
 
-        dbHelper = new DBHelper(this);
-        SetOrRefreshListView();
-
-
-        session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
-        s2 = session_prefs.getString("username",null);
-        uname = findViewById(R.id.userName);
-        uname.setText(s2);
-
-
-        //method to populate list
-
-        //populateTaskListView();
-
-        // click to add task
-        addNewTasks();
-
-
-        //hamburger menu action
-
-        hamburger_menu = findViewById(R.id.hamburger_menu);
-        hamburger_menu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), myAccount.class);
-            startActivity(intent);
-        });
         home = findViewById(R.id.homeTask);
         work = findViewById(R.id.workTasks);
         school =findViewById(R.id.schoolTasks);
         business = findViewById(R.id.businessTasks);
         shopping = findViewById(R.id.shoppingTasks);
 
+        hamburger_menu = findViewById(R.id.hamburger_menu);
 
+        uname = findViewById(R.id.userName);
+
+
+
+        //initialize db class
+        dbHelper = new DBHelper(this);
+
+        //necessary to call this in-order to repopulate list with current set of tasks on deletion of a single tasks
+        SetOrRefreshListView();
+
+
+        //obtain username value from sharedPreferences stored on login and set it on a textview
+        session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
+        s2 = session_prefs.getString("username",null);
+        uname.setText(s2);
+
+
+        // click to add task
+        addNewTasks();
+
+
+        //process hamburger menu action
+        hamburger_menu.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), myAccount.class);
+            startActivity(intent);
+        });
+
+
+
+        //process home button
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO:Simplify this with 9patch
+                //set background on click of home button. Black for home, white for the rest
                 home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
+
+                //set text color to white while clicked, black when not
                 home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -102,12 +115,16 @@ public class FinalPage extends AppCompatActivity {
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //set background on click of home button. Black for shopping, white for the rest
                 shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
+
+                //set text color to white while clicked, black when not
                 shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -119,12 +136,16 @@ public class FinalPage extends AppCompatActivity {
         work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //set background on click of home button. Black for work, white for the rest
                 work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
+
+                //set text color to white while clicked, black when not
                 work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -136,12 +157,16 @@ public class FinalPage extends AppCompatActivity {
         school.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //set background on click of home button. Black for school, white for the rest
                 school.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
+
+                //set text color to white while clicked, black when not
                 school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -153,11 +178,15 @@ public class FinalPage extends AppCompatActivity {
         business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //set background on click of home button. Black for business, white for the rest
                 business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
+                //set text color to white while clicked, black when not
 
                 business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -170,6 +199,8 @@ public class FinalPage extends AppCompatActivity {
 
 
     }
+
+
 
     public void SetOrRefreshListView(){
         cursor = dbHelper.getAll(s2);
@@ -228,10 +259,14 @@ public class FinalPage extends AppCompatActivity {
         taskListPopulate();
 
     }
+
+    //function to populate list view, initially on 1st load with all tasks
     private void taskListPopulate(){
         if (simpleCursorAdapter == null){
             simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
             tasks_listView.setAdapter(simpleCursorAdapter);
+
+            //setup a click listener for a task
             tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -240,16 +275,32 @@ public class FinalPage extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            //setup a long-click listener for a task
             tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                    Cursor getTitleForDeletionConfirm = null;
+                    String taskTitle = null;
+                    try {
+                        getTitleForDeletionConfirm = dbHelper.getTaskById(l);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    if (getTitleForDeletionConfirm.moveToFirst()){
+                        taskTitle = getTitleForDeletionConfirm.getString(getTitleForDeletionConfirm.getColumnIndexOrThrow("TaskTitle"));
+                    }
+
+                    //create and show a dialog to ensure that the user wants to delete the long-clicked task
                     AlertDialog.Builder builder = new AlertDialog.Builder(FinalPage.this);
                     builder.setCancelable(true);
-                    builder.setTitle("Delete task?");
-                    //TODO: get task title to aid user be sure of decision
-                    builder.setMessage("Are you sure you want to delete?");
-                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    builder.setTitle("Delete task");
+                    builder.setMessage("Are you sure you want to delete task " + taskTitle + " ?");
+
+
+                    //if yes, delete task and repopulate list view
+                    builder.setPositiveButton("Yes, Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dbHelper.deleteTask(l);
@@ -257,6 +308,8 @@ public class FinalPage extends AppCompatActivity {
                             SetOrRefreshListView();
                         }
                     });
+
+                    //if no, close dialog and continue
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -264,8 +317,6 @@ public class FinalPage extends AppCompatActivity {
                         }
                     });
                     builder.show();
-
-
                     return true;
                 }
             });
