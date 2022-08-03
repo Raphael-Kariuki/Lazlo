@@ -28,6 +28,7 @@ public class Drafts extends AppCompatActivity {
         draftsListView = findViewById(R.id.draftTask_listView);
         drafts_sprefs = getSharedPreferences("user_details", MODE_PRIVATE);
         s2 = drafts_sprefs.getString("username",null);
+
         cursor = dbHelper.getAllDrafts(s2);
         SetOrRefreshListView();
 
@@ -52,8 +53,15 @@ public class Drafts extends AppCompatActivity {
             draftsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    dbHelper.deleteDraftTask(l);
-                    SetOrRefreshListView();
+                    boolean b = false;
+                    try {
+                        b = dbHelper.deleteDraftTask(l);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    if (b){
+                        SetOrRefreshListView();
+                    }
                     return true;
                 }
             });

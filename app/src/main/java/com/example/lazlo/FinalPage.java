@@ -12,21 +12,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 
 
 public class FinalPage extends AppCompatActivity {
@@ -34,7 +27,7 @@ public class FinalPage extends AppCompatActivity {
     //instantiate variables
     ListView tasks_listView,task1;
     FloatingActionButton btn_addTasks,hamburger_menu;
-    String s2;
+    String user_name;
     SharedPreferences session_prefs;
     DBHelper dbHelper;
     Cursor cursor;
@@ -73,8 +66,8 @@ public class FinalPage extends AppCompatActivity {
 
         //obtain username value from sharedPreferences stored on login and set it on a textview
         session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
-        s2 = session_prefs.getString("username",null);
-        uname.setText(s2);
+        user_name = session_prefs.getString("username",null);
+        uname.setText(user_name);
 
 
         // click to add task
@@ -87,14 +80,13 @@ public class FinalPage extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        //TODO:Simplify this background setup with 9-patch drawables
 
         //process home button
-
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO:Simplify this with 9patch
+
                 //set background on click of home button. Black for home, white for the rest
                 home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
                 work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
@@ -112,6 +104,8 @@ public class FinalPage extends AppCompatActivity {
                 populateHomeTasks();
             }
         });
+
+        //process the shopping click
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,9 +124,11 @@ public class FinalPage extends AppCompatActivity {
                 school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                populateHomeShopping();
+                populateShoppingTasks();
             }
         });
+
+        //process the work click
         work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,6 +150,7 @@ public class FinalPage extends AppCompatActivity {
                 populateWorkTasks();
             }
         });
+        //process the school click
         school.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +172,8 @@ public class FinalPage extends AppCompatActivity {
                 populateSchoolTasks();
             }
         });
+
+        //process the business click
         business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,7 +186,6 @@ public class FinalPage extends AppCompatActivity {
                 home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
                 //set text color to white while clicked, black when not
-
                 business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
                 shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
@@ -201,61 +199,70 @@ public class FinalPage extends AppCompatActivity {
     }
 
 
-
-    public void SetOrRefreshListView(){
-        cursor = dbHelper.getAll(s2);
+    //retrieve content from db and call a function to repopulate the task list
+    private void SetOrRefreshListView(){
+        cursor = dbHelper.getAll(user_name);
         taskListPopulate();
 
     }
+
+    //refresh listview when returning to the activity
     @Override
     protected void onResume(){
         super.onResume();
         SetOrRefreshListView();
-        //refresh listview when returning to the activity
     }
+
+    //clean up
     @Override
     protected void onDestroy(){
         super.onDestroy();
         cursor.close();
-        //clean up
     }
 
 
 
 
+    //process add task floating button and redirect to add tasks page
     private void addNewTasks(){
         btn_addTasks =  findViewById(R.id.btn_addTasks);
         btn_addTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),AddTasks.class);
-                intent.putExtra("username", s2);
+                intent.putExtra("username", user_name);
                 startActivity(intent);
             }
         });
     }
+
+    //obtain home category content and populate list view on home button click
     private  void populateHomeTasks(){
-        cursor = dbHelper.getAllByCategories(s2,"Home");
+        cursor = dbHelper.getAllByCategories(user_name,"Home");
         taskListPopulate();
 
     }
-    private  void populateHomeShopping(){
-        cursor = dbHelper.getAllByCategories(s2,"Shopping");
+    //obtain shopping category content and populate list view on shopping button click
+    private  void populateShoppingTasks(){
+        cursor = dbHelper.getAllByCategories(user_name,"Shopping");
         taskListPopulate();
 
     }
+    //obtain work category content and populate list view on work button click
     private  void populateWorkTasks(){
-        cursor = dbHelper.getAllByCategories(s2,"Work");
+        cursor = dbHelper.getAllByCategories(user_name,"Work");
         taskListPopulate();
 
     }
+    //obtain School category content and populate list view on School button click
     private  void populateSchoolTasks(){
-        cursor = dbHelper.getAllByCategories(s2,"School");
+        cursor = dbHelper.getAllByCategories(user_name,"School");
         taskListPopulate();
 
     }
+    //obtain Business category content and populate list view on Business button click
     private  void populateBusinessTasks(){
-        cursor = dbHelper.getAllByCategories(s2,"Business");
+        cursor = dbHelper.getAllByCategories(user_name,"Business");
         taskListPopulate();
 
     }
@@ -281,16 +288,8 @@ public class FinalPage extends AppCompatActivity {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    Cursor getTitleForDeletionConfirm = null;
-                    String taskTitle = null;
-                    try {
-                        getTitleForDeletionConfirm = dbHelper.getTaskById(l);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    if (getTitleForDeletionConfirm.moveToFirst()){
-                        taskTitle = getTitleForDeletionConfirm.getString(getTitleForDeletionConfirm.getColumnIndexOrThrow("TaskTitle"));
-                    }
+                    //call and assign function that return a string : taskTitle
+                    String taskTitle = getTaskTitleForDeletion(l);
 
                     //create and show a dialog to ensure that the user wants to delete the long-clicked task
                     AlertDialog.Builder builder = new AlertDialog.Builder(FinalPage.this);
@@ -303,9 +302,18 @@ public class FinalPage extends AppCompatActivity {
                     builder.setPositiveButton("Yes, Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            dbHelper.deleteTask(l);
-                            Toast.makeText(FinalPage.this, "task delete successfully", Toast.LENGTH_SHORT).show();
-                            SetOrRefreshListView();
+                            boolean b = false;
+                            try {
+                                b = dbHelper.deleteTask(l);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            if (b){
+                                Toast.makeText(FinalPage.this, "task delete successfully", Toast.LENGTH_SHORT).show();
+                                SetOrRefreshListView();
+                            }else{
+                                Toast.makeText(FinalPage.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 
@@ -321,9 +329,26 @@ public class FinalPage extends AppCompatActivity {
                 }
             });
         }else {
+            //necessary to re-obtain updated task list from the db
             simpleCursorAdapter.swapCursor(cursor);
         }
     }
 
+
+    //function that returns the taskTitle when a specific task is clicked
+    
+    private String getTaskTitleForDeletion(long taskIdOnList){
+        Cursor getTitleForDeletionConfirm = null;
+        String taskTitle = null;
+        try {
+            getTitleForDeletionConfirm = dbHelper.getTaskById(taskIdOnList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (getTitleForDeletionConfirm.moveToFirst()){
+            taskTitle = getTitleForDeletionConfirm.getString(getTitleForDeletionConfirm.getColumnIndexOrThrow("TaskTitle"));
+        }
+        return taskTitle;
+    }
 
 }

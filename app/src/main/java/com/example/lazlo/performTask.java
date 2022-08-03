@@ -378,16 +378,6 @@ public class performTask extends AppCompatActivity {
         }
         return  success;
     }
-    //delete from taskList
-    public boolean deleteTaskOnCompletedButtonPress(Double randomTaskId){
-        boolean success = false;
-        try {
-            success = dbHelper.deleteTaskByTaskId(randomTaskId);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return  success;
-    }
 
     public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,Date taskStartTime,Integer taskTrial){
         boolean success = false;

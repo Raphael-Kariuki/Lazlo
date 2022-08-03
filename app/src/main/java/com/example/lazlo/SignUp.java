@@ -90,6 +90,11 @@ public class SignUp extends AppCompatActivity {
             if(!username1.isEmpty()){ //if username is not empty, proceed
                 if (!email1.isEmpty()){     //if email is not empty, proceed
                     if (Patterns.EMAIL_ADDRESS.matcher(email1).matches()){      //if email input matches a email syntax "**@**.**", proceed
+                        if (!emailExists(email1)){
+                            SignupUsername_inputLayout.setErrorEnabled(false);
+                            SignupEmail_inputLayout.setErrorEnabled(false);
+                            SignupPassword_inputLayout.setErrorEnabled(false);
+                            SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                         if (!password1.isEmpty()){      //if pass 1 is not empty, proceed
                             if (!password2.isEmpty()){      //if pass 2 is not empty, proceed
                                 if (password1.equals(password2)){       //if pass 1 matches pass 2, proceed
@@ -99,11 +104,7 @@ public class SignUp extends AppCompatActivity {
                                             SignupEmail_inputLayout.setErrorEnabled(false);
                                             SignupPassword_inputLayout.setErrorEnabled(false);
                                             SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                                            if (!emailExists(email1)){
-                                                SignupUsername_inputLayout.setErrorEnabled(false);
-                                                SignupEmail_inputLayout.setErrorEnabled(false);
-                                                SignupPassword_inputLayout.setErrorEnabled(false);
-                                                SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+
                                                 try {
                                                     //initialize the db insert function, return true if successful and otherwise
                                                     b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1));
@@ -121,15 +122,7 @@ public class SignUp extends AppCompatActivity {
                                                     //if db insert fails for one reason or the other inform user
                                                     Toast.makeText(SignUp.this, "Failed to create account", Toast.LENGTH_SHORT).show();
                                                 }
-                                            }else{
 
-                                                //show error on non-existing email address
-                                                SignupEmail_inputLayout.setErrorEnabled(true);
-                                                SignupEmail_inputLayout.setError("Email exists");
-                                                SignupUsername_inputLayout.setErrorEnabled(false);
-                                                SignupPassword_inputLayout.setErrorEnabled(false);
-                                                SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                                            }
                                         }else{
 
                                             //show error on non-existing username
@@ -175,7 +168,16 @@ public class SignUp extends AppCompatActivity {
                             SignupPassword_inputLayout.setError("Missing password entry");
                             SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
                         }
-                    }else{
+                        }else{
+
+                            //show error on non-existing email address
+                            SignupEmail_inputLayout.setErrorEnabled(true);
+                            SignupEmail_inputLayout.setError("Email exists");
+                            SignupUsername_inputLayout.setErrorEnabled(false);
+                            SignupPassword_inputLayout.setErrorEnabled(false);
+                            SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                        }
+                        }else{
 
                         //show error on an improper email address
                         SignupEmail_inputLayout.setErrorEnabled(true);
@@ -183,24 +185,24 @@ public class SignUp extends AppCompatActivity {
                         SignupUsername_inputLayout.setErrorEnabled(false);
                         SignupPassword_inputLayout.setErrorEnabled(false);
                         SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                    }
-                }else {
+                        }
+                        }else {
 
-                    //show error on missing/blank email address
-                    SignupEmail_inputLayout.setErrorEnabled(true);
-                    SignupEmail_inputLayout.setError("Email can't be blank");
-                    SignupUsername_inputLayout.setErrorEnabled(false);
-                    SignupPassword_inputLayout.setErrorEnabled(false);
-                    SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
-                }
-            }else{
+                        //show error on missing/blank email address
+                        SignupEmail_inputLayout.setErrorEnabled(true);
+                        SignupEmail_inputLayout.setError("Email can't be blank");
+                        SignupUsername_inputLayout.setErrorEnabled(false);
+                        SignupPassword_inputLayout.setErrorEnabled(false);
+                        SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                        }
+                        }else{
 
-                //show error on a blank/missing username
-                SignupUsername_inputLayout.setErrorEnabled(true);
-                SignupUsername_inputLayout.setError("user name can't be blank");
-                SignupEmail_inputLayout.setErrorEnabled(false);
-                SignupPassword_inputLayout.setErrorEnabled(false);
-                SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
+                        //show error on a blank/missing username
+                        SignupUsername_inputLayout.setErrorEnabled(true);
+                        SignupUsername_inputLayout.setError("user name can't be blank");
+                        SignupEmail_inputLayout.setErrorEnabled(false);
+                        SignupPassword_inputLayout.setErrorEnabled(false);
+                        SignupPasswordConfirm_inputLayout.setErrorEnabled(false);
             }
         });
 
