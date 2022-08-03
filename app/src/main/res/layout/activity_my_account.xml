@@ -13,66 +13,166 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:gravity="center"
+        android:background="@drawable/black_border"
        >
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_marginBottom="40dp"
-
-
+        <LinearLayout
+            android:id="@+id/imgStatusNameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/trial_image_round"
+                android:layout_marginBottom="40dp"
+                android:layout_weight="1"
                 />
-        <com.google.android.material.button.MaterialButton
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="4">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/usernameInMyAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name here"
+                    android:gravity="start"
+                    android:layout_gravity="center_horizontal"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/activity_vertical_margin"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/accountStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="...."
+                    android:gravity="start"
+                    android:layout_gravity="center_horizontal"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    />
 
-            android:id="@+id/btnEditAccount"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="My account"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            />
-        <com.google.android.material.button.MaterialButton
+            </LinearLayout>
+        </LinearLayout>
 
-            android:id="@+id/btnDashBoard"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            />
-        <com.google.android.material.button.MaterialButton
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:id="@+id/menus"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
 
-            android:id="@+id/btn_tasks"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Tasks"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            />
-        <com.google.android.material.button.MaterialButton
 
-            android:id="@+id/btn_Drafts"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Drafts"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            />
-        <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEditAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home\n Edit your account details"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textAlignment="viewEnd"
+        />
+    <androidx.appcompat.widget.AppCompatButton
 
-            android:id="@+id/btn_logout"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            />
+        android:id="@+id/btnDashBoard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dashboard\n View statistics"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_dashboard_24"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textAlignment="viewEnd"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/btn_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pending asks\n View and edit pending tasks"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_pending_actions_24"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textAlignment="viewEnd"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/btn_Drafts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Drafts\n View saved draft tasks"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textAlignment="viewEnd"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout\n End your session"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_power_settings_new_24"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textAlignment="viewEnd"
+        />
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:text="from "
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/grey"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:text="Traplab Inc."
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                >
+
+            </com.google.android.material.textview.MaterialTextView>
+        </LinearLayout>
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

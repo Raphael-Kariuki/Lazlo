@@ -111,7 +111,7 @@ public class SignUp extends AppCompatActivity {
 
                                                 try {
                                                     //initialize the db insert function, return true if successful and otherwise
-                                                    b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1));
+                                                    b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1),null);
                                                 }catch (Exception e){
                                                     Toast.makeText(SignUp.this, "Database error", Toast.LENGTH_SHORT).show();
                                                 }

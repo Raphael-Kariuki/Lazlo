@@ -10,9 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
+            android:name=".editAccount"
+            android:exported="false" />
+        <activity
             android:name=".Dashboard"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".performTask"
             android:exported="false" />
@@ -57,12 +59,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-
-
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

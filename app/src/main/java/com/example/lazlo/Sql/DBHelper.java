@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //TODO: remove username from taskList completely replace with userId
         DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
-        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
@@ -175,13 +175,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Method to insert userdata on sign up, returning true if successful and otherwise
     //executed on signup.java
-    public boolean insertUserData(String userName,Double randUserId, String email, String password){
+    public boolean insertUserData(String userName,Double randUserId, String email, String password, String Status){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if(userName != null && userName.length() > 0) contentValues.put("userName", userName);
         if (randUserId != null && String.valueOf(randUserId).length() > 0) contentValues.put("randUserId", randUserId);
         if(email != null && email.length() > 0) contentValues.put("email", email);
         if (password != null && password.length() > 0) contentValues.put("password", password);
+        contentValues.put("Status", "");
         long result = DB.insert("userDetails", null, contentValues);
         DB.close();
         return result != -1;
@@ -205,11 +206,6 @@ public class DBHelper extends SQLiteOpenHelper {
     //task state 5 rep completed tasks
     public Cursor getAll(String uname) {
         return this.getWritableDatabase().query("TaskList",null,"UserName=? and taskState != 5",new String[]{String.valueOf(uname)},null,null,"TaskDeadline");
-    }
-    
-    //function to obtain user details by email
-    public Cursor getAllEmails(){
-        return this.getWritableDatabase().query("userDetails",new String[]{"email"},null,null,null,null,null);
     }
 
     //function to reset password by mail
@@ -307,7 +303,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //method used to obtain user credentials which are checked on login, matched against user input to know whether the username exists or not
     public Cursor getUserDetailsByUserName(String login_Uname){
         SQLiteDatabase DB = this.getWritableDatabase();
-        return DB.rawQuery("Select userName,email,password, randUserId from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
+        return DB.rawQuery("Select userName,email,password, randUserId,Status from UserDetails where userName=? ",new String[]{String.valueOf(login_Uname)});
     }
 
     //method to obtain all email in the db which are checked against user input on login
@@ -341,5 +337,14 @@ public class DBHelper extends SQLiteOpenHelper {
     //function to obtain task details by id for populating individual task section and while deletion of task when clicked on a list view
     public Cursor getTaskById(long id) {
         return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);
+    }
+
+    public boolean updateUserName(String username,String Status, Double randUserId){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        if (!username.isEmpty()) contentValues.put("userName", username);
+        if (!Status.isEmpty()) contentValues.put("Status", Status);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
     }
 }
