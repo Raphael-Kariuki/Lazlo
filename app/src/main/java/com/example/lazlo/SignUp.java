@@ -56,9 +56,13 @@ public class SignUp extends AppCompatActivity {
         //user name input layout should grab focus so that user can instantly enter input once the activity is rendered
         SignupUsername_inputLayout.requestFocus();
 
+
+
+
+
         //realtime checking of whether the password entered meets the required length of 8 on focus change
         password.setOnFocusChangeListener((view, hasFocus) -> {
-            if (!hasFocus){
+            if (!username.getText().toString().trim().isEmpty() && !email.getText().toString().trim().isEmpty() && !hasFocus){
                 if (password.getText().toString().trim().length() < 8){
                     SignupPassword_inputLayout.setCounterEnabled(true);
                     SignupPassword_inputLayout.setErrorEnabled(true);
@@ -75,16 +79,16 @@ public class SignUp extends AppCompatActivity {
         //process sign up
         btnSignUp.setOnClickListener(view -> {
 
-            //obtain the user input
-            String username1 = username.getText().toString().trim();
-            String email1 = email.getText().toString().trim();
-            String password1 = password.getText().toString().trim();
-            String password2 = confirmPassword.getText().toString().trim();
+
 
             //import class with common methods
             houseOfCommons commons = new houseOfCommons();
             Double randomUserId = commons.generateRandomId();
 
+            String username1 = username.getText().toString().trim();
+            String email1 = email.getText().toString().trim();
+            String password1 = password.getText().toString().trim();
+            String password2 = confirmPassword.getText().toString().trim();
 
 
             if(!username1.isEmpty()){ //if username is not empty, proceed

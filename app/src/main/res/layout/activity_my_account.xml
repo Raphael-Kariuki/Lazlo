@@ -14,7 +14,6 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:gravity="center"
-        android:background="@color/black"
        >
         <ImageView
             android:layout_width="150dp"
@@ -24,30 +23,56 @@
 
 
                 />
-        <Button
+        <com.google.android.material.button.MaterialButton
+
+            android:id="@+id/btnEditAccount"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="My account"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            />
+        <com.google.android.material.button.MaterialButton
+
             android:id="@+id/btnDashBoard"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Dashboard"/>
-        <Button
+            android:text="Dashboard"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            />
+        <com.google.android.material.button.MaterialButton
+
             android:id="@+id/btn_tasks"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Tasks"/>
-        <Button
+            android:text="Tasks"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            />
+        <com.google.android.material.button.MaterialButton
+
             android:id="@+id/btn_Drafts"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Drafts"/>
-        <Button
+            android:text="Drafts"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            />
+        <com.google.android.material.button.MaterialButton
+
             android:id="@+id/btn_logout"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Logout"/>
+            android:text="Logout"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,20 +56,18 @@ public class forgotPassword extends AppCompatActivity {
             public void onClick(View view) {
                 emailAddress = resetPasswordEmailInput.getText().toString().trim();
                 if (!emailAddress.isEmpty()){
-                    System.out.println("Email: " + emailAddress);
-
                     if (Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()){
-                        System.out.println("matches");
-                        SignUp signUp = new SignUp();
                         if(emailExists(emailAddress)){
-                            System.out.println("exists");
                             if (updateTempPassphrase(emailAddress)) {
 
+                                Toast.makeText(forgotPassword.this, "Success, redirecting", Toast.LENGTH_SHORT).show();
                                 int delayTime = 1;
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        startActivity(new Intent(getApplicationContext(), Login.class));
+                                        Intent resetPassword = new Intent(getApplicationContext(), reset_password.class);
+                                        resetPassword.putExtra("emailAddress", emailAddress);
+                                        startActivity(resetPassword);
                                         finish();
                                     }
                                 }, delayTime * 10000);

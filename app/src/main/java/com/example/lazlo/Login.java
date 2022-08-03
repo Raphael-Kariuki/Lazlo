@@ -135,7 +135,7 @@ public class Login extends AppCompatActivity {
 
 
         // process  view that when clicked redirects to create account activity
-        createAccount = findViewById(R.id.createAccount);
+        createAccount = findViewById(R.id.createAccount2);
         createAccount.setOnClickListener(view -> {
             Intent intent1 = new Intent(Login.this, SignUp.class);
             startActivity(intent1);

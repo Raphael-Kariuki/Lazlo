@@ -26,7 +26,9 @@
         android:fontFamily="cursive"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:padding="@dimen/activity_horizontal_margin"/>
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_margin="52dp"
+        />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginUserName_inputLayout"
         android:layout_width="match_parent"
@@ -68,33 +70,20 @@
     </com.google.android.material.textfield.TextInputLayout>
 <com.google.android.material.button.MaterialButton
     android:id="@+id/btnSubmit_login"
-    android:layout_width="match_parent"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/activity_vertical_margin"
     android:text="@string/login"
-    app:cornerRadius="20dp"
     app:backgroundTint="@color/black"
     />
 
    <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
        android:gravity="center"
-       android:layout_marginTop="@dimen/activity_vertical_margin"
+
        >
-       <TextView
-           android:id="@+id/createAccount"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/sign_up"
-           android:clickable="true"
-           android:textStyle="bold"
-           android:textSize="18sp"
-           android:textColor="@color/black"
-           android:layout_weight="7"
-           android:gravity="end"
-           />
 
        <TextView
            android:id="@+id/forgotPassword"
@@ -107,6 +96,34 @@
            android:layout_weight="1"
            android:gravity="end"
            />
+
+       <TextView
+           android:id="@+id/createAccount1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Don't have an account?"
+           android:textStyle="bold"
+           android:gravity="center"
+           style="@style/TextAppearance.Material3.TitleMedium"
+           android:textAllCaps="true"
+           android:textColor="@color/grey"
+           android:layout_marginTop="52dp"
+
+           />
+       <TextView
+           android:id="@+id/createAccount2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/sign_up"
+           android:clickable="true"
+           android:textStyle="bold"
+           android:textSize="18sp"
+           android:textColor="@color/black"
+           android:layout_weight="7"
+           android:gravity="end"
+           />
+
+
    </LinearLayout>
 
 </LinearLayout>

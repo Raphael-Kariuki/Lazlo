@@ -188,7 +188,7 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnShow"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
@@ -200,7 +200,7 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSave"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"

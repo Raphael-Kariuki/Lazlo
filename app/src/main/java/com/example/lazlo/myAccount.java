@@ -9,8 +9,10 @@ import android.widget.Button;
 
 import android.os.Bundle;
 
+import com.google.android.material.button.MaterialButton;
+
 public class myAccount extends AppCompatActivity {
-    Button logout,btnTasks,btnDrafts,btnDashboard;
+    MaterialButton logout,btnTasks,btnDrafts,btnDashboard;
     SharedPreferences prf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

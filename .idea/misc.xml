@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_list_24.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_baseline_lock_open_24.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_baseline_more2_vert_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/ic_baseline_password_24.xml" value="0.2125" />
@@ -45,6 +46,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
         <entry key="app/src/main/res/layout/activity_my_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_notification.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/activity_notification_message.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_perfom_task.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_perform_task.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
