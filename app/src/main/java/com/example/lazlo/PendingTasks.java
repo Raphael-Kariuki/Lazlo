@@ -22,10 +22,10 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class FinalPage extends AppCompatActivity {
+public class PendingTasks extends AppCompatActivity {
 
     //instantiate variables
-    ListView tasks_listView,task1;
+    ListView tasks_listView;
     FloatingActionButton btn_addTasks,hamburger_menu;
     String user_name;
     SharedPreferences session_prefs;
@@ -37,12 +37,12 @@ public class FinalPage extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), myAccount.class));
+        startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_final_page);
+        setContentView(R.layout.activity_pending_tasks);
 
 
 
@@ -80,7 +80,7 @@ public class FinalPage extends AppCompatActivity {
 
         //process hamburger menu action
         hamburger_menu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), myAccount.class);
+            Intent intent = new Intent(getApplicationContext(), Account.class);
             startActivity(intent);
         });
 
@@ -296,7 +296,7 @@ public class FinalPage extends AppCompatActivity {
                     String taskTitle = getTaskTitleForDeletion(l);
 
                     //create and show a dialog to ensure that the user wants to delete the long-clicked task
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FinalPage.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PendingTasks.this);
                     builder.setCancelable(true);
                     builder.setTitle("Delete task");
                     builder.setMessage("Are you sure you want to delete task " + taskTitle + " ?");
@@ -313,10 +313,10 @@ public class FinalPage extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             if (b){
-                                Toast.makeText(FinalPage.this, "task delete successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PendingTasks.this, "task delete successfully", Toast.LENGTH_SHORT).show();
                                 SetOrRefreshListView();
                             }else{
-                                Toast.makeText(FinalPage.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PendingTasks.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

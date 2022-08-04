@@ -1,7 +1,5 @@
 package com.example.lazlo;
 
-import static com.example.lazlo.AddTasks.getDateFromString;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -312,7 +310,7 @@ public class performTask extends AppCompatActivity {
                 //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
 
 
-                Intent backToTasks = new Intent(getApplicationContext(), FinalPage.class);
+                Intent backToTasks = new Intent(getApplicationContext(), PendingTasks.class);
                 startActivity(backToTasks);
             }
         });

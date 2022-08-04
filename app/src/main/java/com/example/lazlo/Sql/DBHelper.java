@@ -9,6 +9,7 @@ import android.database.Cursor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
     //create database
@@ -233,6 +234,14 @@ public class DBHelper extends SQLiteOpenHelper {
     //function to obtain all tasks by categories
     public Cursor getAllByCategories(String uname, String category) {
         return this.getWritableDatabase().query("TaskList",null,"UserName=? and TaskCategory = ? ",new String[]{String.valueOf(uname),String.valueOf(category)},null,null,null);
+    }
+    //function to obtain all tasks by categories
+    public Cursor getAllByCategories(Double randUserId, String category) {
+        return this.getWritableDatabase().rawQuery("Select tl._id,tl.TaskTitle as completedTaskTitle,tl.TaskDescription as completedTaskDescription," +
+                "tl.TaskCategory as completedTaskCategory,tl.TaskAssociatedPrice as completedTaskAssociatedPrice,tl.TaskDeadline as completedTaskDeadline" +
+                        " from TaskList tl inner join Completed_N_DeletedTasks ctl on tl.randUserId = ctl.randUserId " +
+                "where ctl.randUserId = ? and tl.TaskCategory = ?",
+                new String[]{String.valueOf(randUserId),String.valueOf(category)});
     }
 
     //get sum of spending per month for dashboard

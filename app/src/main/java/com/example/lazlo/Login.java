@@ -107,7 +107,7 @@ public class Login extends AppCompatActivity {
                                     startActivity(intent);
                                 } else {
                                     //redirect to final page to start adding tasks which will populate the dashboard
-                                    Intent toFinalPageCozNewUser = new Intent(getApplicationContext(), FinalPage.class);
+                                    Intent toFinalPageCozNewUser = new Intent(getApplicationContext(), PendingTasks.class);
                                     startActivity(toFinalPageCozNewUser);
                                 }
 

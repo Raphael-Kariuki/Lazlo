@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".myAccount">
+    tools:context=".Account">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -70,19 +70,7 @@
     android:padding="@dimen/activity_vertical_margin">
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/inHouse_btnResetPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Security\n Reset your password"
-        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-        android:textStyle="bold"
-        android:drawableStart="@drawable/ic_baseline_account_circle_24"
-        android:textColor="@color/black"
-        android:padding="10dp"
-        android:background="@color/white"
-        android:textAlignment="viewEnd"
-        />
+
     <androidx.appcompat.widget.AppCompatButton
 
         android:id="@+id/btnDashBoard"
@@ -102,7 +90,7 @@
         android:id="@+id/btn_tasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pending asks\n View and edit pending tasks"
+        android:text="Tasks\n View and edit tasks"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         android:textStyle="bold"
         android:drawableStart="@drawable/ic_baseline_pending_actions_24"
@@ -112,14 +100,13 @@
         android:textAlignment="viewEnd"
         />
     <androidx.appcompat.widget.AppCompatButton
-
-        android:id="@+id/btn_Drafts"
+        android:id="@+id/inHouse_btnResetPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Drafts\n View saved draft tasks"
+        android:text="Security\n Reset your password"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         android:textStyle="bold"
-        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+        android:drawableStart="@drawable/ic_baseline_security_24"
         android:textColor="@color/black"
         android:padding="10dp"
         android:background="@color/white"

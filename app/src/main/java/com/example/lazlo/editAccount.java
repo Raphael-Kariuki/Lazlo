@@ -260,7 +260,7 @@ Cursor success;
             editor.putString("email", emailAddress);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), myAccount.class));
+            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 
@@ -283,7 +283,7 @@ Cursor success;
             editor.putString("email", emailAddress);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), myAccount.class));
+            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
     public void emailHasChanged_Update(Double randUserId){
@@ -303,7 +303,7 @@ Cursor success;
             editor.putString("email", emailAddress);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), myAccount.class));
+            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 
@@ -324,7 +324,7 @@ Cursor success;
             editor.putString("username", username);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), myAccount.class));
+            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 

@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.textview.MaterialTextView;
 
-public class myAccount extends AppCompatActivity {
-    AppCompatButton logout,btnTasks,btnDrafts,btnDashboard, inHouse_btnResetPassword;
+public class Account extends AppCompatActivity {
+    AppCompatButton logout,btnTasks,btnDashboard, inHouse_btnResetPassword;
     SharedPreferences prf;
     LinearLayout imgStatusNameLayout;
     SharedPreferences spf;
@@ -27,7 +27,7 @@ public class myAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_account);
+        setContentView(R.layout.activity_account);
 
         usernameInMyAccount = findViewById(R.id.usernameInMyAccount);
 
@@ -62,7 +62,7 @@ public class myAccount extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences.Editor editor = prf.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 startActivity(i);
 
             }
@@ -71,7 +71,7 @@ public class myAccount extends AppCompatActivity {
         btnTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), FinalPage.class);
+                Intent intent = new Intent(getApplicationContext(), TasksHomePage.class);
                 startActivity(intent);
             }
         });
@@ -84,14 +84,6 @@ public class myAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnDrafts = findViewById(R.id.btn_Drafts);
-        btnDrafts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), Drafts.class);
-                    intent.putExtra("username", prf.getString("username",null));
-                    startActivity(intent);
-                }
-            });
+
     }
 }

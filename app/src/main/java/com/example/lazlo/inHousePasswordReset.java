@@ -27,7 +27,7 @@ public class inHousePasswordReset extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), myAccount.class));
+        startActivity(new Intent(getApplicationContext(), Account.class));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class inHousePasswordReset extends AppCompatActivity {
                                     }
                                     if (b){
                                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), myAccount.class));
+                                        startActivity(new Intent(getApplicationContext(), Account.class));
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Password reset failed, kindly restart the process", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));

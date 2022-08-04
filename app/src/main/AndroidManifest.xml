@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
+            android:name=".CompletedTasks"
+            android:exported="false" />
+        <activity
+            android:name=".TasksHomePage"
+            android:exported="false" />
+        <activity
             android:name=".inHousePasswordReset"
             android:exported="false" />
         <activity
@@ -37,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Drafts"
+            android:name=".DraftTasks"
             android:exported="false" />
         <activity
             android:name=".individualTask"
@@ -46,10 +52,10 @@
             android:name=".AddTasks"
             android:exported="false" />
         <activity
-            android:name=".myAccount"
+            android:name=".Account"
             android:exported="false" />
         <activity
-            android:name=".FinalPage"
+            android:name=".PendingTasks"
             android:exported="false" />
         <activity
             android:name=".SignUp"

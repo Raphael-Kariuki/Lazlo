@@ -29,14 +29,12 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -47,7 +45,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -91,7 +88,7 @@ public class Dashboard extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), myAccount.class));
+        startActivity(new Intent(getApplicationContext(), Account.class));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +100,7 @@ public class Dashboard extends AppCompatActivity {
 
         hamburger_menu = findViewById(R.id.hamburger_menu);
         hamburger_menu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), myAccount.class);
+            Intent intent = new Intent(getApplicationContext(), Account.class);
             startActivity(intent);
         });
 

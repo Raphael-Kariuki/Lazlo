@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.example.lazlo.Sql.DBHelper;
 
-public class Drafts extends AppCompatActivity {
+public class DraftTasks extends AppCompatActivity {
     ListView draftsListView;
     Cursor cursor;
     String s2;
@@ -23,12 +23,12 @@ public class Drafts extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), myAccount.class));
+        startActivity(new Intent(getApplicationContext(), Account.class));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drafts);
+        setContentView(R.layout.activity_draft_tasks);
         dbHelper = new DBHelper(this);
         draftsListView = findViewById(R.id.draftTask_listView);
         drafts_sprefs = getSharedPreferences("user_details", MODE_PRIVATE);
