@@ -71,10 +71,10 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEditAccount"
+        android:id="@+id/inHouse_btnResetPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home\n Edit your account details"
+        android:text="Security\n Reset your password"
         android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         android:textStyle="bold"
         android:drawableStart="@drawable/ic_baseline_account_circle_24"

@@ -29,7 +29,10 @@ public class SignUp extends AppCompatActivity {
     boolean b;
     TextInputLayout SignupUsername_inputLayout,SignupEmail_inputLayout,SignupPassword_inputLayout,SignupPasswordConfirm_inputLayout;
 
-
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

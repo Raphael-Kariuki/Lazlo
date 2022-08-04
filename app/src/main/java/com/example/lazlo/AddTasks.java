@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +46,10 @@ public class AddTasks extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), FinalPage.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

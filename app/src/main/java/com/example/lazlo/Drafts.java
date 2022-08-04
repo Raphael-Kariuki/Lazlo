@@ -20,6 +20,11 @@ public class Drafts extends AppCompatActivity {
     SimpleCursorAdapter simpleCursorAdapter;
     DBHelper dbHelper;
     SharedPreferences drafts_sprefs;
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), myAccount.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

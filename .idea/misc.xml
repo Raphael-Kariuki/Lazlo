@@ -41,6 +41,7 @@
         <entry key="app/src/main/res/layout/activity_entry_splash.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.24960505529225907" />
+        <entry key="app/src/main/res/layout/activity_in_house_password_reset.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
@@ -59,6 +60,7 @@
         <entry key="app/src/main/res/layout/fragment_school.xml" value="0.2869791666666667" />
         <entry key="app/src/main/res/layout/fragment_work.xml" value="0.19056261343012704" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/reset_password.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/spending_listview.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tasks_dropdown.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />

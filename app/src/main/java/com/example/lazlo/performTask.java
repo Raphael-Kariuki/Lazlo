@@ -41,6 +41,10 @@ public class performTask extends AppCompatActivity {
     String Title ,Description, Category, Bills,Deadline;
     LocalDateTime formattedLocalDateTime;
 
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), individualTask.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

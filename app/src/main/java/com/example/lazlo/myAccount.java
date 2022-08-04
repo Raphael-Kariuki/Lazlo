@@ -7,16 +7,14 @@ import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.view.View;
-import android.widget.Button;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 public class myAccount extends AppCompatActivity {
-    AppCompatButton logout,btnTasks,btnDrafts,btnDashboard, btnEditAccount;
+    AppCompatButton logout,btnTasks,btnDrafts,btnDashboard, inHouse_btnResetPassword;
     SharedPreferences prf;
     LinearLayout imgStatusNameLayout;
     SharedPreferences spf;
@@ -48,17 +46,17 @@ public class myAccount extends AppCompatActivity {
             }
         });
 
-        btnEditAccount = findViewById(R.id.btnEditAccount);
-        btnEditAccount.setOnClickListener(new View.OnClickListener() {
+        inHouse_btnResetPassword = findViewById(R.id.inHouse_btnResetPassword);
+        inHouse_btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(getApplicationContext(), editAccount.class));
+            startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
             }
         });
 
         logout = findViewById(R.id.btn_logout);
         prf = getSharedPreferences("user_details",MODE_PRIVATE);
-        Intent i = new Intent(getApplicationContext(),MainActivity.class);
+        Intent i = new Intent(getApplicationContext(),Login.class);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -26,6 +26,10 @@ public class reset_password extends AppCompatActivity {
     String emailAddress;
 
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), forgotPassword.class));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password);

@@ -28,6 +28,13 @@ public class Login extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TextInputLayout loginUserName_inputLayout, loginPassword_inputLayout;
     String status, emailAddress;
+
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

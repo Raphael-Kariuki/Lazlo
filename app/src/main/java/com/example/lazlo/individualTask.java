@@ -39,6 +39,10 @@ public class individualTask extends AppCompatActivity {
   Double randomTaskId;
   boolean f;
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), FinalPage.class));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);

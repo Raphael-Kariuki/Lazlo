@@ -30,7 +30,10 @@ public class forgotPassword extends AppCompatActivity {
     String emailAddress;
     Cursor success;
 
-
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), Login.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,7 @@ public class forgotPassword extends AppCompatActivity {
                                         startActivity(resetPassword);
                                         finish();
                                     }
-                                }, delayTime * 10000);
+                                }, delayTime * 5000);
                             }else{
                                 resetSuccessText.setText(R.string.Failed_password_reset);
                             }

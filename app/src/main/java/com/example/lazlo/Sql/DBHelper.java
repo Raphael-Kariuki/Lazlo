@@ -216,6 +216,14 @@ public class DBHelper extends SQLiteOpenHelper {
         returnValue = this.getWritableDatabase().update("userDetails",contentValues,"email=?",new String[]{String.valueOf(email)});
         return returnValue != -1;
     }
+    //function to reset password by mail
+    public boolean updateByRandomUserId(Double randUserId, String tempPassword){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("password", tempPassword);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId=?",new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
 
     //function to obtain all saved drafts
     public Cursor getAllDrafts(String uname) {

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
+            android:name=".inHousePasswordReset"
+            android:exported="false" />
+        <activity
             android:name=".editAccount"
             android:exported="false" />
         <activity
@@ -59,7 +62,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

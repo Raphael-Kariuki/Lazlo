@@ -10,6 +10,7 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.button.MaterialButton;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /* added code */
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        MainActivity.this.finish();
+            MainActivity.this.finish();
     }
 
     @Override

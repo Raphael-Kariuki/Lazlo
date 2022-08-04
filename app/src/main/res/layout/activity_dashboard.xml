@@ -242,6 +242,7 @@
                         android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold"
+                        android:backgroundTint="@color/white"
 
                         />
 
@@ -255,6 +256,7 @@
                         android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold"
+                        android:backgroundTint="@color/white"
 
                         />
 
@@ -718,25 +720,23 @@
                         android:id="@+id/showSpendingSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:orientation="vertical">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnShowPredictedSpending"
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/black"
                             android:text="@string/show_spending"
                             android:textColor="@color/white"
-                            app:cornerRadius="@dimen/activity_vertical_margin" />
+                            />
 
                         <TextView
                             android:id="@+id/SumTotalView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
                             android:clickable="false"
                             android:text=""
                             android:textSize="20sp"
@@ -748,7 +748,6 @@
                         android:id="@+id/listViewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:orientation="horizontal"
                         android:padding="5dp">
 

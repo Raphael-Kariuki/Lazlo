@@ -36,6 +36,10 @@ public class FinalPage extends AppCompatActivity {
     AppCompatButton home, school,work,business,shopping;
 
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), myAccount.class));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_page);
