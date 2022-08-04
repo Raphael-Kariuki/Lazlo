@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class AddTasks extends AppCompatActivity {
@@ -162,7 +163,7 @@ public class AddTasks extends AppCompatActivity {
                                                 houseOfCommons commons = new houseOfCommons();
                                                 Double randomTaskId = commons.generateRandomId();
                                                 Integer defaultTaskState = 0;
-                                                b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,defaultTaskState);
+                                                b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,getDateTimeNow(),defaultTaskState);
 
                                             }catch(Exception e){
                                                 System.out.println("Db insertion error: " + e);
@@ -270,12 +271,58 @@ public class AddTasks extends AppCompatActivity {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
             selected_date = getDateFromString(selectedDate, dateTimeFormatter);
-            System.out.println("get date from string " + selected_date);
             return true;
         }catch (IllegalArgumentException e){
             System.out.println("Date Exception" + e);
             return false;
         }
+    }
+
+    public LocalDateTime formatLocalDateTime(String date_now){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+        LocalDateTime formatted_dateNow = null;
+        try {
+           formatted_dateNow = getDateFromString(date_now, dateTimeFormatter);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        return formatted_dateNow;
+    }
+
+    public LocalDateTime getDateTimeNow(){
+        Calendar calendar = Calendar.getInstance(new Locale("en","KE"));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        String formattedHour = null, formattedMinute = null;        String formattedMonth = null,formattedDay = null;
+
+        if (hour < 10){
+            formattedHour = "0" + hour;
+        }else{
+            formattedHour = "" + hour;
+        }
+        if (minute < 10 ){
+            formattedMinute = "0" + minute;
+        }else{
+            formattedMinute = "" + minute;
+        }
+
+        if (month + 1 <= 9){
+            formattedMonth = "0" + (month + 1) ;
+        }else{
+            formattedMonth = String.valueOf(month + 1);
+        }
+        if(day < 10){
+            formattedDay = "0" + day;
+        }else{
+            formattedDay = String.valueOf(day);
+        }
+        String dateNow = formattedDay + "-" + formattedMonth + "-" + year + " " + formattedHour +":" + formattedMinute;
+        return formatLocalDateTime(dateNow);
+
     }
     public boolean willPriceFormat(String priceToParse){
 //TODO: check for wrong input on price

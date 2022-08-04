@@ -228,7 +228,7 @@ public class CompletedTasks extends AppCompatActivity {
     //function to populate list view, initially on 1st load with all tasks
     private void taskListPopulate(){
         if (completedTasks_simpleCursorAdapter == null){
-            completedTasks_simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.userdata_listrow,completedTasks_cursor,new String[]{"completedTaskTitle","completedTaskDescription","completedTaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+            completedTasks_simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.userdata_listrow,completedTasks_cursor,new String[]{"completedTaskTitle","completedTaskDescription","completedTaskDeadline","completedTaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedDates,R.id.TaskAssociatedPrice},0);
             completedTasks_tasks_listView.setAdapter(completedTasks_simpleCursorAdapter);
 
             //setup a click listener for a task

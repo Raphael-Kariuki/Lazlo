@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+
     >
-<RelativeLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:paddingTop="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+    android:orientation="vertical"
+    android:layout_weight="1"
     >
 
     <TextView
@@ -18,9 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:layout_marginLeft="5dp"
+        android:text="Title goes here"
+        android:maxLines="2"
         />
     <TextView
         android:id="@+id/taskDescription"
@@ -29,22 +34,53 @@
         android:layout_below="@id/taskTitle"
         android:layout_marginTop="7dp"
         android:textColor="#000000"
-        android:textSize="14sp"
+        android:textSize="11sp"
         android:layout_marginLeft="5dp"
+        android:text="The description goes here The description goes here "
+        android:maxLines="5"
         />
 
-    <TextView
-        android:id="@+id/TaskAssociatedPrice"
+
+</LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="#000000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:layout_alignBaseline="@id/taskTitle"/>
-</RelativeLayout>
+        android:gravity="end"
+
+        >
+        <TextView
+            android:id="@+id/TaskAssociatedDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="#000000"
+            android:textSize="11sp"
+            android:layout_alignBaseline="@id/taskTitle"
+            android:text="24-07-2022 15:54"
+            />
+
+        <TextView
+            android:id="@+id/TaskAssociatedPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="#000000"
+            android:textSize="11sp"
+            android:layout_alignBaseline="@id/taskDescription"
+            android:text="Ksh 5,000"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
