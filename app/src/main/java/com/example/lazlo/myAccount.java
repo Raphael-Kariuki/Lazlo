@@ -21,6 +21,11 @@ public class myAccount extends AppCompatActivity {
     LinearLayout imgStatusNameLayout;
     SharedPreferences spf;
     MaterialTextView usernameInMyAccount,accountStatus;
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), Dashboard.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

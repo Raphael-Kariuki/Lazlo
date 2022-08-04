@@ -838,3 +838,131 @@ parent="Theme.MaterialComponents.DayNight.NoActionBar"
         cursor.close();
         return userList;
     }
+
+
+    ------------------------
+
+      /*
+                                            String username = editUsername_TextInputEdit.getText().toString().trim();
+                                            String Status = editAboutYou_TextInputEdit.getText().toString().trim();
+                                            String emailAddress = editEmail_TextInput.getText().toString().trim();
+
+                                            boolean b = false;
+
+                                            try {
+                                                b = dbHelper.updateUserName(username,Status,randUserId,emailAddress);
+                                            }catch (Exception e){
+                                                System.out.println("Exception: " + e);
+                                            }
+
+                                            if (b){
+                                                Toast.makeText(this, "Success updating username", Toast.LENGTH_SHORT).show();
+                                                SharedPreferences.Editor editor =  spf.edit();
+                                                editor.putString("username", username);
+                                                editor.putString("Status", Status);
+                                                editor.putString("email", emailAddress);
+                                                editor.apply();
+
+                                                startActivity(new Intent(getApplicationContext(), myAccount.class));
+                                            }*/
+
+
+
+     ------------------------------------------------
+
+      if (!editUsername_TextInputEdit.getText().toString().trim().isEmpty()){     //username shouldn't be empty
+                 if (editUsername_TextInputEdit.getText().toString().trim().length() <= 10){     //username shouldn't be 10+ characters
+                     if (!editUsername_TextInputEdit.getText().toString().trim().equals(uname)){     //if username is changed proceed checking whether the new username exists in the db
+                         if (!isUserNameExist(editUsername_TextInputEdit.getText().toString().trim())){      //username should be uniques, not already registered
+                             if (!editAboutYou_TextInputEdit.getText().toString().trim().isEmpty()){         //status shouldn't be empty
+
+                                 if (!editEmail_TextInput.getText().toString().trim().isEmpty()){            //email entry shouldn't be empty
+                                     if (Patterns.EMAIL_ADDRESS.matcher(editEmail_TextInput.getText().toString().trim()).matches()){     //email must be of a valid format
+                                         if (!editEmail_TextInput.getText().toString().trim().equals(emailAddress)){     //if email is changed, proceed
+                                             if (!emailExists(editEmail_TextInput.getText().toString().trim())){         //confirm whether new email exists in db
+                                                 emailHasBeenChangedUsernameHasBeenChanged_Update(randUserId);
+                                             }else {
+                                                 editEmail_TextInputLayout.setErrorEnabled(true);
+                                                 editEmail_TextInputLayout.setError("Enter a registered email address");
+                                                 editUsername_TextInputLayout.setErrorEnabled(false);
+                                                 editAboutYou_TextInputLayout.setErrorEnabled(false);
+                                             }
+                                         }else{
+                                             userNameHasChanged_Update(randUserId);
+                                         }
+                                     }else{
+                                         editEmail_TextInputLayout.setErrorEnabled(true);
+                                         editEmail_TextInputLayout.setError("Enter an valid address");
+                                         editUsername_TextInputLayout.setErrorEnabled(false);
+                                         editAboutYou_TextInputLayout.setErrorEnabled(false);
+                                     }
+                                 }else{
+                                     editEmail_TextInputLayout.setErrorEnabled(true);
+                                     editEmail_TextInputLayout.setError("Enter an email address");
+                                     editUsername_TextInputLayout.setErrorEnabled(false);
+                                     editAboutYou_TextInputLayout.setErrorEnabled(false);
+                                 }
+                             }else{
+                                 editEmail_TextInputLayout.setErrorEnabled(false);
+                                 editUsername_TextInputLayout.setErrorEnabled(false);
+                                 editAboutYou_TextInputLayout.setError("Enter about you");
+                                 editAboutYou_TextInputLayout.setErrorEnabled(true);
+                             }
+                         }else{
+                             editEmail_TextInputLayout.setErrorEnabled(false);
+                             editUsername_TextInputLayout.setErrorEnabled(true);
+                             editUsername_TextInputLayout.setError("Enter a different username");
+                             editAboutYou_TextInputLayout.setErrorEnabled(false);
+                         }
+                     }else{
+                         //branched of without checking whether the username exists as it has not been changed
+                         if (!editAboutYou_TextInputEdit.getText().toString().trim().isEmpty()){
+                             if (!editEmail_TextInput.getText().toString().trim().isEmpty()){
+                                 if (Patterns.EMAIL_ADDRESS.matcher(editEmail_TextInput.getText().toString().trim()).matches()){
+                                     if (!editEmail_TextInput.getText().toString().trim().equals(emailAddress)){
+                                         if (!emailExists(editEmail_TextInput.getText().toString().trim())){
+                                             //function called to update email as it has changed
+                                             emailHasBeenChangedUsernameHasBeenChanged_Update(randUserId);
+                                         }else {
+                                             editEmail_TextInputLayout.setErrorEnabled(true);
+                                             editEmail_TextInputLayout.setError("Enter a registered email address");
+                                             editUsername_TextInputLayout.setErrorEnabled(false);
+                                             editAboutYou_TextInputLayout.setErrorEnabled(false);
+                                         }
+                                     }else{
+                                         //function called that doesn't update email as the email has not changed
+                                         userNameHasChanged_Update(randUserId);
+                                     }
+                                 }else{
+                                     editEmail_TextInputLayout.setErrorEnabled(true);
+                                     editEmail_TextInputLayout.setError("Enter an valid address");
+                                     editUsername_TextInputLayout.setErrorEnabled(false);
+                                     editAboutYou_TextInputLayout.setErrorEnabled(false);
+                                 }
+                             }else{
+                                 editEmail_TextInputLayout.setErrorEnabled(true);
+                                 editEmail_TextInputLayout.setError("Enter an email address");
+                                 editUsername_TextInputLayout.setErrorEnabled(false);
+                                 editAboutYou_TextInputLayout.setErrorEnabled(false);
+                             }
+                         }else{
+                             editEmail_TextInputLayout.setErrorEnabled(false);
+                             editUsername_TextInputLayout.setErrorEnabled(false);
+                             editAboutYou_TextInputLayout.setError("Enter about you");
+                             editAboutYou_TextInputLayout.setErrorEnabled(true);
+                         }
+                     }
+                 }else{
+                     editEmail_TextInputLayout.setErrorEnabled(false);
+                     editUsername_TextInputLayout.setErrorEnabled(true);
+                     editUsername_TextInputLayout.setCounterEnabled(true);
+                     editUsername_TextInputLayout.setCounterMaxLength(10);
+                     editUsername_TextInputLayout.setError("Username shouldn't exceed 10 characters");
+                     editAboutYou_TextInputLayout.setErrorEnabled(false);
+                 }
+             }else {
+                 editEmail_TextInputLayout.setErrorEnabled(false);
+                 editUsername_TextInputLayout.setErrorEnabled(true);
+                 editUsername_TextInputLayout.setError("Enter your new username");
+                 editAboutYou_TextInputLayout.setErrorEnabled(false);
+             }

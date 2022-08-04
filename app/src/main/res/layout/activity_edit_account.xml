@@ -68,7 +68,32 @@
                 android:textColorHint="@color/black"
                 android:textColor="@color/black"
                 android:text="Rafa"
-                android:hint="@string/username"
+                android:hint="Status"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editEmail_TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/black"
+            app:startIconDrawable="@drawable/ic_baseline_email_24"
+            android:padding="@dimen/activity_vertical_margin"
+            app:boxStrokeErrorColor="@color/orange"
+            app:endIconMode="clear_text"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editEmail_TextInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
+                android:autofillHints="Email address"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+                android:text="Rafa"
+                android:hint="Email address"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

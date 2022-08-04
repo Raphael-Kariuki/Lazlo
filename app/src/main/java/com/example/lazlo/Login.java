@@ -27,7 +27,7 @@ public class Login extends AppCompatActivity {
     DBHelper dbHelper;
     SharedPreferences sharedPreferences;
     TextInputLayout loginUserName_inputLayout, loginPassword_inputLayout;
-    String status;
+    String status, emailAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +86,7 @@ public class Login extends AppCompatActivity {
                                 editor.putString("username", unameCheck);
                                 editor.putString("randomUserId", String.valueOf(randomUserId));
                                 editor.putString("Status", status);
+                                editor.putString("email", emailAddress);
                                 editor.apply();
 
                                 //set the fields to ""
@@ -170,6 +171,7 @@ public class Login extends AppCompatActivity {
                 //obtain randomUser Id to be stored in shared preferences
                 randomUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));
                 status =  cursor.getString(cursor.getColumnIndexOrThrow("Status"));
+                emailAddress = cursor.getString(cursor.getColumnIndexOrThrow("email"));
 
                 //close db connection
                 cursor.close();

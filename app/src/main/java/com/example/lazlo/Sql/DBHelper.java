@@ -339,11 +339,47 @@ public class DBHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);
     }
 
-    public boolean updateUserName(String username,String Status, Double randUserId){
+
+    //update username and email while editing account
+    public boolean updateUserNameAndEmail(String username, Double randUserId, String emailAddress){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        if (!username.isEmpty()) contentValues.put("userName", username);
+        if (!emailAddress.isEmpty()) contentValues.put("email", emailAddress);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
+    //update username ,status and email while editing account
+    public boolean updateUserNameAndEmailAndStatus(String username, String Status, Double randUserId, String emailAddress){
         long returnValue;
         ContentValues contentValues = new ContentValues();
         if (!username.isEmpty()) contentValues.put("userName", username);
         if (!Status.isEmpty()) contentValues.put("Status", Status);
+        if (!emailAddress.isEmpty()) contentValues.put("email", emailAddress);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
+    //update email while editing account
+    public boolean updateEmailOnly(Double randUserId, String emailAddress){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        if (!emailAddress.isEmpty()) contentValues.put("email", emailAddress);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
+    //update status while editing account
+    public boolean updateStatusOnly(String Status, Double randUserId){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        if (!Status.isEmpty()) contentValues.put("Status", Status);
+        returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
+    //update username  while editing account
+    public boolean updateUserNameOnly(String username, Double randUserId){
+        long returnValue;
+        ContentValues contentValues = new ContentValues();
+        if (!username.isEmpty()) contentValues.put("userName", username);
         returnValue = this.getWritableDatabase().update("userDetails",contentValues,"randUserId = ?", new String[]{String.valueOf(randUserId)});
         return returnValue != -1;
     }
