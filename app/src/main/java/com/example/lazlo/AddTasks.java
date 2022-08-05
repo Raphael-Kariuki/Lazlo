@@ -170,7 +170,10 @@ public class AddTasks extends AppCompatActivity {
                                             }
                                             if (b){
                                                 Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
-                                                finish();
+                                                Intent categoryStringToSendToPendingTasks = new Intent(getApplicationContext(), PendingTasks.class);
+                                                categoryStringToSendToPendingTasks.putExtra("tempCategory", selected_category);
+                                                startActivity(categoryStringToSendToPendingTasks);
+                                                //finish();
                                             }else {
                                                 Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
                                             }
