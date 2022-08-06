@@ -20,6 +20,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -103,6 +104,9 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 1;
+                //Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                System.out.println(LocalDateTime.now(ZoneId.of("GMT+3")));
+                System.out.println(Date.from(LocalDateTime.now(ZoneId.of("GMT+3")).atZone(ZoneId.systemDefault()).toInstant()));
                 startTaskDate = new Date();
                 Cursor cursor = null;
                 Integer trial;
@@ -222,7 +226,7 @@ public class performTask extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 completeTaskDate = new Date();
-                //setup to determine whether the task was completed in one run or not
+                //setup to determine whether the task was completed in completedTaskCreationDate run or not
                 String typeOfCompletion = null;
 
                 if(taskState == 1){
@@ -311,6 +315,7 @@ public class performTask extends AppCompatActivity {
 
 
                 Intent backToTasks = new Intent(getApplicationContext(), PendingTasks.class);
+                backToTasks.putExtra("tempCategory", Category);
                 startActivity(backToTasks);
             }
         });

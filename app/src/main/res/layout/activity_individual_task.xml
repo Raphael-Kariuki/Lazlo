@@ -55,15 +55,15 @@
                     app:boxStrokeColor="@color/black"
                     app:hintAnimationEnabled="true"
                     app:hintTextColor="@color/black"
-
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/individualTaskTitle_TextInputEdit"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="@string/task_title"
                         android:textStyle="bold"
+                        android:textSize="12dp"
 
                         />
 
@@ -84,7 +84,8 @@
                         android:id="@+id/individualTaskDescription_TextInputEdit"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="@string/task_description" />
+                        android:hint="@string/task_description"
+                        android:textSize="12dp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,7 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/task_category"
-
+                        android:textSize="12dp"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/bills"
-
+                        android:textSize="12dp"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +153,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="@string/select_date"
-
+                            android:textSize="12dp"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -173,45 +174,46 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="@string/select_time"
-
+                            android:textSize="12dp"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/deadlines"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnShow"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_alignParentStart="true"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_baseline_list_24"
                         android:text="@string/show_tasks"
                         android:textColor="@color/white"
-                        app:backgroundTint="@color/black"
-                        app:cornerRadius="20dp" />
+                        android:textSize="10dp"
+                        app:backgroundTint="@color/black" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSave"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_baseline_save_24"
                         android:text="@string/save"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/black"
-                        app:cornerRadius="20dp" />
+                        android:textSize="10dp"
+                        android:layout_alignBaseline="@id/btnShow"
+                        android:layout_alignParentEnd="true"
+                        />
 
 
-                </LinearLayout>
+                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

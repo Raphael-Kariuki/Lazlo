@@ -16,7 +16,7 @@ public class myCircle extends Drawable {
     public myCircle() {
         // Set up color and text size
         redPaint = new Paint();
-        redPaint.setARGB(255, 255, 0, 0);
+        //redPaint.setARGB(255, 255, 0, 0);
     }
 
     @Override

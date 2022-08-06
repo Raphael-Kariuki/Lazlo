@@ -84,7 +84,7 @@ public class Login extends AppCompatActivity {
                     if (cursor.getCount() != 0) {        //if cursor is non0empty(Means username exists in db), proceed
                         try {
 
-                            //ensure username and password are tied, meaning they belong to one user, proceed
+                            //ensure username and password are tied, meaning they belong to completedTaskCreationDate user, proceed
                             if (loginCheck(cursor, passCheck)) {
                                 dbHelper.close();
 

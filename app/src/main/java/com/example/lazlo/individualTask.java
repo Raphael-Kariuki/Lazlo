@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +37,8 @@ public class individualTask extends AppCompatActivity {
   Cursor cursor;
   String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline;
   LocalDateTime selected_date;
-  Double randomTaskId;
+  Double randomTaskId, randUserId;
+  SharedPreferences spf;
   boolean f;
     @Override
     public void onBackPressed(){
@@ -47,6 +49,8 @@ public class individualTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
 
+        spf = getSharedPreferences("user_details", MODE_PRIVATE);
+        randUserId = Double.parseDouble(spf.getString("randomUserId",null));
         individualTaskTitle_TextInputEdit = findViewById(R.id.individualTaskTitle_TextInputEdit);
         individualTaskDescription_TextInputEdit = findViewById(R.id.individualTaskDescription_TextInputEdit);
         individualTaskCategory_TextInputEdit = findViewById(R.id.individualTaskCategory_TextInputEdit);
@@ -217,7 +221,7 @@ public class individualTask extends AppCompatActivity {
         String regex;
         System.out.println("Populating...");
         try {
-            cursor = dbHelper.getTaskById(currentId);
+            cursor = dbHelper.getTaskById(currentId, randUserId);
             System.out.println("Success conn to db...with id: " + currentId);
         }catch (Exception e){
             Toast.makeText(this,"Error " + e + "occurred", Toast.LENGTH_LONG).show();
@@ -243,6 +247,7 @@ public class individualTask extends AppCompatActivity {
             individualTaskBills_TextInputEdit.setText(Bills);
 
             String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
+
 
             if(timeDateToFormat.contains("T")){
                 regex = "T";

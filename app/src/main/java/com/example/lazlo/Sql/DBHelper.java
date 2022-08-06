@@ -190,9 +190,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to delete task by id when item on listview is clicked
-    public boolean deleteTask(long id){
+    public boolean deleteTask(long id, Double randUserId){
         long returnValue;
-        returnValue = this.getWritableDatabase().delete("TaskList","_id=?",new String[]{String.valueOf(id)});
+        returnValue = this.getWritableDatabase().delete("TaskList","_id=? and randUserId = ?",new String[]{String.valueOf(id),String.valueOf(randUserId)});
         return returnValue != -1;
     }
     
@@ -233,15 +233,30 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //function to obtain all tasks by categories
     public Cursor getAllByCategories(String uname, String category) {
-        return this.getWritableDatabase().query("TaskList",null,"UserName=? and TaskCategory = ? ",new String[]{String.valueOf(uname),String.valueOf(category)},null,null,null);
+        return this.getWritableDatabase().query("TaskList",null,"UserName=? and TaskCategory = ? and TaskState != 5",new String[]{String.valueOf(uname),String.valueOf(category)},null,null,null);
     }
     //function to obtain all tasks by categories
     public Cursor getAllByCategories(Double randUserId, String category) {
-        return this.getWritableDatabase().rawQuery("Select tl._id,tl.TaskTitle as completedTaskTitle,tl.TaskDescription as completedTaskDescription," +
+        return this.getWritableDatabase().rawQuery("Select distinct tl._id,tl.TaskTitle as completedTaskTitle,tl.TaskDescription as completedTaskDescription," +
                 "tl.TaskCategory as completedTaskCategory,tl.TaskAssociatedPrice as completedTaskAssociatedPrice,tl.TaskDeadline as completedTaskDeadline" +
                         " from TaskList tl inner join Completed_N_DeletedTasks ctl on tl.randUserId = ctl.randUserId " +
                 "where ctl.randUserId = ? and tl.TaskCategory = ? and tl.taskState = 5",
                 new String[]{String.valueOf(randUserId),String.valueOf(category)});
+    }
+    public Cursor getAllTasksById(Long taskId,Double randUserId) {
+        return this.getWritableDatabase().rawQuery("Select distinct ctl.randTaskId as completedTaskRandomId," +
+                        "tl._id,tl.TaskTitle as completedTaskTitle," +
+                        "tl.TaskDescription as completedTaskDescription," +
+                        "tl.TaskCategory as completedTaskCategory," +
+                        "tl.TaskAssociatedPrice as completedTaskPredictedSpending," +
+                        "tl.TaskDeadline as completedTaskDeadline," +
+                        " tl.TaskCreationTime as completedTaskCreationDate," +
+                        "ctl.taskStartTime as completedTaskStartDate, " +
+                        "ctl.taskCompleteTime as completedTaskCompletionDate," +
+                        "ctl.taskDuration as completedTaskActualDuration " +
+                        " from TaskList tl inner join Completed_N_DeletedTasks ctl on tl.randUserId = ctl.randUserId " +
+                        "where ctl.randUserId = ? and ctl._id = ? and tl.taskState = 5",
+                new String[]{String.valueOf(randUserId),String.valueOf(taskId)});
     }
 
     //get sum of spending per month for dashboard
@@ -353,8 +368,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to obtain task details by id for populating individual task section and while deletion of task when clicked on a list view
-    public Cursor getTaskById(long id) {
-        return this.getWritableDatabase().query("TaskList",null,"_id=?",new String[]{String.valueOf(id)},null,null,null);
+    public Cursor getTaskById(long id, Double randUserId) {
+        return this.getWritableDatabase().query("TaskList",null,"_id=? and randUserId = ?",new String[]{String.valueOf(id),String.valueOf(randUserId)},null,null,null);
     }
 
 

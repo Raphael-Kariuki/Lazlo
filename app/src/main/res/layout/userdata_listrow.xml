@@ -3,6 +3,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+    android:layout_margin="10dp"
+
 
     >
 <LinearLayout
@@ -10,8 +12,6 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:paddingTop="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
     android:orientation="vertical"
     android:layout_weight="1"
     >
@@ -26,6 +26,7 @@
         android:layout_marginLeft="5dp"
         android:text="Title goes here"
         android:maxLines="2"
+        android:clickable="false"
         />
     <TextView
         android:id="@+id/taskDescription"
@@ -38,6 +39,7 @@
         android:layout_marginLeft="5dp"
         android:text="The description goes here The description goes here "
         android:maxLines="5"
+        android:clickable="false"
         />
 
 
@@ -47,11 +49,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:orientation="vertical"
         android:layout_alignParentEnd="true"
         android:gravity="end"
+        android:clickable="false"
 
         >
         <TextView
@@ -60,11 +61,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="7dp"
-            android:layout_marginEnd="20dp"
             android:textColor="#000000"
             android:textSize="11sp"
             android:layout_alignBaseline="@id/taskTitle"
             android:text="24-07-2022 15:54"
+            android:clickable="false"
             />
 
         <TextView
@@ -73,12 +74,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="7dp"
-            android:layout_marginEnd="20dp"
             android:textColor="#000000"
             android:textSize="11sp"
             android:layout_alignBaseline="@id/taskDescription"
             android:text="Ksh 5,000"
             android:textStyle="bold"
+            android:clickable="false"
             />
     </LinearLayout>
 

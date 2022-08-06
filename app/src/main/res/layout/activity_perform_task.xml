@@ -14,63 +14,98 @@
         android:orientation="vertical"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin">
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/runningTaskTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/task_title"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/runningTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/black_border"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="5dp"
+        android:text="Title goes here, it could be a very long title that might require folding"
+        android:textColor="#ECE5E5"
+        android:textSize="15sp"
+        android:textStyle="bold"
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/runningTaskDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/task_description"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
+        />
+    <LinearLayout
+        android:id="@+id/categoryDeadlineLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runningTaskTitle"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskCategory"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/task_category"
+            android:text="Shopping"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
+            android:textSize="12sp"
+            android:gravity="start"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textStyle="bold"
             />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/runningTaskBills"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bills"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/runningTaskDeadline"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/task_deadline"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
+            android:text="2022-07-8T13:57"
+            android:textColor="#000000"
+            android:textSize="11sp"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:textStyle="bold"
             />
-</LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/runningTaskBills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categoryDeadlineLayout"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Ksh 2,000"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/runningTaskDescription"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runningTaskBills"
+        android:gravity="center"
+        android:text="t com.intellij.configurationStore.SaveExecutorKt.saveSessions(SaveExecutor.kt:86)
+	at com.intellij.configurationStore.SaveSessionProducerManager$save$task$1.invoke(SaveExecutor.kt:69)
+	at com.intellij.configurationStore.SaveSessionProducerManager$save$task$1.invoke(SaveExecutor.kt:23)
+	at com.intellij.configurationStore.SaveSessionProducerManager.save$suspendImpl(SaveExecutor.kt:79)
+	at com.intellij.configurationStore.SaveSessionProducerManager.save(SaveExecutor.kt)
+	at com.intellij.configurationStore.ApplicationStoreImpl$doSave$2$1."
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,8 +121,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btnStartTask2"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_margin="5dp"
                     android:background="@drawable/pie"
                     android:backgroundTint="@color/black"
@@ -97,8 +132,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btnResumeTask"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_margin="5dp"
                     android:background="@drawable/pie"
                     android:backgroundTint="@color/black"
@@ -108,8 +143,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btnPauseTask"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
@@ -125,25 +160,25 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCompleteDoingTask"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/black"
+                    android:drawableStart="@drawable/ic_baseline_check_24"
+                    android:text="@string/complete"
+                    android:textColor="@color/white" />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnCancelDoingTask"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
                     android:drawableStart="@drawable/ic_baseline_close_24"
                     android:text="@string/cancel"
                     android:textColor="@color/white" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnCompleteDoingTask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/black"
-                    android:drawableStart="@drawable/ic_baseline_check_24"
-                    android:text="@string/complete"
-                    android:textColor="@color/white" />
+
             </LinearLayout>
         </LinearLayout>
 

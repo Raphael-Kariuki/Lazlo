@@ -5,6 +5,7 @@
       <map>
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/arrows_of_perfomance.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/black_border.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/buttons_custom.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/cinq.xml" value="0.1225" />
@@ -28,6 +29,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/month_bg.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/pie.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/triad.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/trois.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/uno.xml" value="0.1025" />
         <entry key="app/src/main/res/layout-v28/activity_dashboard.xml" value="0.20416666666666666" />
@@ -44,6 +46,7 @@
         <entry key="app/src/main/res/layout/activity_final_page.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.24960505529225907" />
         <entry key="app/src/main/res/layout/activity_in_house_password_reset.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/activity_individual_completed_task.xml" value="0.24960505529225907" />
         <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
@@ -52,7 +55,7 @@
         <entry key="app/src/main/res/layout/activity_notification_message.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_pending_tasks.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_perfom_task.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/layout/activity_perform_task.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/activity_perform_task.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />

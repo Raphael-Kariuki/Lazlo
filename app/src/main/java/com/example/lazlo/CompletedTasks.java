@@ -65,7 +65,6 @@ public class CompletedTasks extends AppCompatActivity {
         completedTasks_user_name = completedTasks_session_prefs.getString("username",null);
         completedTasks_uname.setText(completedTasks_user_name);
         completedTasks_randUserId = Double.parseDouble(completedTasks_session_prefs.getString("randomUserId", null));
-        System.out.println(completedTasks_randUserId + " "+ completedTasks_user_name);
 
 
         //process hamburger menu action
@@ -74,6 +73,11 @@ public class CompletedTasks extends AppCompatActivity {
             startActivity(intent);
 
         });
+
+        completedTasks_home.requestFocus();
+        populateCompletedTasks_HomeTasks();
+        completedTasks_home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+        completedTasks_home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             //TODO:Simplify this background setup with 9-patch drawables
 
             //process completedTasks_home button
@@ -194,19 +198,19 @@ public class CompletedTasks extends AppCompatActivity {
         
     }
 
-    //obtain home category content and populate list view on home button click
+    //obtain Home category content and populate list view on Home button click
     private  void populateCompletedTasks_HomeTasks(){
         completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Home");
         taskListPopulate();
 
     }
-    //obtain shopping category content and populate list view on shopping button click
+    //obtain Shopping category content and populate list view on Shopping button click
     private  void populateCompletedTasks_ShoppingTasks(){
         completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Shopping");
         taskListPopulate();
 
     }
-    //obtain work category content and populate list view on work button click
+    //obtain Work category content and populate list view on Work button click
     private  void populateCompletedTasks_WorkTasks(){
         completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Work");
         taskListPopulate();
@@ -236,6 +240,9 @@ public class CompletedTasks extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                    Intent toIndividualCompletedTask = new Intent(getApplicationContext(),IndividualCompletedTask.class);
+                    toIndividualCompletedTask.putExtra("selectedTaskId", l);
+                    startActivity(toIndividualCompletedTask);
                 }
             });
         }else {

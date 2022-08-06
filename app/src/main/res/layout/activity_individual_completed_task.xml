@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".performTask"
+    >
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/completedTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/black_border"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="5dp"
+                android:text="Title goes here, it could be a very long title that might require folding"
+                android:textColor="#ECE5E5"
+                android:textSize="15sp"
+                android:textStyle="bold"
+
+                />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category:"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="start"
+        android:layout_weight=".5"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textStyle="bold"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/completedTaskCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shopping"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:gravity="start"
+        android:layout_weight="1"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textStyle="bold"
+        />
+</LinearLayout>
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Creation date"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="start"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                android:background="@drawable/triad"
+                android:layout_weight="1"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task deadline"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="start"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                android:background="@drawable/trois"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/completedTaskCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/triad"
+        android:gravity="center"
+        android:text="2022-09-09\n 20:20"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/completedTaskDeadlineDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/completedTaskCreationDate"
+        android:layout_toEndOf="@id/completedTaskCreationDate"
+        android:background="@drawable/uno"
+        android:gravity="center"
+        android:text="2022-09-09\n 20:20"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/completedTaskStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/completedTaskDeadlineDate"
+        android:background="@drawable/trois"
+        android:gravity="center"
+        android:text="2022-09-09\n 20:20"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/completedTaskCompletionDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/completedTaskStartDate"
+        android:layout_toEndOf="@id/completedTaskStartDate"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="2022-09-09\n 20:20"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</RelativeLayout>
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Creation date"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                android:background="@drawable/uno"
+                android:layout_weight="1"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task deadline"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                android:background="@color/white"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+<TableRow>
+
+</TableRow>
+
+            <TableRow>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Predicted duration"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:layout_weight=".5"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    android:background="@color/grey"
+                    android:padding="5dp"
+                    android:layout_marginRight="3dp"
+
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actual duration"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:layout_weight=".5"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    android:background="@color/grey"
+                    android:padding="5dp"
+                    android:layout_marginRight="3dp"
+
+                    />
+            </TableRow>
+            <TableRow>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/completedTaskPredictedDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10 mins"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/completedTaskActualDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1 min"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+
+            <TableRow>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Predicted spending"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:layout_weight=".5"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    android:background="@color/grey"
+                    android:padding="5dp"
+                    android:layout_marginRight="3dp"
+
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actual spending"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:layout_weight=".5"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    android:background="@color/grey"
+                    android:padding="5dp"
+                    android:layout_marginRight="3dp"
+
+                    />
+            </TableRow>
+            <TableRow>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/completedTaskPredictedSpending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ksh 2,000"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/completedTaskActualSpending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ksh 1,300"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textStyle="bold"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task description"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_weight=".5"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/completedTaskDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com.intellij.configurationStore.SaveExecutorKt.saveSessions(SaveExecutor.kt:86)
+	at com.intellij.configurationStore.SaveSessionProducerManager$save$task$1.invoke(SaveExecutor.kt:69)
+	at com.intellij.configurationStore.SaveSessionProducerManager$save$task$1.invoke(SaveExecutor.kt:23)
+	at com.intellij.configurationStore.SaveSessionProducerManager.save$suspendImpl(SaveExecutor.kt:79)
+	at com.intellij.configurationStore.SaveSessionProducerManager.save(SaveExecutor.kt)
+	at com.intellij.configurationStore.ApplicationStoreImpl$doSave$2$1"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:gravity="start"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+</ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

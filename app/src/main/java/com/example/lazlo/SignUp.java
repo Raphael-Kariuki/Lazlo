@@ -126,7 +126,7 @@ public class SignUp extends AppCompatActivity {
                                                     Intent i = new Intent(SignUp.this, Login.class);
                                                     startActivity(i);
                                                 }else {
-                                                    //if db insert fails for one reason or the other inform user
+                                                    //if db insert fails for completedTaskCreationDate reason or the other inform user
                                                     Toast.makeText(SignUp.this, "Failed to create account", Toast.LENGTH_SHORT).show();
                                                 }
 

@@ -33,7 +33,9 @@ public class PendingTasks extends AppCompatActivity {
     Cursor cursor;
     SimpleCursorAdapter simpleCursorAdapter;
     AppCompatTextView uname;
-    AppCompatButton home, school,work,business,shopping;
+    AppCompatButton Home, School, Work, Business, Shopping;
+    String categoryToPopulate;
+    Double randomUserId;
 
     @Override
     public void onBackPressed(){
@@ -49,11 +51,11 @@ public class PendingTasks extends AppCompatActivity {
         //initialize views
         tasks_listView = this.findViewById(R.id.task_listView);
 
-        home = findViewById(R.id.homeTask);
-        work = findViewById(R.id.workTasks);
-        school =findViewById(R.id.schoolTasks);
-        business = findViewById(R.id.businessTasks);
-        shopping = findViewById(R.id.shoppingTasks);
+        Home = findViewById(R.id.homeTask);
+        Work = findViewById(R.id.workTasks);
+        School =findViewById(R.id.schoolTasks);
+        Business = findViewById(R.id.businessTasks);
+        Shopping = findViewById(R.id.shoppingTasks);
 
         hamburger_menu = findViewById(R.id.hamburger_menu);
 
@@ -64,13 +66,14 @@ public class PendingTasks extends AppCompatActivity {
         //initialize db class
         dbHelper = new DBHelper(this);
 
-        //necessary to call this in-order to repopulate list with current set of tasks on deletion of a single tasks
-        SetOrRefreshListView();
+
+
 
 
         //obtain username value from sharedPreferences stored on login and set it on a textview
         session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
         user_name = session_prefs.getString("username",null);
+        randomUserId = Double.parseDouble(session_prefs.getString("randomUserId", null));
         uname.setText(user_name);
 
 
@@ -86,115 +89,115 @@ public class PendingTasks extends AppCompatActivity {
 
         //TODO:Simplify this background setup with 9-patch drawables
 
-        //process home button
-        home.setOnClickListener(new View.OnClickListener() {
+        //process Home button
+        Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //set background on click of home button. Black for home, white for the rest
-                home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                //set background on click of Home button. Black for Home, white for the rest
+                Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
 
                 //set text color to white while clicked, black when not
-                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateHomeTasks();
             }
         });
 
-        //process the shopping click
-        shopping.setOnClickListener(new View.OnClickListener() {
+        //process the Shopping click
+        Shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //set background on click of home button. Black for shopping, white for the rest
-                shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                //set background on click of Home button. Black for Shopping, white for the rest
+                Shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
 
                 //set text color to white while clicked, black when not
-                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateShoppingTasks();
             }
         });
 
-        //process the work click
-        work.setOnClickListener(new View.OnClickListener() {
+        //process the Work click
+        Work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //set background on click of home button. Black for work, white for the rest
-                work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                //set background on click of Home button. Black for Work, white for the rest
+                Work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
 
                 //set text color to white while clicked, black when not
-                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateWorkTasks();
             }
         });
-        //process the school click
-        school.setOnClickListener(new View.OnClickListener() {
+        //process the School click
+        School.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //set background on click of home button. Black for school, white for the rest
-                school.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                //set background on click of Home button. Black for School, white for the rest
+                School.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
 
                 //set text color to white while clicked, black when not
-                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateSchoolTasks();
             }
         });
 
-        //process the business click
-        business.setOnClickListener(new View.OnClickListener() {
+        //process the Business click
+        Business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //set background on click of home button. Black for business, white for the rest
-                business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                school.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                //set background on click of Home button. Black for Business, white for the rest
+                Business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
 
                 //set text color to white while clicked, black when not
-                business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                school.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateBusinessTasks();
             }
         });
@@ -203,9 +206,53 @@ public class PendingTasks extends AppCompatActivity {
     }
 
 
-    //retrieve content from db and call a function to repopulate the task list
+    //This is called when a task is deleted from the list view
+    //receives a category string obtained from the deleted task, why? A deleted task will have a similar category with the rest that are rendered then.
+    //We don't want  that when a task is deleted, the view jumps to a different category. User experience is key, no matter the lines of code required
+    //that is then used to retrieve content from db of that specific category
+    // and call a function to repopulate the task list
+    //TODO:find a way to shorten this preceding bulk of code
+
     private void SetOrRefreshListView(){
-        cursor = dbHelper.getAll(user_name);
+        cursor = dbHelper.getAllByCategories(user_name,categoryToPopulate);
+        System.out.println(categoryToPopulate);
+        taskListPopulate();
+
+    }
+
+    //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
+    // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
+    private void SetOrRefreshListView2(){
+        String tempCategory = this.getIntent().getStringExtra("tempCategory");
+        if (tempCategory != null){
+            cursor = dbHelper.getAllByCategories(user_name,tempCategory);
+
+            //highlight the obtained category button
+            if (tempCategory.equals("Home")){
+                Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }else if (tempCategory.equals("Business")){
+                Business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }else if (tempCategory.equals("School")){
+                School.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }else if (tempCategory.equals("Work")){
+                Work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }else if (tempCategory.equals("Shopping")){
+                Shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }
+        }else {
+
+            // if the activity is loaded without addTasks preceding it, that means the tempCategory string will be null
+            // thus render the default/ first category, home and highlight to guide user
+            cursor = dbHelper.getAllByCategories(user_name,"Home");
+            Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
+            Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+        }
+        //receives a cursor that is specific by name, any cursor placed before it with the name cursor, works. CAUTION!!
         taskListPopulate();
 
     }
@@ -214,7 +261,7 @@ public class PendingTasks extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        SetOrRefreshListView();
+        SetOrRefreshListView2();
     }
 
     //clean up
@@ -240,19 +287,19 @@ public class PendingTasks extends AppCompatActivity {
         });
     }
 
-    //obtain home category content and populate list view on home button click
+    //obtain Home category content and populate list view on Home button click
     private  void populateHomeTasks(){
         cursor = dbHelper.getAllByCategories(user_name,"Home");
         taskListPopulate();
 
     }
-    //obtain shopping category content and populate list view on shopping button click
+    //obtain Shopping category content and populate list view on Shopping button click
     private  void populateShoppingTasks(){
         cursor = dbHelper.getAllByCategories(user_name,"Shopping");
         taskListPopulate();
 
     }
-    //obtain work category content and populate list view on work button click
+    //obtain Work category content and populate list view on Work button click
     private  void populateWorkTasks(){
         cursor = dbHelper.getAllByCategories(user_name,"Work");
         taskListPopulate();
@@ -308,7 +355,13 @@ public class PendingTasks extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             boolean b = false;
                             try {
-                                b = dbHelper.deleteTask(l);
+
+                                b = dbHelper.deleteTask(l, randomUserId);
+                                Cursor Cursor = dbHelper.getTaskById(l, randomUserId);
+                                categoryToPopulate = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+
+
+
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
@@ -345,7 +398,7 @@ public class PendingTasks extends AppCompatActivity {
         Cursor getTitleForDeletionConfirm = null;
         String taskTitle = null;
         try {
-            getTitleForDeletionConfirm = dbHelper.getTaskById(taskIdOnList);
+            getTitleForDeletionConfirm = dbHelper.getTaskById(taskIdOnList,randomUserId);
         }catch (Exception e){
             e.printStackTrace();
         }
