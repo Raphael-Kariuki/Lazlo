@@ -22,13 +22,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class performTask extends AppCompatActivity {
 
     AppCompatImageButton btnStartTask2,btnPauseTask, btnResumeTask;
     AppCompatButton btnCancelDoingTask, btnCompleteDoingTask;
-    Date startTaskDate, pauseTaskDate,resumeTaskDate,cancelTaskDate, completeTaskDate;
     int taskState;
     AlertDialog.Builder builder;
     long totalTaskDuration;
@@ -38,7 +39,7 @@ public class performTask extends AppCompatActivity {
     Double randomUserId;
     Double randomTaskId;
     String Title ,Description, Category, Bills,Deadline;
-    LocalDateTime formattedLocalDateTime;
+    LocalDateTime formattedLocalDateTime,startTaskDate,pauseTaskDate,resumeTaskDate, completeTaskDate,cancelTaskDate;
 
     @Override
     public void onBackPressed(){
@@ -104,10 +105,8 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 1;
-                //Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-                System.out.println(LocalDateTime.now(ZoneId.of("GMT+3")));
-                System.out.println(Date.from(LocalDateTime.now(ZoneId.of("GMT+3")).atZone(ZoneId.systemDefault()).toInstant()));
-                startTaskDate = new Date();
+
+                startTaskDate = getDateTimeNow();
                 Cursor cursor = null;
                 Integer trial;
                 boolean b = false;
@@ -154,7 +153,7 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.INVISIBLE);
                 taskState = 2;
-                pauseTaskDate = new Date();
+                pauseTaskDate = getDateTimeNow();
 
                 //update db
 
@@ -175,7 +174,7 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 3;
-                resumeTaskDate = new Date();
+                resumeTaskDate = getDateTimeNow();
 
                 //update db
                 boolean b = updateTaskStatusOnResumeButtonPress(randomTaskId,resumeTaskDate,3);
@@ -194,6 +193,9 @@ public class performTask extends AppCompatActivity {
         btnCancelDoingTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cancelTaskDate = getDateTimeNow();
+                taskState = 4;
+
                 builder.setCancelable(true);
                 builder.setTitle("Cancel working on a task");
                 builder.setMessage("Are you sure you want to cancel working on this task?");
@@ -203,7 +205,7 @@ public class performTask extends AppCompatActivity {
 
                         finish();
                         //update db
-                        boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,4);
+                        boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,taskState);
                         if (b){
                             Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
                         }else{
@@ -218,36 +220,58 @@ public class performTask extends AppCompatActivity {
                     }
                 });
                 builder.show();
-                taskState = 4;
-                cancelTaskDate = new Date();
             }
         });
         btnCompleteDoingTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                completeTaskDate = new Date();
+
+                //obtain current date and time
+                completeTaskDate = getDateTimeNow();
+
                 //setup to determine whether the task was completed in completedTaskCreationDate run or not
                 String typeOfCompletion = null;
 
+
+                //taskState one is obtained when the start button is clicked, if the state remains so to completion, that means
+                // the activity wasn't paused to completion, thus assign it as oneShot kinda task. Its duration is simple, completeTme minus startTime
+                //LocalDateTime has to be converted to Date so as to obtain the epoch time in long format which can the be used to obtain duration
                 if(taskState == 1){
                     typeOfCompletion = "oneShot";
-                    totalTaskDuration = completeTaskDate.getTime() - startTaskDate.getTime();
+                    totalTaskDuration = getDateFromLocalDateTime(completeTaskDate).getTime() - getDateFromLocalDateTime(startTaskDate).getTime();
+
+                    /*
+                    * 1hr = 60min
+                    * 1min = 60 sec
+                    * 1 sec = 1000ms
+                    *       =
+                    * 1hr = 3,600,000 ms
+                    * 1 min = 60,000 ms
+                    *
+                    *
+                    * */
                     long hours = totalTaskDuration/3600000;
                     long minutes = totalTaskDuration/60000;
                     long seconds = totalTaskDuration/1000;
-                    System.out.println("Time taken: " + hours + ":" + minutes + ":" + seconds);
+
+                    /*
+                    * Task State 3 signifies the resume task button was clicked, thus assign the completion type as doubleShot
+                    * */
                 }else if(taskState == 3){
                     typeOfCompletion = "doubleShot";
-                    totalTaskDuration = (pauseTaskDate.getTime() - startTaskDate.getTime()) + (completeTaskDate.getTime() - resumeTaskDate.getTime());
+                    totalTaskDuration = (getDateFromLocalDateTime(pauseTaskDate).getTime() - getDateFromLocalDateTime(startTaskDate).getTime()) + (getDateFromLocalDateTime(completeTaskDate).getTime() - getDateFromLocalDateTime(resumeTaskDate).getTime());
                     long hours = totalTaskDuration/3600000;
                     long minutes = totalTaskDuration/60000;
                     long seconds = totalTaskDuration/1000;
-                    System.out.println("Time taken: " + hours + ":" + minutes + ":" + seconds);
                 }
                 //setup taskState for completed tasks
                 taskState = 5;
 
 
+                /*
+                * taskStatus table has to be updated with new values of completionTime, Duration typeOfCompletion and the new state which is 5 = completed
+                * If successful in updating the taskStatus table, obtain values
+                * */
 
                 boolean b = updateTaskStatusOnCompleteButtonPress(randomTaskId,completeTaskDate,totalTaskDuration,typeOfCompletion,taskState);
                 if (b){
@@ -255,20 +279,20 @@ public class performTask extends AppCompatActivity {
                     Cursor cursor = dbHelper.getCompletedTaskById(randomTaskId);
                     if (cursor.moveToFirst() ){
                         Double randTaskId,randUserId;
-                        Date taskStartTime = null,taskPauseTime = null,taskResumeTime = null,taskCancelTime = null,taskCompleteTime = null;
+                        LocalDateTime taskStartTime = null,taskPauseTime = null,taskResumeTime = null,taskCancelTime = null,taskCompleteTime = null;
                         long taskDuration;
                         String taskType;
                         Integer taskTrial;
                         if (taskState == 3){
-                            taskPauseTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskPauseTime")));
-                            taskResumeTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskResumeTime")));
-                            taskCancelTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCancelTime")));
-                            taskCompleteTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                            taskPauseTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskPauseTime")));
+                            taskResumeTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskResumeTime")));
+                            taskCancelTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCancelTime")));
+                            taskCompleteTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
                         }else if(taskState == 1){
-                            taskCompleteTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                            taskCompleteTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
                         }
 
-                        taskStartTime = stringToDate(cursor.getString(cursor.getColumnIndexOrThrow("taskStartTime")));
+                        taskStartTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskStartTime")));
                         randUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));
                         randTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
                         taskDuration = cursor.getLong(cursor.getColumnIndexOrThrow("taskDuration"));
@@ -283,7 +307,8 @@ public class performTask extends AppCompatActivity {
                                 if (d){
                                     Toast.makeText(performTask.this, "Properly transferred", Toast.LENGTH_SHORT).show();
 
-                                    //
+                                    //update taskList table with new taskState = 5 instead of deleting the task which reduces the count of total
+                                    // tasks which is required on the dashboard
                                     boolean g = updateTaskListWithTaskState(randomTaskId, taskState);
 
                                     ////delete from taskStatus:cool
@@ -339,9 +364,9 @@ public class performTask extends AppCompatActivity {
         runningTaskDeadline.setText(Deadline);
     }
 
-    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, Date taskStartTime,
-                                            Date taskPauseTime, Date taskResumeTime, Date taskCancelTime,
-                                            Date taskCompleteTime, Long taskDuration, String taskType,
+    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, LocalDateTime taskStartTime,
+                                            LocalDateTime taskPauseTime, LocalDateTime taskResumeTime, LocalDateTime taskCancelTime,
+                                            LocalDateTime taskCompleteTime, Long taskDuration, String taskType,
                                             Integer taskTrial, Integer taskState){
         boolean success = false;
         try {
@@ -353,9 +378,9 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime,
-                                                 Date taskResumeTime, Date taskCancelTime,
-                                                 Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
+    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,LocalDateTime taskStartTime, LocalDateTime taskPauseTime,
+                                                 LocalDateTime taskResumeTime, LocalDateTime taskCancelTime,
+                                                 LocalDateTime taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
         boolean success = false;
         try {
             success = dbHelper.insertCompleted_N_DeletedTasks(randUserId,randTaskId,taskDeadline,taskStartTime,taskPauseTime,
@@ -386,7 +411,7 @@ public class performTask extends AppCompatActivity {
         return  success;
     }
 
-    public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,Date taskStartTime,Integer taskTrial){
+    public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,LocalDateTime taskStartTime,Integer taskTrial){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnStartByTaskId(randTaskId,taskStartTime,taskTrial);
@@ -396,7 +421,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnPauseButtonPress(Double randTaskId,Date taskPauseTime, String taskType, Integer taskState){
+    public boolean updateTaskStatusOnPauseButtonPress(Double randTaskId,LocalDateTime taskPauseTime, String taskType, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnPauseByTaskId(randTaskId,taskPauseTime, taskType,taskState);
@@ -406,7 +431,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnResumeButtonPress(Double randTaskId,Date taskResumeTime, Integer taskState){
+    public boolean updateTaskStatusOnResumeButtonPress(Double randTaskId,LocalDateTime taskResumeTime, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnResumeByTaskId(randTaskId,taskResumeTime,taskState);
@@ -416,7 +441,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnCancelButtonPress(Double randTaskId,Date taskCancelTime, Integer taskState){
+    public boolean updateTaskStatusOnCancelButtonPress(Double randTaskId,LocalDateTime taskCancelTime, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnCancelByTaskId(randTaskId,taskCancelTime,taskState);
@@ -427,7 +452,7 @@ public class performTask extends AppCompatActivity {
 
     }
 
-    public boolean updateTaskStatusOnCompleteButtonPress(Double randTaskId,Date taskCompleteTime, long taskDuration,String taskType,Integer taskState){
+    public boolean updateTaskStatusOnCompleteButtonPress(Double randTaskId,LocalDateTime taskCompleteTime, long taskDuration,String taskType,Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnCompleteByTaskId(randTaskId,taskCompleteTime,taskDuration,taskType,taskState);
@@ -470,10 +495,72 @@ public class performTask extends AppCompatActivity {
         }
         return formattedLocalDateTime;
     }
+    //function that receives a date string returns a localDateTime
+    private LocalDateTime LocalDateTimeFormatPlusSeconds(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm:ss");
+        try {
+            formattedLocalDateTime = getDateFromString(selectedDate, dateTimeFormatter);
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+        }
+        return formattedLocalDateTime;
+    }
+    //function that receives a date string returns a localDateTime
+    private LocalDateTime LocalDateTimeFormatPlusSecondsFromDB(String selectedDate){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-L-d HH:mm:ss");
+        try {
+            formattedLocalDateTime = getDateFromString(selectedDate, dateTimeFormatter);
+        }catch (IllegalArgumentException e){
+            System.out.println("Date Exception" + e);
+        }
+        return formattedLocalDateTime;
+    }
+    public LocalDateTime getDateTimeNow(){
+        Calendar calendar = Calendar.getInstance(new Locale("en","KE"));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
 
+        String formattedHour = null, formattedMinute = null;        String formattedMonth = null,formattedDay = null,formattedSecond =null;
+
+        if (hour < 10){
+            formattedHour = "0" + hour;
+        }else{
+            formattedHour = "" + hour;
+        }
+        if (minute < 10 ){
+            formattedMinute = "0" + minute;
+        }else{
+            formattedMinute = "" + minute;
+        }
+
+        if (month + 1 <= 9){
+            formattedMonth = "0" + (month + 1) ;
+        }else{
+            formattedMonth = String.valueOf(month + 1);
+        }
+        if(day < 10){
+            formattedDay = "0" + day;
+        }else{
+            formattedDay = String.valueOf(day);
+        }
+        if(second < 10){
+            formattedSecond = "0" + second;
+        }else{
+            formattedSecond = String.valueOf(second);
+        }
+        String dateNow = formattedDay + "-" + formattedMonth + "-" + year + " " + formattedHour +":" + formattedMinute + ":" + formattedSecond;
+        return LocalDateTimeFormatPlusSeconds(dateNow);
+
+    }
     public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
         return LocalDateTime.parse(string, dateTimeFormatter);
     }
-
+    private Date getDateFromLocalDateTime(LocalDateTime localDateTime){
+        return Date.from(localDateTime.now(ZoneId.of("GMT+3")).atZone(ZoneId.systemDefault()).toInstant());
+    }
 
 }

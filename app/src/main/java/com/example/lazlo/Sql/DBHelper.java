@@ -21,13 +21,13 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         //TODO: remove username from taskList completely replace with userId
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskDeadline LOCALDATETIME NOT NULL,TaskCreationTime LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LOCALDATETIME NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
-        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
-        DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime DATE NOT NULL, taskPauseTime DATE , taskResumeTime DATE, taskCancelTime DATE,taskCompleteTime DATE, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
+        DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LOCALDATETIME NOT NULL, taskPauseTime LOCALDATETIME , taskResumeTime LOCALDATETIME, taskCancelTime LOCALDATETIME,taskCompleteTime LOCALDATETIME, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
+        DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LOCALDATETIME NOT NULL, taskPauseTime LOCALDATETIME , taskResumeTime LOCALDATETIME, taskCancelTime LOCALDATETIME,taskCompleteTime LOCALDATETIME, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
     }
 
     //method run when there's a db upgrade
@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to inert taskStatus
-    public boolean insertTaskStatus(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
+    public boolean insertTaskStatus(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,LocalDateTime taskStartTime, LocalDateTime taskPauseTime, LocalDateTime taskResumeTime, LocalDateTime taskCancelTime, LocalDateTime taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial, Integer taskState) {
         ContentValues cv = new ContentValues();
         if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
         if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
@@ -81,7 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to insert completed tasks
-    public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId,LocalDateTime taskDeadline, Date taskStartTime, Date taskPauseTime, Date taskResumeTime, Date taskCancelTime, Date taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial) {
+    public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId,LocalDateTime taskDeadline, LocalDateTime taskStartTime, LocalDateTime taskPauseTime, LocalDateTime taskResumeTime, LocalDateTime taskCancelTime, LocalDateTime taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial) {
         ContentValues cv = new ContentValues();
         if (randUserId != null && randUserId > 1) cv.put("randUserId", randUserId);
         if (randTaskId != null && randTaskId > 1) cv.put("randTaskId", randTaskId);
@@ -117,7 +117,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //update taskTrial and startTime values
-    public boolean updateTaskStatusOnStartByTaskId(Double randomTaskId, Date taskStartTime,Integer taskTrial){
+    public boolean updateTaskStatusOnStartByTaskId(Double randomTaskId, LocalDateTime taskStartTime,Integer taskTrial){
         ContentValues cv = new ContentValues();
         cv.put("taskStartTime", String.valueOf(taskStartTime));
         if (taskTrial != null && taskTrial >= 1) cv.put("taskTrial", taskTrial);
@@ -128,7 +128,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to update pause time, type and state on pause
-    public boolean updateTaskStatusOnPauseByTaskId(Double randomTaskId, Date taskPauseTime,String taskType, Integer taskState){
+    public boolean updateTaskStatusOnPauseByTaskId(Double randomTaskId, LocalDateTime taskPauseTime,String taskType, Integer taskState){
         ContentValues cv = new ContentValues();
         cv.put("taskPauseTime", String.valueOf(taskPauseTime));
         cv.put("taskType", taskType);
@@ -140,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to update time and state on resume
-    public boolean updateTaskStatusOnResumeByTaskId(Double randomTaskId, Date taskResumeTime,Integer taskState){
+    public boolean updateTaskStatusOnResumeByTaskId(Double randomTaskId, LocalDateTime taskResumeTime,Integer taskState){
         ContentValues cv = new ContentValues();
         cv.put("taskResumeTime", String.valueOf(taskResumeTime));
         if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
@@ -151,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to update task state to state 4 repin cancelled tasks and cancel time
-    public boolean updateTaskStatusOnCancelByTaskId(Double randomTaskId, Date taskCancelTime,Integer taskState){
+    public boolean updateTaskStatusOnCancelByTaskId(Double randomTaskId, LocalDateTime taskCancelTime,Integer taskState){
         ContentValues cv = new ContentValues();
         cv.put("taskCancelTime", String.valueOf(taskCancelTime));
         if (taskState != null && taskState >= 1) cv.put("taskState", taskState);
@@ -162,7 +162,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to update task details with taskType, duration, status and completion time
-    public boolean updateTaskStatusOnCompleteByTaskId(Double randomTaskId, Date taskCompleteTime,long taskDuration,String taskType,Integer taskState){
+    public boolean updateTaskStatusOnCompleteByTaskId(Double randomTaskId, LocalDateTime taskCompleteTime,long taskDuration,String taskType,Integer taskState){
         ContentValues cv = new ContentValues();
         cv.put("taskCompleteTime", String.valueOf(taskCompleteTime));
         cv.put("taskType", taskType);

@@ -281,8 +281,8 @@ public class AddTasks extends AppCompatActivity {
         }
     }
 
-    public LocalDateTime formatLocalDateTime(String date_now){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+    public LocalDateTime formatLocalDateTimePlusSeconds(String date_now){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm:ss");
         LocalDateTime formatted_dateNow = null;
         try {
            formatted_dateNow = getDateFromString(date_now, dateTimeFormatter);
@@ -299,8 +299,9 @@ public class AddTasks extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
 
-        String formattedHour = null, formattedMinute = null;        String formattedMonth = null,formattedDay = null;
+        String formattedHour = null, formattedMinute = null;        String formattedMonth = null,formattedDay = null,formattedSecond = null;
 
         if (hour < 10){
             formattedHour = "0" + hour;
@@ -323,8 +324,13 @@ public class AddTasks extends AppCompatActivity {
         }else{
             formattedDay = String.valueOf(day);
         }
-        String dateNow = formattedDay + "-" + formattedMonth + "-" + year + " " + formattedHour +":" + formattedMinute;
-        return formatLocalDateTime(dateNow);
+        if(second < 10){
+            formattedSecond = "0" + second;
+        }else{
+            formattedSecond = String.valueOf(second);
+        }
+        String dateNow = formattedDay + "-" + formattedMonth + "-" + year + " " + formattedHour +":" + formattedMinute + ":" + formattedSecond;
+        return formatLocalDateTimePlusSeconds(dateNow);
 
     }
     public boolean willPriceFormat(String priceToParse){
