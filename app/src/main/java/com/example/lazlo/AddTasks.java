@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -24,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AddTasks extends AppCompatActivity {
@@ -147,6 +150,7 @@ public class AddTasks extends AppCompatActivity {
                 String selectedDate_String = select_date.getText().toString().trim();
                 String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
                 String selectedCategory_string = tasksCategories.getText().toString().trim();
+                String selectedTime_String = selectTime_AutocompleteView.getText().toString().trim();
                 String selectedDateTime = selectedDate_String + " " + selected_time;
 
                 //process inputs
@@ -154,33 +158,57 @@ public class AddTasks extends AppCompatActivity {
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
                             if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
-                                if ( willPriceFormat(TaskAssociatedPrice)){
-                                    if (!selectedDate_String.isEmpty() && willDateFormat(selectedDateTime)){
-                                        date_now = LocalDateTime.now();
-                                        if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
-                                            try {
-                                                //insert task to db if dates are cool
-                                                houseOfCommons commons = new houseOfCommons();
-                                                Double randomTaskId = commons.generateRandomId();
-                                                Integer defaultTaskState = 0;
-                                                b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,getDateTimeNow(),defaultTaskState);
+                                if (!TaskAssociatedPrice.isEmpty() && priceCheck(TaskAssociatedPrice)){
+                                    willPriceFormat(TaskAssociatedPrice);
+                                    if (!selectedDate_String.isEmpty() && selectedDate_String != null && dateCheck(selectedDate_String)){
+                                        if (!selectedTime_String.isEmpty() && selectedTime_String != null && timeCheck(selectedTime_String)){
+                                            if (willDateFormat(selectedDateTime)){
+                                                date_now = LocalDateTime.now();
+                                                if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
+                                                    try {
+                                                        //insert task to db if dates are cool
+                                                        houseOfCommons commons = new houseOfCommons();
+                                                        Double randomTaskId = commons.generateRandomId();
+                                                        Integer defaultTaskState = 0;
+                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,getDateTimeNow(),defaultTaskState);
 
-                                            }catch(Exception e){
-                                                System.out.println("Db insertion error: " + e);
+                                                    }catch(Exception e){
+                                                        System.out.println("Db insertion error: " + e);
+                                                    }
+                                                    if (b){
+                                                        Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
+                                                        Intent categoryStringToSendToPendingTasks = new Intent(getApplicationContext(), PendingTasks.class);
+                                                        categoryStringToSendToPendingTasks.putExtra("tempCategory", selected_category);
+                                                        startActivity(categoryStringToSendToPendingTasks);
+                                                        //finish();
+                                                    }else {
+                                                        Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }else{
+                                                    Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
+                                                    select_date.setText("");
+                                                }
+                                            }else{
+                                                selectedDate_TextInputLayout.setErrorEnabled(true);
+                                                selectedDate_TextInputLayout.setError("select date");
+                                                selectedTime_TextInputLayout.setErrorEnabled(true);
+                                                selectedTime_TextInputLayout.setError("select time");
+                                                taskTitle_TextLayout.setErrorEnabled(false);
+                                                taskDescription_TextLayout.setErrorEnabled(false);
+                                                price_TextLayout.setErrorEnabled(false);
+                                                tasksCategoryTextLayout.setErrorEnabled(false);
                                             }
-                                            if (b){
-                                                Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
-                                                Intent categoryStringToSendToPendingTasks = new Intent(getApplicationContext(), PendingTasks.class);
-                                                categoryStringToSendToPendingTasks.putExtra("tempCategory", selected_category);
-                                                startActivity(categoryStringToSendToPendingTasks);
-                                                //finish();
-                                            }else {
-                                                Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
-                                            }
+
                                         }else{
-                                            Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
-                                            select_date.setText("");
+                                            selectedDate_TextInputLayout.setErrorEnabled(false);
+                                            selectedTime_TextInputLayout.setErrorEnabled(true);
+                                            selectedTime_TextInputLayout.setError("select time");
+                                            taskTitle_TextLayout.setErrorEnabled(false);
+                                            taskDescription_TextLayout.setErrorEnabled(false);
+                                            price_TextLayout.setErrorEnabled(false);
+                                            tasksCategoryTextLayout.setErrorEnabled(false);
                                         }
+
 
                                     }else{
                                         selectedDate_TextInputLayout.setErrorEnabled(true);
@@ -189,15 +217,16 @@ public class AddTasks extends AppCompatActivity {
                                         taskDescription_TextLayout.setErrorEnabled(false);
                                         price_TextLayout.setErrorEnabled(false);
                                         tasksCategoryTextLayout.setErrorEnabled(false);
+                                        selectedTime_TextInputLayout.setErrorEnabled(false);
                                     }
                                 }else{
                                     price_TextLayout.setErrorEnabled(true);
                                     price_TextLayout.setError("Enter a money figure");
                                     taskTitle_TextLayout.setErrorEnabled(false);
                                     taskDescription_TextLayout.setErrorEnabled(false);
-                                    price_TextLayout.setErrorEnabled(false);
                                     tasksCategoryTextLayout.setErrorEnabled(false);
                                     selectedDate_TextInputLayout.setErrorEnabled(false);
+                                    selectedTime_TextInputLayout.setErrorEnabled(false);
                                 }
 
                             }  else{
@@ -207,6 +236,7 @@ public class AddTasks extends AppCompatActivity {
                                 taskDescription_TextLayout.setErrorEnabled(false);
                                 price_TextLayout.setErrorEnabled(false);
                                 selectedDate_TextInputLayout.setErrorEnabled(false);
+                                selectedTime_TextInputLayout.setErrorEnabled(false);
                             }
 
 
@@ -217,6 +247,7 @@ public class AddTasks extends AppCompatActivity {
                             taskDescription_TextLayout.setErrorEnabled(false);
                             price_TextLayout.setErrorEnabled(false);
                             selectedDate_TextInputLayout.setErrorEnabled(false);
+                            selectedTime_TextInputLayout.setErrorEnabled(false);
                         }
                     }else{
                         taskDescription_TextLayout.setErrorEnabled(true);
@@ -225,6 +256,7 @@ public class AddTasks extends AppCompatActivity {
                         tasksCategoryTextLayout.setErrorEnabled(false);
                         price_TextLayout.setErrorEnabled(false);
                         selectedDate_TextInputLayout.setErrorEnabled(false);
+                        selectedTime_TextInputLayout.setErrorEnabled(false);
                     }
 
                 }else{
@@ -234,6 +266,7 @@ public class AddTasks extends AppCompatActivity {
                     tasksCategoryTextLayout.setErrorEnabled(false);
                     price_TextLayout.setErrorEnabled(false);
                     selectedDate_TextInputLayout.setErrorEnabled(false);
+                    selectedTime_TextInputLayout.setErrorEnabled(false);
                     }
 
 
@@ -269,6 +302,24 @@ public class AddTasks extends AppCompatActivity {
 
             }
         });
+    }
+    public boolean dateCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[-]).{10}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
+    public boolean timeCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[:]).{3,9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
+    public boolean priceCheck(String passphrase){
+        String regex = "^(?=.*[0-9]).{1,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
     }
     public boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
@@ -334,7 +385,6 @@ public class AddTasks extends AppCompatActivity {
 
     }
     public boolean willPriceFormat(String priceToParse){
-//TODO: check for wrong input on price
                 if (!priceToParse.isEmpty()){
                     try {
                         Price = Double.parseDouble(priceToParse);
