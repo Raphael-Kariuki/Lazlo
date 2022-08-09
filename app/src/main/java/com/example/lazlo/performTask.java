@@ -39,7 +39,12 @@ public class performTask extends AppCompatActivity {
     Double randomUserId;
     Double randomTaskId;
     String Title ,Description, Category, Bills,Deadline;
-    LocalDateTime formattedLocalDateTime,startTaskDate,pauseTaskDate,resumeTaskDate, completeTaskDate,cancelTaskDate;
+    LocalDateTime formattedLocalDateTime;
+    long startTaskDate;
+    long pauseTaskDate;
+    long resumeTaskDate;
+    long completeTaskDate;
+    long cancelTaskDate;
 
     @Override
     public void onBackPressed(){
@@ -106,7 +111,7 @@ public class performTask extends AppCompatActivity {
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 1;
 
-                startTaskDate = getDateTimeNow();
+                startTaskDate = new Date().getTime();
                 Cursor cursor = null;
                 Integer trial;
                 boolean b = false;
@@ -153,7 +158,7 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.INVISIBLE);
                 taskState = 2;
-                pauseTaskDate = getDateTimeNow();
+                pauseTaskDate = new Date().getTime();
 
                 //update db
 
@@ -174,7 +179,7 @@ public class performTask extends AppCompatActivity {
                 btnCancelDoingTask.setVisibility(View.VISIBLE);
                 btnCompleteDoingTask.setVisibility(View.VISIBLE);
                 taskState = 3;
-                resumeTaskDate = getDateTimeNow();
+                resumeTaskDate = new Date().getTime();
 
                 //update db
                 boolean b = updateTaskStatusOnResumeButtonPress(randomTaskId,resumeTaskDate,3);
@@ -193,7 +198,7 @@ public class performTask extends AppCompatActivity {
         btnCancelDoingTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cancelTaskDate = getDateTimeNow();
+                cancelTaskDate = new Date().getTime();
                 taskState = 4;
 
                 builder.setCancelable(true);
@@ -227,7 +232,8 @@ public class performTask extends AppCompatActivity {
             public void onClick(View view) {
 
                 //obtain current date and time
-                completeTaskDate = getDateTimeNow();
+                completeTaskDate = new Date().getTime();
+
 
                 //setup to determine whether the task was completed in completedTaskCreationDate run or not
                 String typeOfCompletion = null;
@@ -238,7 +244,13 @@ public class performTask extends AppCompatActivity {
                 //LocalDateTime has to be converted to Date so as to obtain the epoch time in long format which can the be used to obtain duration
                 if(taskState == 1){
                     typeOfCompletion = "oneShot";
-                    totalTaskDuration = getDateFromLocalDateTime(completeTaskDate).getTime() - getDateFromLocalDateTime(startTaskDate).getTime();
+                    try {
+                        totalTaskDuration = completeTaskDate - startTaskDate;
+                        System.out.println("Duration1: " + completeTaskDate + completeTaskDate + startTaskDate );
+                        System.out.println("Duration1: " + totalTaskDuration );
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                     /*
                     * 1hr = 60min
@@ -257,15 +269,20 @@ public class performTask extends AppCompatActivity {
                     /*
                     * Task State 3 signifies the resume task button was clicked, thus assign the completion type as doubleShot
                     * */
+
                 }else if(taskState == 3){
                     typeOfCompletion = "doubleShot";
-                    totalTaskDuration = (getDateFromLocalDateTime(pauseTaskDate).getTime() - getDateFromLocalDateTime(startTaskDate).getTime()) + (getDateFromLocalDateTime(completeTaskDate).getTime() - getDateFromLocalDateTime(resumeTaskDate).getTime());
+                    try {
+                        totalTaskDuration = (pauseTaskDate - startTaskDate) + (completeTaskDate - resumeTaskDate);
+                        System.out.println("Duration2: " + totalTaskDuration );
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     long hours = totalTaskDuration/3600000;
                     long minutes = totalTaskDuration/60000;
                     long seconds = totalTaskDuration/1000;
                 }
-                //setup taskState for completed tasks
-                taskState = 5;
+
 
 
                 /*
@@ -273,26 +290,50 @@ public class performTask extends AppCompatActivity {
                 * If successful in updating the taskStatus table, obtain values
                 * */
 
-                boolean b = updateTaskStatusOnCompleteButtonPress(randomTaskId,completeTaskDate,totalTaskDuration,typeOfCompletion,taskState);
+                System.out.println("Updating db");
+                boolean b = false;
+                try {
+                    b = updateTaskStatusOnCompleteButtonPress(randomTaskId,completeTaskDate,totalTaskDuration,typeOfCompletion,taskState);
+                    System.out.println("success hit to db..");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 if (b){
                     Toast.makeText(performTask.this, "Completion success", Toast.LENGTH_SHORT).show();
-                    Cursor cursor = dbHelper.getCompletedTaskById(randomTaskId);
+                    System.out.println("proceeding..");
+                    Cursor cursor = null;
+                    try {
+                        cursor = dbHelper.getCompletedTaskById(randomTaskId);
+                        System.out.println("success hit to db2..");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     if (cursor.moveToFirst() ){
                         Double randTaskId,randUserId;
-                        LocalDateTime taskStartTime = null,taskPauseTime = null,taskResumeTime = null,taskCancelTime = null,taskCompleteTime = null;
+                        String taskStartTime = null;
+                        String taskPauseTime = null;
+                        String taskResumeTime = null;
+                        String taskCancelTime = null;
+                        String taskCompleteTime = null;
                         long taskDuration;
                         String taskType;
                         Integer taskTrial;
+                        System.out.println("populating..");
                         if (taskState == 3){
-                            taskPauseTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskPauseTime")));
-                            taskResumeTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskResumeTime")));
-                            taskCancelTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCancelTime")));
-                            taskCompleteTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                            System.out.println("Parsing..");
+                            taskPauseTime = cursor.getString(cursor.getColumnIndexOrThrow("taskPauseTime"));
+                            taskResumeTime = cursor.getString(cursor.getColumnIndexOrThrow("taskResumeTime"));
+                            taskCancelTime = cursor.getString(cursor.getColumnIndexOrThrow("taskCancelTime"));
+                            taskCompleteTime = cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime"));
                         }else if(taskState == 1){
-                            taskCompleteTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime")));
+                            System.out.println("Parsing2..");
+                            taskCompleteTime = cursor.getString(cursor.getColumnIndexOrThrow("taskCompleteTime"));
                         }
+                        //setup taskState for completed tasks
+                        taskState = 5;
 
-                        taskStartTime = LocalDateTimeFormatPlusSecondsFromDB(cursor.getString(cursor.getColumnIndexOrThrow("taskStartTime")));
+                        taskStartTime = cursor.getString(cursor.getColumnIndexOrThrow("taskStartTime"));
                         randUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));
                         randTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
                         taskDuration = cursor.getLong(cursor.getColumnIndexOrThrow("taskDuration"));
@@ -364,9 +405,9 @@ public class performTask extends AppCompatActivity {
         runningTaskDeadline.setText(Deadline);
     }
 
-    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, LocalDateTime taskStartTime,
-                                            LocalDateTime taskPauseTime, LocalDateTime taskResumeTime, LocalDateTime taskCancelTime,
-                                            LocalDateTime taskCompleteTime, Long taskDuration, String taskType,
+    public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, Long taskStartTime,
+                                            Long taskPauseTime, Long taskResumeTime, Long taskCancelTime,
+                                            Long taskCompleteTime, Long taskDuration, String taskType,
                                             Integer taskTrial, Integer taskState){
         boolean success = false;
         try {
@@ -378,9 +419,9 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,LocalDateTime taskStartTime, LocalDateTime taskPauseTime,
-                                                 LocalDateTime taskResumeTime, LocalDateTime taskCancelTime,
-                                                 LocalDateTime taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
+    public boolean insertCompletedTaskOnComplete(Double randUserId, Double randTaskId, LocalDateTime taskDeadline,String taskStartTime, String taskPauseTime,
+                                                 String taskResumeTime, String taskCancelTime,
+                                                 String taskCompleteTime, Long taskDuration, String taskType, Integer taskTrial){
         boolean success = false;
         try {
             success = dbHelper.insertCompleted_N_DeletedTasks(randUserId,randTaskId,taskDeadline,taskStartTime,taskPauseTime,
@@ -411,7 +452,7 @@ public class performTask extends AppCompatActivity {
         return  success;
     }
 
-    public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,LocalDateTime taskStartTime,Integer taskTrial){
+    public boolean updateTaskStatusOnStartButtonPress(Double randTaskId,long taskStartTime,Integer taskTrial){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnStartByTaskId(randTaskId,taskStartTime,taskTrial);
@@ -421,7 +462,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnPauseButtonPress(Double randTaskId,LocalDateTime taskPauseTime, String taskType, Integer taskState){
+    public boolean updateTaskStatusOnPauseButtonPress(Double randTaskId,long taskPauseTime, String taskType, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnPauseByTaskId(randTaskId,taskPauseTime, taskType,taskState);
@@ -431,7 +472,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnResumeButtonPress(Double randTaskId,LocalDateTime taskResumeTime, Integer taskState){
+    public boolean updateTaskStatusOnResumeButtonPress(Double randTaskId,long taskResumeTime, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnResumeByTaskId(randTaskId,taskResumeTime,taskState);
@@ -441,7 +482,7 @@ public class performTask extends AppCompatActivity {
         return success;
 
     }
-    public boolean updateTaskStatusOnCancelButtonPress(Double randTaskId,LocalDateTime taskCancelTime, Integer taskState){
+    public boolean updateTaskStatusOnCancelButtonPress(Double randTaskId,long taskCancelTime, Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnCancelByTaskId(randTaskId,taskCancelTime,taskState);
@@ -452,7 +493,7 @@ public class performTask extends AppCompatActivity {
 
     }
 
-    public boolean updateTaskStatusOnCompleteButtonPress(Double randTaskId,LocalDateTime taskCompleteTime, long taskDuration,String taskType,Integer taskState){
+    public boolean updateTaskStatusOnCompleteButtonPress(Double randTaskId,long taskCompleteTime, long taskDuration,String taskType,Integer taskState){
         boolean success = false;
         try {
             success = dbHelper.updateTaskStatusOnCompleteByTaskId(randTaskId,taskCompleteTime,taskDuration,taskType,taskState);
