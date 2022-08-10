@@ -52,7 +52,8 @@ public class AddTasks extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), PendingTasks.class));
+        //startActivity(new Intent(getApplicationContext(), PendingTasks.class));
+        finish();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

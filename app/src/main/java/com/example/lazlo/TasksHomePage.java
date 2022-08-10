@@ -9,7 +9,7 @@ import android.view.View;
 
 public class TasksHomePage extends AppCompatActivity {
 
-    AppCompatButton btnPendingTasks, btnCompletedTasks, btnDraftTasks;
+    AppCompatButton btnPendingTasks, btnCompletedTasks, btnDraftTasks, btnAddTasks;
 
     @Override
     public  void onBackPressed(){
@@ -19,11 +19,17 @@ public class TasksHomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks_home_page);
-
+        btnAddTasks = findViewById(R.id.btnAddTasks);
         btnPendingTasks = findViewById(R.id.btnPendingTasks);
         btnCompletedTasks = findViewById(R.id.btnCompletedTasks);
         btnDraftTasks = findViewById(R.id.btnDraftTasks);
 
+        btnAddTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddTasks.class));
+            }
+        });
         btnCompletedTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
