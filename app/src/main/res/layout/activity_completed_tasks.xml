@@ -8,64 +8,52 @@
     tools:context=".PendingTasks"
     >
 
-    <LinearLayout
-        android:id="@+id/completedTasks_accountActions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@color/grey"
-        >
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/completedTasks_userName"
-            android:layout_width="0dp"
-            android:layout_height="62dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:background="@color/grey"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/completedTasks_hamburger_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:contentDescription="@string/menu"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_baseline_more2_vert_24"
-            android:layout_gravity="center"
-            style="?android:attr/borderlessButtonStyle"
-            app:backgroundTint="@color/white"
-            />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/menu"
-        android:layout_below="@id/completedTasks_accountActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         >
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/completedTasks_homeTask"
+
+        <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/completedTasks_homeTask"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_home_24"
+                android:padding="10dp"
+                android:text="@string/home"
+                android:textColor="@color/black"
+                android:textSize="9sp"
+
+
+                />
+        <TextView
+            android:id="@+id/completedTasks_homeUnder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/home"
-            android:textSize="9sp"
-            android:drawableTop="@drawable/ic_baseline_home_24"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:background="@color/white"
+            android:layout_weight="3"
+            android:background="@color/black"/>
+    </LinearLayout>
 
 
-            />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completedTasks_shoppingTasks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/shopping"
             android:textSize="9sp"
@@ -74,10 +62,24 @@
             android:padding="10dp"
             android:background="@color/white"
             />
+        <TextView
+            android:id="@+id/completedTasks_shoppingUnder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@color/black"/>
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completedTasks_schoolTasks"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_baseline_school_24"
             android:text="@string/school"
@@ -86,10 +88,23 @@
             android:padding="10dp"
             android:background="@color/white"
             />
+        <TextView
+        android:id="@+id/completedTasks_schoolUnder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="@color/black"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completedTasks_businessTasks"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/business"
             android:textSize="9sp"
@@ -98,10 +113,22 @@
             android:padding="10dp"
             android:background="@color/white"
             />
+        <TextView
+            android:id="@+id/completedTasks_businessUnder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completedTasks_workTasks"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/work"
             android:textSize="9sp"
@@ -110,6 +137,13 @@
             android:padding="10dp"
             android:background="@color/white"
             />
+        <TextView
+            android:id="@+id/completedTasks_workUnder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@color/black"/>
+    </LinearLayout>
     </LinearLayout>
 
 
