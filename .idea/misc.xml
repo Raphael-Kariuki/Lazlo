@@ -6,6 +6,7 @@
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/arrows_of_perfomance.xml" value="0.1435" />
+        <entry key="app/src/main/res/drawable/black.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/black_border.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/buttons_custom.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/cinq.xml" value="0.1225" />
@@ -28,6 +29,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/month_bg.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/orange.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/pie.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/triad.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/trois.xml" value="0.1025" />
@@ -72,6 +74,7 @@
         <entry key="app/src/main/res/layout/tasks_dropdown.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/userdata_listrow.xml" value="0.33" />
+        <entry key="app/src/main/res/menu/action_bar_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />

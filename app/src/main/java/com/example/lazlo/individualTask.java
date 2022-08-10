@@ -2,6 +2,8 @@ package com.example.lazlo;
 
 import static com.example.lazlo.AddTasks.getDateFromString;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -20,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.time.LocalDateTime;
@@ -30,7 +34,7 @@ public class individualTask extends AppCompatActivity {
   TextInputEditText individualTaskTitle_TextInputEdit, individualTaskDescription_TextInputEdit,
           individualTaskBills_TextInputEdit,individualTaskDateDeadline_TextInputEdit,individualTaskTimeDeadline_TextInputEdit;
   AutoCompleteTextView individualTaskCategory_TextInputEdit;
-  AppCompatButton btnSave, btnShow;
+  MaterialButton btnSave;
   AppCompatImageButton btnStartTask;
   DBHelper dbHelper;
   long currentId;
@@ -40,14 +44,32 @@ public class individualTask extends AppCompatActivity {
   Double randomTaskId, randUserId;
   SharedPreferences spf;
   boolean f;
+
     @Override
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), PendingTasks.class));
     }
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
+
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("View and edit individual task");
 
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId",null));
@@ -59,7 +81,6 @@ public class individualTask extends AppCompatActivity {
         individualTaskTimeDeadline_TextInputEdit = findViewById(R.id.individualTaskTimeDeadline_TextInputEdit);
 
         btnSave = findViewById(R.id.btnSave);
-        btnShow = findViewById(R.id.btnShow);
 
         dbHelper = new DBHelper(this);
 
@@ -209,12 +230,7 @@ public class individualTask extends AppCompatActivity {
 
             }
         });
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
 
     }
     public void showData(){

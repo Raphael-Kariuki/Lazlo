@@ -1,24 +1,31 @@
 package com.example.lazlo;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -33,23 +40,62 @@ public class PendingTasks extends AppCompatActivity {
     Cursor cursor;
     SimpleCursorAdapter simpleCursorAdapter;
     AppCompatTextView uname;
-    AppCompatButton Home, School, Work, Business, Shopping;
+    MaterialButton Home, School, Work, Business, Shopping;
     String categoryToPopulate;
     Double randomUserId;
+    TextView homeUnder, schoolUnder, workUnder, businessUnder, shoppingUnder;
 
     @Override
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case android.R.id.home:
+        case R.id.myAccount :
+            //add the function to perform here
+            startActivity(new Intent(this, Account.class));
+            return(true);
+        case R.id.exit:
+            //add the function to perform here
+            SharedPreferences prf;
+            prf = getSharedPreferences("user_details",MODE_PRIVATE);
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            SharedPreferences.Editor editor = prf.edit();
+            editor.clear();
+            editor.apply();
+            startActivity(i);
+            return(true);
+
+    }
+        return(super.onOptionsItemSelected(item));
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_tasks);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
 
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Pending tasks");
 
         //initialize views
         tasks_listView = this.findViewById(R.id.task_listView);
+
+        homeUnder = findViewById(R.id.homeUnder);
+        workUnder = findViewById(R.id.workUnder);
+        schoolUnder = findViewById(R.id.schoolUnder);
+        businessUnder = findViewById(R.id.businessUnder);
+        shoppingUnder = findViewById(R.id.shoppingUnder);
 
         Home = findViewById(R.id.homeTask);
         Work = findViewById(R.id.workTasks);
@@ -57,7 +103,6 @@ public class PendingTasks extends AppCompatActivity {
         Business = findViewById(R.id.businessTasks);
         Shopping = findViewById(R.id.shoppingTasks);
 
-        hamburger_menu = findViewById(R.id.hamburger_menu);
 
         uname = findViewById(R.id.userName);
 
@@ -74,18 +119,12 @@ public class PendingTasks extends AppCompatActivity {
         session_prefs = getSharedPreferences("user_details", MODE_PRIVATE);
         user_name = session_prefs.getString("username",null);
         randomUserId = Double.parseDouble(session_prefs.getString("randomUserId", null));
-        uname.setText(user_name);
 
 
         // click to add task
         addNewTasks();
 
 
-        //process hamburger menu action
-        hamburger_menu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Account.class);
-            startActivity(intent);
-        });
 
         //TODO:Simplify this background setup with 9-patch drawables
 
@@ -93,21 +132,12 @@ public class PendingTasks extends AppCompatActivity {
         Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
 
-                //set background on click of Home button. Black for Home, white for the rest
-                Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-
-
-                //set text color to white while clicked, black when not
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
                 populateHomeTasks();
             }
         });
@@ -116,21 +146,11 @@ public class PendingTasks extends AppCompatActivity {
         Shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //set background on click of Home button. Black for Shopping, white for the rest
-                Shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-
-
-                //set text color to white while clicked, black when not
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
                 populateShoppingTasks();
             }
         });
@@ -139,21 +159,11 @@ public class PendingTasks extends AppCompatActivity {
         Work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //set background on click of Home button. Black for Work, white for the rest
-                Work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-
-
-                //set text color to white while clicked, black when not
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
                 populateWorkTasks();
             }
         });
@@ -161,21 +171,11 @@ public class PendingTasks extends AppCompatActivity {
         School.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //set background on click of Home button. Black for School, white for the rest
-                School.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Business.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-
-
-                //set text color to white while clicked, black when not
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
                 populateSchoolTasks();
             }
         });
@@ -184,20 +184,11 @@ public class PendingTasks extends AppCompatActivity {
         Business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //set background on click of Home button. Black for Business, white for the rest
-                Business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Shopping.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Work.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                School.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Home.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-
-                //set text color to white while clicked, black when not
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
                 populateBusinessTasks();
             }
         });
@@ -229,28 +220,28 @@ public class PendingTasks extends AppCompatActivity {
 
             //highlight the obtained category button
             if (tempCategory.equals("Home")){
-                Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+               // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             }else if (tempCategory.equals("Business")){
-                Business.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+               // Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             }else if (tempCategory.equals("School")){
-                School.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+               // School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             }else if (tempCategory.equals("Work")){
-                Work.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+               // Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             }else if (tempCategory.equals("Shopping")){
-                Shopping.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-                Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+              //  Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
             }
         }else {
 
             // if the activity is loaded without addTasks preceding it, that means the tempCategory string will be null
             // thus render the default/ first category, home and highlight to guide user
             cursor = dbHelper.getAllByCategories(user_name,"Home");
-            Home.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.cinq));
-            Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+           // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
         }
         //receives a cursor that is specific by name, any cursor placed before it with the name cursor, works. CAUTION!!
         taskListPopulate();

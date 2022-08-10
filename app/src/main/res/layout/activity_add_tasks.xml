@@ -35,6 +35,7 @@
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
         app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:startIconDrawable="@drawable/ic_baseline_topic_24"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,6 +64,7 @@
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
         app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:startIconDrawable="@drawable/ic_baseline_notes_24"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +90,7 @@
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
         app:hintEnabled="false"
-        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_category_24"
         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
@@ -119,6 +121,7 @@
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
         app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+        app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -145,15 +148,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/black"
             app:hintEnabled="false"
-            app:endIconMode="clear_text"
             app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
             app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
             app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
             app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+            app:startIconDrawable="@drawable/ic_baseline_date_range_24"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -172,15 +176,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/black"
             app:hintEnabled="false"
-            app:endIconMode="clear_text"
             app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
             app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
             app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
             app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+            app:startIconDrawable="@drawable/ic_baseline_access_time_24"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -195,20 +200,20 @@
 
     </LinearLayout>
 
-      >
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_saveTask"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/save_task"
+            android:contentDescription="Create"
             android:drawableStart="@drawable/ic_baseline_save_24"
-            android:text="@string/save"
+            android:text="Create"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:backgroundTint="@color/black"
             app:cornerRadius="20dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_vertical_margin"/>
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textAllCaps="false"/>
 </LinearLayout>
 
 

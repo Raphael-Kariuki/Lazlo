@@ -2,6 +2,7 @@ package com.example.lazlo;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -11,6 +12,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -85,24 +88,52 @@ public class Dashboard extends AppCompatActivity {
         return LocalDateTime.parse(string, dateTimeFormatter);
     }
 
-
     @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), Account.class));
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case android.R.id.home:
+            this.finish();
+            return true;
+        case R.id.myAccount:
+            //add the function to perform here
+            startActivity(new Intent(this, Account.class));
+            return(true);
+        case R.id.exit:
+            //add the function to perform here
+            SharedPreferences prf;
+            prf = getSharedPreferences("user_details",MODE_PRIVATE);
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            SharedPreferences.Editor editor = prf.edit();
+            editor.clear();
+            editor.apply();
+            startActivity(i);
+            return(true);
+
+    }
+        return(super.onOptionsItemSelected(item));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Dashboard");
+
         numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
 
 
-        hamburger_menu = findViewById(R.id.hamburger_menu);
-        hamburger_menu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Account.class);
-            startActivity(intent);
-        });
+
 
         dbHelper = new DBHelper(this);
 

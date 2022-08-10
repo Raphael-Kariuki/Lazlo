@@ -55,7 +55,7 @@ public class SignUp extends AppCompatActivity {
 
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        actionBar.setTitle("Create account");
 
 
         //process the user input views

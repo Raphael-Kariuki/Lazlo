@@ -1,10 +1,13 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,9 +33,25 @@ public class inHousePasswordReset extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Account.class));
     }
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_house_password_reset);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Reset password");
 
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
