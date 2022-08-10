@@ -1,10 +1,13 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
@@ -23,10 +26,30 @@ public class IndividualCompletedTask extends AppCompatActivity {
     Double randTaskId;
     String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str,completedTaskDeadline_str;
     long completedTaskStartDate_long, completedTaskCompletionDate_long,completedTaskActualDuration_long,completedTaskPredictedSpending_long, completedTaskCreationDate_long;
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_completed_task);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Completed task");
+
 
 
         completedTaskTitle = findViewById(R.id.completedTaskTitle);

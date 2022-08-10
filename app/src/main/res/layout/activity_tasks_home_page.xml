@@ -52,7 +52,7 @@
         android:drawableTop="@drawable/ic_baseline_post_add_24"
         android:textColor="@color/black"
         android:padding="10dp"
-        android:background="@drawable/triad"
+        android:background="@drawable/add_tasks_background"
         android:layout_weight="1"
         android:layout_margin="@dimen/activity_vertical_margin"
         />
@@ -66,7 +66,7 @@
         android:drawableTop="@drawable/ic_baseline_pending_actions_24"
         android:textColor="@color/black"
         android:padding="10dp"
-        android:background="@drawable/triad"
+        android:background="@drawable/pending_tasks_background"
         android:layout_weight="1"
         android:layout_margin="@dimen/activity_vertical_margin"
         />
@@ -86,7 +86,7 @@
                     android:drawableTop="@drawable/ic_baseline_done_24"
                     android:textColor="@color/black"
                     android:padding="10dp"
-                    android:background="@drawable/triad"
+                    android:background="@drawable/completed_tasks_background"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/activity_vertical_margin"
                     />
@@ -101,11 +101,12 @@
                     android:drawableTop="@drawable/ic_baseline_archive_24"
                     android:textColor="@color/black"
                     android:padding="10dp"
-                    android:background="@drawable/triad"
+                    android:background="@drawable/draft_tasks_background"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/activity_vertical_margin"
                     />
             </LinearLayout>
+
 
 
 
@@ -137,7 +138,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 >
 
             </com.google.android.material.textview.MaterialTextView>

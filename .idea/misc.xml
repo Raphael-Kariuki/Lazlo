@@ -5,12 +5,16 @@
       <map>
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/add_tasks_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/arrows_of_perfomance.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/black.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/black_border.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/buttons_custom.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/cinq.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/completed_tasks_background.xml" value="0.1435" />
+        <entry key="app/src/main/res/drawable/dashboard_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/deux.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/draft_tasks_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/hamburger_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1185" />
         <entry key="app/src/main/res/drawable/ic_baseline_business_24.xml" value="0.2125" />
@@ -25,12 +29,17 @@
         <entry key="app/src/main/res/drawable/ic_baseline_save_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_school_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_baseline_topic_24.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/ic_baseline_username_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/logout_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/month_bg.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/orange.xml" value="0.1435" />
+        <entry key="app/src/main/res/drawable/pending_tasks_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/pie.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/security_background.xml" value="0.1435" />
+        <entry key="app/src/main/res/drawable/task_background.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/triad.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/trois.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/uno.xml" value="0.1025" />
@@ -39,7 +48,7 @@
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_alarm_broadcast.xml" value="0.20625" />
-        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.18329466357308585" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
