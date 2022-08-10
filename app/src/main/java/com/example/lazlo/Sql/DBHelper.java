@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB){
         //TODO: remove username from taskList completely replace with userId
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LOCALDATETIME NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL, UserName TEXT NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
 
@@ -289,7 +289,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //method to insert task, executed on addTasks.java
     public boolean insertTasks(Double randTaskId, Double randUserId,String userName, String taskTitle, String taskDescription, String taskCategory,
-                               Double taskAssociatedPrice, LocalDateTime taskDeadline,LocalDateTime taskCreationTime, Integer taskState){
+                               Double taskAssociatedPrice, LocalDateTime taskDeadline,long taskCreationTime, Integer taskState){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (randTaskId != null && String.valueOf(randTaskId).length() > 0) contentValues.put("randTaskId", randTaskId);
@@ -300,7 +300,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (taskCategory != null && taskCategory.length() > 0) contentValues.put("TaskCategory", taskCategory);
         if (taskState != null && String.valueOf(taskState).length() > 0) contentValues.put("taskState", taskState);
         contentValues.put("TaskAssociatedPrice", taskAssociatedPrice);
-        if (taskCreationTime != null) contentValues.put("taskCreationTime", String.valueOf(taskCreationTime));
+        if (String.valueOf(taskCreationTime).length() > 1) contentValues.put("taskCreationTime", String.valueOf(taskCreationTime));
         if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();

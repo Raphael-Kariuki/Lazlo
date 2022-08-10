@@ -6,20 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".AddTasks"
     >
-    <TextView
-        android:id="@+id/createTasksLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:gravity="center_horizontal"
-        android:text="@string/create_new_task"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="10dp"
-        android:background="@color/black"
-        />
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,10 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/createTasksLabel"
-        android:layout_marginTop="40dp"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -66,7 +57,12 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -91,7 +87,12 @@
         app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
 
         <AutoCompleteTextView
@@ -112,7 +113,12 @@
         android:padding="5dp"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -142,7 +148,12 @@
             android:layout_weight="1"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black"
+            app:hintEnabled="false"
+            app:endIconMode="clear_text"
+            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -164,7 +175,12 @@
             android:layout_weight="1"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black"
+            app:hintEnabled="false"
+            app:endIconMode="clear_text"
+            app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+            app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -178,43 +194,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/deadlineLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        >
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancelTaskCreation"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/save_as_draft"
-            android:drawableStart="@drawable/ic_baseline_cancel_24"
-            android:text="@string/save_as_draft"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="@color/black"
-            android:layout_weight="1"
-            />
-        <androidx.appcompat.widget.AppCompatButton
+      >
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_saveTask"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/save_task"
             android:drawableStart="@drawable/ic_baseline_save_24"
             android:text="@string/save"
             android:textStyle="bold"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="@color/black"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            app:cornerRadius="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_vertical_margin"/>
 </LinearLayout>
 
 

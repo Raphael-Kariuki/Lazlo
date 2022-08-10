@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -17,6 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -24,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +37,7 @@ import java.util.regex.Pattern;
 public class AddTasks extends AppCompatActivity {
     TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView;
     DatePickerDialog datePickerDialog;
-    AppCompatButton btn_saveTasks, btn_cancelTaskCreation;
+    MaterialButton btn_saveTasks;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
     LocalDateTime selected_date,date_now;
@@ -56,10 +61,44 @@ public class AddTasks extends AppCompatActivity {
         finish();
     }
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!task_title.getText().toString().isEmpty()){
+                    try {
+                        String USERNAME = tasks_sharedPrefs.getString("username",null);
+                        String taskTitle_String = task_title.getText().toString().trim();
+                        String taskDescription_String = task_description.getText().toString().trim();
+                        String selectedDate_String = select_date.getText().toString().trim();
+                        String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
+                        String selectedCategory_string = tasksCategories.getText().toString().trim();
+                        d = dbHelper.insertDraftTasks(USERNAME, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
+                        if (d){
+                            Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    this.finish();
+
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tasks);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Create new task");
 
 
         task_title =  findViewById(R.id.taskTitleAutoCompleteView);
@@ -78,7 +117,7 @@ public class AddTasks extends AppCompatActivity {
         selectedTime_TextInputLayout = findViewById(R.id.selectedTime_TextInputLayout);
 
         btn_saveTasks = findViewById(R.id.btn_saveTask);
-        btn_cancelTaskCreation = findViewById(R.id.cancelTaskCreation);
+
 
         dbHelper = new DBHelper(this);
         // get the string username broadcast from login to stand in as the
@@ -171,7 +210,7 @@ public class AddTasks extends AppCompatActivity {
                                                         houseOfCommons commons = new houseOfCommons();
                                                         Double randomTaskId = commons.generateRandomId();
                                                         Integer defaultTaskState = 0;
-                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,getDateTimeNow(),defaultTaskState);
+                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState);
 
                                                     }catch(Exception e){
                                                         System.out.println("Db insertion error: " + e);
@@ -275,34 +314,7 @@ public class AddTasks extends AppCompatActivity {
 
             }
         });
-        btn_cancelTaskCreation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-                        try {
-                            String USERNAME = tasks_sharedPrefs.getString("username",null);
-                            String taskTitle_String = task_title.getText().toString().trim();
-                            String taskDescription_String = task_description.getText().toString().trim();
-                            String selectedDate_String = select_date.getText().toString().trim();
-                            String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
-                            String selectedCategory_string = tasksCategories.getText().toString().trim();
-                            d = dbHelper.insertDraftTasks(USERNAME, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
-                            if (d){
-                                Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        }catch (Exception e){
-                            Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
-                        }
-
-
-
-
-
-
-            }
-        });
     }
     public boolean dateCheck(String passphrase){
         String regex = "^(?=.*[0-9])(?=.*[-]).{10}$";

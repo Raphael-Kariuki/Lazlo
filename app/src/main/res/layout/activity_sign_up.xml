@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUp"
-    >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -19,16 +16,27 @@
 
     <TextView
         android:id="@+id/app_title_on_signUp"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Material3.TitleMedium"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="40sp"
-        android:fontFamily="cursive"
-        android:textStyle="bold"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:textColor="@color/black"/>
+        android:gravity="center_horizontal"
+        android:text="Let's get started!"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/app_title_on_signUp2"
+        android:layout_below="@id/app_title_on_signUp"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Create an account to manage your day"
+        android:textColor="@color/grey"
+        />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupUsername_inputLayout"
+        android:layout_below="@id/app_title_on_signUp2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,15 +44,19 @@
         app:startIconDrawable="@drawable/ic_baseline_username_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
         app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupUsername_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/grey"
             android:inputType="textPersonName"
             android:autofillHints="Username"
 
@@ -52,6 +64,7 @@
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupEmail_inputLayout"
+        android:layout_below="@id/SignupUsername_inputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,8 +72,12 @@
         app:startIconDrawable="@drawable/ic_baseline_email_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
         app:endIconMode="clear_text"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
 
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/grey"
             android:inputType="textEmailAddress"
             android:autofillHints="Email"
             />
@@ -76,6 +93,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupPassword_inputLayout"
+        android:layout_below="@id/SignupEmail_inputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,13 +102,17 @@
         app:startIconDrawable="@drawable/ic_baseline_password_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintEnabled="false"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPassword_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/grey"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:autofillHints="password"
@@ -98,6 +120,7 @@
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/SignupPasswordConfirm_inputLayout"
+        android:layout_below="@id/SignupPassword_inputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,37 +129,51 @@
         app:startIconDrawable="@drawable/ic_baseline_password_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintTextColor="@color/black"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignupPasswordConfirm_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/grey"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:autofillHints="password"
             />
     </com.google.android.material.textfield.TextInputLayout>
-
+<LinearLayout
+    android:layout_below="@id/SignupPasswordConfirm_inputLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignUp_signUpPage"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/SignupPasswordConfirm_inputLayout"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:text="@string/sign_up"
         android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
         app:backgroundTint="@color/black"
-        />
+        app:cornerRadius="30dp"/>
     <TextView
         android:id="@+id/Switch2login2"
+        android:layout_below="@id/btnSignUp_signUpPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account ?"
         android:textStyle="bold"
-        android:textSize="17sp"
+        android:textSize="12sp"
         android:textColor="@color/grey"
+        android:layout_gravity="center_horizontal"
 
 
         />
@@ -148,7 +185,9 @@
         android:clickable="true"
         android:textStyle="bold"
         android:textSize="18sp"
-android:textColor="@color/black"
-        />
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+  droid:layout_toEndOf="@id/Switch2login2"
+        />
+</RelativeLayout>

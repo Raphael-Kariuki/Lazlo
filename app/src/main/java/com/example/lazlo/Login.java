@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     @Override

@@ -9,6 +9,11 @@ import android.os.Bundle;
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 public class IndividualCompletedTask extends AppCompatActivity {
     long selectedTaskId;
     SharedPreferences spf;
@@ -16,7 +21,8 @@ public class IndividualCompletedTask extends AppCompatActivity {
     MaterialTextView completedTaskTitle,completedTaskCategory,completedTaskCreationDate, completedTaskDeadline,completedTaskStartDate,completedTaskCompletionDate,completedTaskPredictedDuration,completedTaskActualDuration,completedTaskPredictedSpending,completedTaskActualSpending,completedTaskDescription;
     DBHelper dbHelper;
     Double randTaskId;
-    String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str, completedTaskPredictedSpending_str,completedTaskDeadline_str, completedTaskCreationDate_str, completedTaskStartDate_str, completedTaskCompletionDate_str,completedTaskActualDuration_str;
+    String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str,completedTaskDeadline_str;
+    long completedTaskStartDate_long, completedTaskCompletionDate_long,completedTaskActualDuration_long,completedTaskPredictedSpending_long, completedTaskCreationDate_long;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,28 +83,58 @@ public class IndividualCompletedTask extends AppCompatActivity {
             completedTaskDescription_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDescription"));
             completedTaskDescription.setText(completedTaskDescription_str);
             completedTaskCategory_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskCategory"));
-            completedTaskCategory.setText(completedTaskCategory_str);
+            completedTaskCategory.setText(new StringBuilder().append(getString(R.string.hash_tag)).append(completedTaskCategory_str).toString());
             System.out.println("Error: " + 2);
-            completedTaskPredictedSpending_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskPredictedSpending"));
-            completedTaskPredictedSpending.setText(completedTaskPredictedSpending_str);
+            completedTaskPredictedSpending_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskPredictedSpending"));
+            completedTaskPredictedSpending.setText(new StringBuilder().append("").append(completedTaskPredictedSpending_long).toString());
             System.out.println("Error: " + 3);
             completedTaskDeadline_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDeadline"));
             completedTaskDeadline.setText(completedTaskDeadline_str);
             System.out.println("Error: " + 4);
-            completedTaskCreationDate_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
-            completedTaskCreationDate.setText(completedTaskCreationDate_str);
+            completedTaskCreationDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
+            completedTaskCreationDate.setText(returnDate(completedTaskCreationDate_long));
             System.out.println("Error: " + 5);
-            completedTaskStartDate_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskStartDate"));
-            completedTaskStartDate.setText(completedTaskStartDate_str);
+            completedTaskStartDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskStartDate"));
+            completedTaskStartDate.setText(returnDate(completedTaskStartDate_long));
             System.out.println("Error: " + 6);
-            completedTaskCompletionDate_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskCompletionDate"));
-            completedTaskCompletionDate.setText(completedTaskCompletionDate_str);
+            completedTaskCompletionDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCompletionDate"));
+            completedTaskCompletionDate.setText(returnDate(completedTaskCompletionDate_long));
             System.out.println("Error: " + 7);
-            completedTaskActualDuration_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
-            completedTaskActualDuration.setText(completedTaskActualDuration_str);
+            completedTaskActualDuration_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
+            completedTaskActualDuration.setText(returnDuration(completedTaskActualDuration_long));
             System.out.println("Error: " + 8);
         }else{
             System.out.println("Error populating view");
         }
+    }
+    private String returnDate(long epochDate){
+        String pattern = "dd-MM-yyyy HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("en", "KE"));
+        return simpleDateFormat.format(new Date(epochDate));
+    }
+    /*
+    * long hours = totalTaskDuration/3600000;
+      long minutes = totalTaskDuration/60000;
+      long seconds = totalTaskDuration/1000;
+    * */
+    private String returnDuration(long duration){
+        String formattedDuration;
+        if (duration > 3600000){
+            long hours = duration/3600000;
+            long minutes = duration/60000;
+            long seconds = duration/1000;
+            formattedDuration  = hours + "hr " + minutes + " min " + seconds + " secs";
+
+        }else if(duration > 600000 ){
+            long minutes = duration/60000;
+            long seconds = duration/1000;
+            formattedDuration  = minutes + " min " + seconds + " secs";
+        }else if(duration > 1000){
+            long seconds = duration/1000;
+            formattedDuration  = seconds + " secs";
+        }else {
+            formattedDuration = "< 1s";
+        }
+        return formattedDuration;
     }
 }
