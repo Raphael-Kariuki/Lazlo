@@ -208,8 +208,9 @@ public class AddTasks extends AppCompatActivity {
                                                         //insert task to db if dates are cool
                                                         houseOfCommons commons = new houseOfCommons();
                                                         Double randomTaskId = commons.generateRandomId();
-                                                        Integer defaultTaskState =0, defaultTaskReschedule = 0;
-                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState,defaultTaskReschedule);
+                                                        Integer defaultTaskState = 0;
+                                                        Double defaultParentTaskId = 0.0;
+                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState,defaultParentTaskId);
 
                                                     }catch(Exception e){
                                                         System.out.println("Db insertion error: " + e);

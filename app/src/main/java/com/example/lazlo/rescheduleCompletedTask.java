@@ -107,14 +107,16 @@ String time2Insert;
         });
 
 
-        //TODO:process input and prepare for insertion remembering we have to delete the taskFrom the db
+        //TODO:process input and prepare for insertion remembering while in inserting use new taskId plus process taskParentId. Check on storing an array in db so as to store trail of parents
+
         /*
          * Question that pops up is whether to retain the previous task _id or use a new one. I think it's wise to delete the task and only update that it's a rescheduled
          * task by an integer that declares so. If we don't delete the task, rescheduled tasks will increase the count of total tasks, yet it's the same task.
          * Apart from setting up a determiner of scheduled tasks, wwe can also create a table that receives non-unique taskIds and their previous completion dates.
          * We also have to delete the task from Completed_n_deletedTasks. Question 2, why not delete from completed tasks yet delete from task list?
          *
-         * Decision: Not delete from either. In inserting the rescheduled task, treat it as a brand new task, assign new taskId.
+         * Decision: Not delete from either. In inserting the rescheduled task, treat it as a brand new task, assign new taskId.However intro taskParentId to create
+         * a traceable link
          * Also not delete from completed task. Rationale behind this , if you work out monday and tuesday, both a re workouts, do you say you worked out
          * once or twice?
          *
