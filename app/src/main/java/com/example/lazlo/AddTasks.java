@@ -183,7 +183,6 @@ public class AddTasks extends AppCompatActivity {
             public void onClick(View view) {
 
                 //get inputs to insert to db
-                String USERNAME = tasks_sharedPrefs.getString("username",null);
                 String randUserId = tasks_sharedPrefs.getString("randomUserId", null);
                 String taskTitle_String = task_title.getText().toString().trim();
                 String taskDescription_String = task_description.getText().toString().trim();
@@ -209,8 +208,8 @@ public class AddTasks extends AppCompatActivity {
                                                         //insert task to db if dates are cool
                                                         houseOfCommons commons = new houseOfCommons();
                                                         Double randomTaskId = commons.generateRandomId();
-                                                        Integer defaultTaskState = 0;
-                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId),USERNAME, taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState);
+                                                        Integer defaultTaskState =0, defaultTaskReschedule = 0;
+                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState,defaultTaskReschedule);
 
                                                     }catch(Exception e){
                                                         System.out.println("Db insertion error: " + e);
@@ -413,34 +412,7 @@ public class AddTasks extends AppCompatActivity {
 
 
     }
-    //this method converts the time into 12hr format and assigns am or pm
-    public String FormatTime(int hour, int minute) {
 
-        String time;
-        time = "";
-        String formattedMinute;
-
-        if (minute / 10 == 0) {
-            formattedMinute = "0" + minute;
-        } else {
-            formattedMinute = "" + minute;
-        }
-
-
-        if (hour == 0) {
-            time = "12" + ":" + formattedMinute + " AM";
-        } else if (hour < 12) {
-            time = hour + ":" + formattedMinute + " AM";
-        } else if (hour == 12) {
-            time = "12" + ":" + formattedMinute + " PM";
-        } else {
-            int temp = hour - 12;
-            time = temp + ":" + formattedMinute + " PM";
-        }
-
-
-        return time;
-    }
 private void selectTime(){
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -460,7 +432,8 @@ private void selectTime(){
                 formattedMinute = "" + minute;
             }
             selected_time = formattedHour + ":" + formattedMinute;
-            selectTime_AutocompleteView.setText(FormatTime(hour, minute));
+            houseOfCommons houseOfCommons = new houseOfCommons();
+            selectTime_AutocompleteView.setText(houseOfCommons.FormatTime(hour, minute));
         }
     },hour, minute,false);
     timePickerDialog.show();

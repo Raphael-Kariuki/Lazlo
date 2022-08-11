@@ -5,7 +5,6 @@ import static com.example.lazlo.AddTasks.getDateFromString;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.app.DatePickerDialog;
@@ -73,6 +72,7 @@ public class individualTask extends AppCompatActivity {
 
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId",null));
+
         individualTaskTitle_TextInputEdit = findViewById(R.id.individualTaskTitle_TextInputEdit);
         individualTaskDescription_TextInputEdit = findViewById(R.id.individualTaskDescription_TextInputEdit);
         individualTaskCategory_TextInputEdit = findViewById(R.id.individualTaskCategory_TextInputEdit);
@@ -169,12 +169,12 @@ public class individualTask extends AppCompatActivity {
                 String updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
                 String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
                 String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
-                System.out.println(updateDate + updateTime);
 
 
                 /*
-                * Formatting dates are tricky. What the code below does is take the time section
-                * HH:ss PM/AM split it first to obtain "HH" and "mm PM".
+                * Formatting dates are tricky.
+                * What the code below does is take the time section HH:ss PM/AM split it first to obtain "HH" and "mm PM".
+                * The further split "mm PM/AM" to "mm" and "PM/AM"
                 * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
                 * */
                 String[] timeDeh = updateTime.split(":", 2);
@@ -187,12 +187,21 @@ public class individualTask extends AppCompatActivity {
                 }
                 new_minute = timeDeh[1].split(" ", 2)[0];
                 //===============================
-                String new_date = parseDate(updateDate);
+
+                //this is necessary when the user doesn't make a change on the date
+                /*
+                * The db output of date is yyyy-MM-dd while the dateDialog one is dd-MM-yyyy, so this is there to cater
+                * for all situations, if the first digit after stripping the date is less than 31 then format is dd-MM-yyyy meaning user has changed
+                * the date , however if the first digit is greater than 31 then the format is yyyy-MM-dd meaning the user hasn't made any change to the date.
+                * It is as from the db
+                * */
+                houseOfCommons houseOfCommons = new houseOfCommons();
+                String new_date = houseOfCommons.parseDate(updateDate);
 
 
+                //combine the date and time ready for formatting
 
                 String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
-                System.out.println(updateDateTime);
                 if (!updateTitle.isEmpty()){
                     if (!updateDescription.isEmpty()){
                         if (!updateCategory.isEmpty() && (updateCategory.equals("Shopping") || updateCategory.equals("Work") || updateCategory.equals("School") || updateCategory.equals("Business") || updateCategory.equals("Home") )){
@@ -202,11 +211,10 @@ public class individualTask extends AppCompatActivity {
                                     LocalDateTime date_now = LocalDateTime.now();
                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                         try {
-                                            f = dbHelper.update(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,selected_date);
+                                            f = dbHelper.updateTask(currentId,null,updateTitle,updateDescription,updateCategory,updatePrice,selected_date);
                                             Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
                                         }catch (Exception e){
                                             Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
-                                            System.out.println("Db update error: " + e);
                                         }
                                     }
                                 }else{
@@ -293,8 +301,8 @@ public class individualTask extends AppCompatActivity {
                 }else{
                     timeDate2update = hour + ":" + minute;
                 }
-                AddTasks addTasks = new AddTasks();
-                individualTaskTimeDeadline_TextInputEdit.setText(addTasks.FormatTime(hour, minute));
+                houseOfCommons houseOfCommons = new houseOfCommons();
+                individualTaskTimeDeadline_TextInputEdit.setText(houseOfCommons.FormatTime(hour, minute));
             }
         },hour, minute,false);
         timePickerDialog.show();
@@ -313,27 +321,6 @@ public class individualTask extends AppCompatActivity {
 
 
 
-    private String parseDate(String toDecideOn){
-      String regex = "";
-      String new_day = "",new_month = "",new_year = "",new_date;
-        if (toDecideOn.contains("/")){
-            regex = "/";
-      }else if(toDecideOn.contains("-")){
-            regex = "-";
-      }
-        String[] date = toDecideOn.split(regex,3);
 
-        if (Integer.parseInt(date[0]) > 31){
-            new_year = date[0];
-            new_month = date[1];
-            new_day = date[2];
-        }else if(Integer.parseInt(date[0]) < 31){
-            new_day = date[0];
-            new_month = date[1];
-            new_year = date[2];
-        }
-        new_date = new_day + "-" + new_month + "-" + new_year;
-        return new_date;
-    }
 
     }

@@ -156,7 +156,7 @@ public class CompletedTasks extends AppCompatActivity {
         
         
     }
-
+//TODO:check why the completed tasks aren't populating
     //obtain Home category content and populate list view on Home button click
     private  void populateCompletedTasks_HomeTasks(){
         completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Home");
@@ -202,6 +202,16 @@ public class CompletedTasks extends AppCompatActivity {
                     Intent toIndividualCompletedTask = new Intent(getApplicationContext(),IndividualCompletedTask.class);
                     toIndividualCompletedTask.putExtra("selectedTaskId", l);
                     startActivity(toIndividualCompletedTask);
+                }
+            });
+            completedTasks_tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Intent sendToIndividualCompletedTaskEdit = new Intent(getApplicationContext(), rescheduleCompletedTask.class);
+                    sendToIndividualCompletedTaskEdit.putExtra("task2RescheduleId", l);
+                    startActivity(sendToIndividualCompletedTaskEdit);
+                    return false;
                 }
             });
         }else {

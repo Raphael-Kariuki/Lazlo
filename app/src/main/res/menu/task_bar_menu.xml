@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search_bar"
+        android:title="Search"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:actionViewClass="android.widget.SearchView" />
+    <item
+        android:id="@+id/myAccount"
+        app:showAsAction="never"
+        android:title="My account">
+    </item>
+    <item
+        android:id="@+id/exit"
+        app:showAsAction="never"
+        android:title="Logout">
+    </item>
+</menu>

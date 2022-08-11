@@ -2,14 +2,14 @@ package com.example.lazlo;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,8 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.os.Bundle;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +31,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
+
 public class PendingTasks extends AppCompatActivity {
 
     //instantiate variables
     ListView tasks_listView;
-    FloatingActionButton btn_addTasks,hamburger_menu;
+    FloatingActionButton btn_addTasks;
     String user_name;
     SharedPreferences session_prefs;
     DBHelper dbHelper;
@@ -49,12 +52,7 @@ public class PendingTasks extends AppCompatActivity {
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case android.R.id.home:
@@ -72,6 +70,7 @@ public class PendingTasks extends AppCompatActivity {
             editor.apply();
             startActivity(i);
             return(true);
+
 
     }
         return(super.onOptionsItemSelected(item));
@@ -124,7 +123,8 @@ public class PendingTasks extends AppCompatActivity {
         // click to add task
         addNewTasks();
 
-
+        populateHomeTasks();
+        tasks_listView.setTextFilterEnabled(true);
 
         //TODO:Simplify this background setup with 9-patch drawables
 
@@ -196,6 +196,22 @@ public class PendingTasks extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.task_bar_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
+//TODO:work on search
+
+
+
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     //This is called when a task is deleted from the list view
     //receives a category string obtained from the deleted task, why? A deleted task will have a similar category with the rest that are rendered then.
@@ -219,21 +235,27 @@ public class PendingTasks extends AppCompatActivity {
             cursor = dbHelper.getAllByCategories(user_name,tempCategory);
 
             //highlight the obtained category button
-            if (tempCategory.equals("Home")){
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-               // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-            }else if (tempCategory.equals("Business")){
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-               // Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-            }else if (tempCategory.equals("School")){
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-               // School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-            }else if (tempCategory.equals("Work")){
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-               // Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-            }else if (tempCategory.equals("Shopping")){
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-              //  Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            switch (tempCategory) {
+                case "Home":
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Business":
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "School":
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Work":
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Shopping":
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    //  Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
             }
         }else {
 
@@ -310,7 +332,7 @@ public class PendingTasks extends AppCompatActivity {
     }
 
     //function to populate list view, initially on 1st load with all tasks
-    private void taskListPopulate(){
+    public void taskListPopulate(){
         if (simpleCursorAdapter == null){
             simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
             tasks_listView.setAdapter(simpleCursorAdapter);

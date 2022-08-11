@@ -410,12 +410,10 @@ public class Dashboard extends AppCompatActivity {
         //setup date ranges
         String rangeStart = "01-" + newMonthIndex + "-" + mYear + " 00:01";
         String rangeEnd = "31-" + newMonthIndex + "-" + mYear + " 00:01";
-        System.out.println(rangeStart + " : " + rangeEnd);
 
 
         dateRanges[0] = stringToDate(rangeStart);
         dateRanges[1] = stringToDate(rangeEnd);
-        System.out.println(dateRanges[0] + " :: " + dateRanges[1]);
         return dateRanges;
 
     }
@@ -444,7 +442,6 @@ public class Dashboard extends AppCompatActivity {
         Cursor cursor = null;
         try {
             cursor = dbHelper.getSumOfTasksPerMonthForDashBoard(randUserid, startDate, endDate);
-            System.out.println("Success getting count");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -455,7 +452,6 @@ public class Dashboard extends AppCompatActivity {
         Cursor cursor = null;
         try {
             cursor = dbHelper.getSumOfTasksForDashBoard(randUserid);
-            System.out.println("Success getting count");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -476,7 +472,6 @@ public class Dashboard extends AppCompatActivity {
         Cursor cursor = null;
         try {
             cursor = dbHelper.getCountOfPendingTasks(randUserid);
-            System.out.println("Success getting count");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -563,7 +558,6 @@ public class Dashboard extends AppCompatActivity {
             //obtain monthly date ranges
             LocalDateTime[] monthlyRange = getMonthBasedStats(i);
 
-            System.out.println(monthlyRange[0] + " ::: " + monthlyRange[1]);
             //obtain monthly sum
             try {
                 monthLySumCursor = dbHelper.getSumPerMonth(randUserId, monthlyRange[0], monthlyRange[1]);
@@ -575,7 +569,6 @@ public class Dashboard extends AppCompatActivity {
 
             if (monthLySumCursor.moveToFirst()) {
                 int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
-                System.out.println("Total spending: " + monthlySpendingSum);
                 //set text to view
                 monthlyTextViews[i -1].setTextSize(12);
                 monthlyTextViews[i - 1].setText("" +  numberFormat.format(monthlySpendingSum));
@@ -604,7 +597,6 @@ public class Dashboard extends AppCompatActivity {
                     monthLySumCursor.close();
 
                     spendingPerMonth[i] = monthlySpendingSum;
-                    System.out.println(i + ": " + spendingPerMonth[i]);
                 }else{
                     spendingPerMonth[i] = 0;
                 }
@@ -708,7 +700,6 @@ public class Dashboard extends AppCompatActivity {
 
         for (int i = 0; i < 5; i++) {
             pieDatum.add(new PieEntry(bills[i],categories[i]));
-            System.out.println(bills[i] + "" + categories[i]);
         }
         return pieDatum;
     }

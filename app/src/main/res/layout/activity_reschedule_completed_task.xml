@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".individualTask"
+    >
+
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/completedIndividualTaskTitle_TextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    app:boxStrokeColor="@color/black"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_baseline_topic_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/completedIndividualTaskTitle_TextInputEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/task_title"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/completedIndividualTaskDescription_TextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    app:boxStrokeColor="@color/black"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_baseline_notes_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/completedIndividualTaskDescription_TextInputEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/task_description"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="12sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/completedIndividualTaskCategory_TextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    app:boxStrokeColor="@color/black"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_baseline_category_24">
+
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/completedIndividualTaskCategory_TextInputEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/task_category"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="12sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/completedIndividualTaskBills_TextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    app:boxStrokeColor="@color/black"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_baseline_attach_money_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/completedIndividualTaskBills_TextInputEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/bills"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="12sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/deadlines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/completedIndividualTaskDateDeadline_TextLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="false"
+                        app:startIconDrawable="@drawable/ic_baseline_date_range_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/completedIndividualTaskDateDeadline_TextInputEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/select_date"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="12sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/completedIndividualTaskTimeDeadline_TextLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_weight="1"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="false"
+                        app:startIconDrawable="@drawable/ic_baseline_access_time_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/completedIndividualTaskTimeDeadline_TextInputEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/select_time"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="12sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCompletedTaskSave"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/black"
+                    app:cornerRadius="20dp" />
+
+
+            </LinearLayout>
+
+
+
+</ScrollView>

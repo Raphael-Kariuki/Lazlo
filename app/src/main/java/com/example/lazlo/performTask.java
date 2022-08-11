@@ -136,7 +136,7 @@ public class performTask extends AppCompatActivity {
                     c = insertDetailsOnTaskStart(randomUserId, randomTaskId,LocalDateTimeFormat(Deadline),startTaskDate,null,null,null,null,null,null,1,1);
                 }
                 if (b){
-                    Toast.makeText(performTask.this, "update success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(performTask.this, "updateTask success", Toast.LENGTH_SHORT).show();
                 }else if(c){
                     Toast.makeText(performTask.this, "Insert success", Toast.LENGTH_SHORT).show();
                 }else{
@@ -160,7 +160,7 @@ public class performTask extends AppCompatActivity {
                 taskState = 2;
                 pauseTaskDate = new Date().getTime();
 
-                //update db
+                //updateTask db
 
                 boolean b = updateTaskStatusOnPauseButtonPress(randomTaskId,pauseTaskDate,"doubleShot",2);
                 if (b){
@@ -181,7 +181,7 @@ public class performTask extends AppCompatActivity {
                 taskState = 3;
                 resumeTaskDate = new Date().getTime();
 
-                //update db
+                //updateTask db
                 boolean b = updateTaskStatusOnResumeButtonPress(randomTaskId,resumeTaskDate,3);
                 if (b){
                     Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
@@ -209,7 +209,7 @@ public class performTask extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         finish();
-                        //update db
+                        //updateTask db
                         boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,taskState);
                         if (b){
                             Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
@@ -348,7 +348,7 @@ public class performTask extends AppCompatActivity {
                                 if (d){
                                     Toast.makeText(performTask.this, "Properly transferred", Toast.LENGTH_SHORT).show();
 
-                                    //update taskList table with new taskState = 5 instead of deleting the task which reduces the count of total
+                                    //updateTask taskList table with new taskState = 5 instead of deleting the task which reduces the count of total
                                     // tasks which is required on the dashboard
                                     boolean g = updateTaskListWithTaskState(randomTaskId, taskState);
 
@@ -358,7 +358,7 @@ public class performTask extends AppCompatActivity {
 
 
                                     if (g){
-                                        Toast.makeText(performTask.this, "Properly update with task state", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(performTask.this, "Properly updateTask with task state", Toast.LENGTH_SHORT).show();
                                     }else if(e){
                                         Toast.makeText(performTask.this, "Properly trashed ", Toast.LENGTH_SHORT).show();
                                     }

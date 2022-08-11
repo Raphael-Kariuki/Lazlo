@@ -31,10 +31,9 @@ public class IndividualCompletedTask extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -47,6 +46,7 @@ public class IndividualCompletedTask extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         // showing the back button in action bar
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Completed task");
 
@@ -96,36 +96,35 @@ public class IndividualCompletedTask extends AppCompatActivity {
             System.out.println("Error: " + e);
         }
 
-        if (cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()){
             randTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("completedTaskRandomId"));
-            System.out.println("Error: " + 0);
+
             completedTaskTitle_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskTitle"));
-            System.out.println(completedTaskTitle_str + 0);
             completedTaskTitle.setText(completedTaskTitle_str);
-            System.out.println("Error: " + 1);
+
             completedTaskDescription_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDescription"));
             completedTaskDescription.setText(completedTaskDescription_str);
+
             completedTaskCategory_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskCategory"));
-            completedTaskCategory.setText(new StringBuilder().append(getString(R.string.hash_tag)).append(completedTaskCategory_str).toString());
-            System.out.println("Error: " + 2);
+            completedTaskCategory.setText(String.format(new Locale("en","KE"),"%s%s", getString(R.string.hash_tag), completedTaskCategory_str));
+
             completedTaskPredictedSpending_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskPredictedSpending"));
-            completedTaskPredictedSpending.setText(new StringBuilder().append("").append(completedTaskPredictedSpending_long).toString());
-            System.out.println("Error: " + 3);
+            completedTaskPredictedSpending.setText(String.format(new Locale("en","KE"),"%d", completedTaskPredictedSpending_long));
+
             completedTaskDeadline_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDeadline"));
             completedTaskDeadline.setText(completedTaskDeadline_str);
-            System.out.println("Error: " + 4);
+
             completedTaskCreationDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
             completedTaskCreationDate.setText(returnDate(completedTaskCreationDate_long));
-            System.out.println("Error: " + 5);
+
             completedTaskStartDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskStartDate"));
             completedTaskStartDate.setText(returnDate(completedTaskStartDate_long));
-            System.out.println("Error: " + 6);
+
             completedTaskCompletionDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCompletionDate"));
             completedTaskCompletionDate.setText(returnDate(completedTaskCompletionDate_long));
-            System.out.println("Error: " + 7);
+
             completedTaskActualDuration_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
             completedTaskActualDuration.setText(returnDuration(completedTaskActualDuration_long));
-            System.out.println("Error: " + 8);
         }else{
             System.out.println("Error populating view");
         }

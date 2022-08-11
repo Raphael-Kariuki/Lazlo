@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
+            android:name=".rescheduleCompletedTask"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+        <activity
+            android:name=".searchableActivity"
+            android:exported="false"/>
+        <activity
             android:name=".entrySplash"
             android:exported="true">
             <intent-filter>
@@ -21,64 +28,64 @@
         <activity
             android:name=".SignUp"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".Login"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-            />
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
             android:name=".Dashboard"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".TasksHomePage"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Dark"/>
+            android:theme="@style/Theme.Material3.Dark" />
         <activity
             android:name=".AddTasks"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".PendingTasks"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".individualTask"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
-
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".CompletedTasks"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".IndividualCompletedTask"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
-            />
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".DraftTasks"
             android:exported="false" />
-
-
         <activity
             android:name=".performTask"
             android:exported="false" />
-
         <activity
             android:name=".Account"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Dark.NoActionBar"
-            />
+            android:theme="@style/Theme.Material3.Dark.NoActionBar" />
         <activity
             android:name=".inHousePasswordReset"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".editAccount"
             android:exported="false" />
-
         <activity
             android:name=".forgotPassword"
             android:exported="false" />
@@ -88,11 +95,6 @@
         <activity
             android:name=".NotificationMessage"
             android:exported="false" />
-
-
-
-
-
     </application>
 
 </manifest>
