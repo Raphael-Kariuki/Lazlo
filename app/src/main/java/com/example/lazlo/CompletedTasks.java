@@ -38,10 +38,9 @@ public class CompletedTasks extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -82,7 +81,6 @@ public class CompletedTasks extends AppCompatActivity {
         completedTasks_randUserId = Double.parseDouble(completedTasks_session_prefs.getString("randomUserId", null));
 
 
-        completedTasks_home.requestFocus();
         populateCompletedTasks_HomeTasks();
 
             //TODO:Simplify this background setup with 9-patch drawables
@@ -92,10 +90,10 @@ public class CompletedTasks extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     populateCompletedTasks_HomeTasks();
                 }
             });
@@ -104,10 +102,10 @@ public class CompletedTasks extends AppCompatActivity {
             completedTasks_shopping.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
                     populateCompletedTasks_ShoppingTasks();
                 }
@@ -117,11 +115,11 @@ public class CompletedTasks extends AppCompatActivity {
             completedTasks_work.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     populateCompletedTasks_WorkTasks();
                 }
             });
@@ -130,11 +128,11 @@ public class CompletedTasks extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     populateCompletedTasks_SchoolTasks();
                 }
             });
@@ -143,11 +141,11 @@ public class CompletedTasks extends AppCompatActivity {
             completedTasks_business.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     populateCompletedTasks_BusinessTasks();
                 }
             });
@@ -156,7 +154,6 @@ public class CompletedTasks extends AppCompatActivity {
         
         
     }
-//TODO:check why the completed tasks aren't populating
     //obtain Home category content and populate list view on Home button click
     private  void populateCompletedTasks_HomeTasks(){
         completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Home");
@@ -211,7 +208,7 @@ public class CompletedTasks extends AppCompatActivity {
                     Intent sendToIndividualCompletedTaskEdit = new Intent(getApplicationContext(), rescheduleCompletedTask.class);
                     sendToIndividualCompletedTaskEdit.putExtra("task2RescheduleId", l);
                     startActivity(sendToIndividualCompletedTaskEdit);
-                    return false;
+                    return true;
                 }
             });
         }else {
@@ -219,4 +216,59 @@ public class CompletedTasks extends AppCompatActivity {
             completedTasks_simpleCursorAdapter.swapCursor(completedTasks_cursor);
         }
     }
+
+    //this function on the other hand receives a category string from IndividualCompletedTask and rescheduleCompletedTask. This is to ensure once a task is rendered or opened for viewing or rescheduling,
+    // it's category is automatically rendered on the list view, not some different category.
+    // The specific category button is also highlighted . UX matters
+    private void SetOrRefreshListView2(){
+        String tempCategory = this.getIntent().getStringExtra("category2Populate");
+        if (tempCategory != null){
+            completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,tempCategory);
+
+            //highlight the obtained category button
+            switch (tempCategory) {
+                case "Home":
+                    completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Business":
+                    completedTasks_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "School":
+                    completedTasks_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Work":
+                    completedTasks_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    // Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+                case "Shopping":
+                    completedTasks_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
+                    //  Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    break;
+            }
+        }else {
+
+            // if the activity is loaded without IndividualCompletedTask and rescheduleCompletedTask preceding it,
+            // that means the tempCategory string will be null
+            // thus render the default/ first category, home and highlight to guide user
+            completedTasks_cursor = completedTasks_dbHelper.getAllByCategories(completedTasks_randUserId,"Home");
+            completedTasks_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+        }
+        //receives a cursor that is specific by name, any cursor placed before it with the name cursor, works. CAUTION!!
+        taskListPopulate();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SetOrRefreshListView2();
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+    }
+
 }
