@@ -3,14 +3,12 @@ package com.example.lazlo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,8 +28,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class AddTasks extends AppCompatActivity {
@@ -62,29 +58,28 @@ public class AddTasks extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (!task_title.getText().toString().isEmpty()){
-                    try {
-                        String USERNAME = tasks_sharedPrefs.getString("username",null);
-                        String taskTitle_String = task_title.getText().toString().trim();
-                        String taskDescription_String = task_description.getText().toString().trim();
-                        String selectedDate_String = select_date.getText().toString().trim();
-                        String TaskAssociatedPrice =  priceAutocompleteView.getText().toString().trim();
-                        String selectedCategory_string = tasksCategories.getText().toString().trim();
-                        d = dbHelper.insertDraftTasks(USERNAME, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
-                        if (d){
-                            Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    }catch (Exception e){
-                        Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
+        if (item.getItemId() == android.R.id.home) {
+            if (!task_title.getText().toString().isEmpty()) {
+                try {
+                    String USERNAME = tasks_sharedPrefs.getString("username", null);
+                    String taskTitle_String = task_title.getText().toString().trim();
+                    String taskDescription_String = task_description.getText().toString().trim();
+                    String selectedDate_String = select_date.getText().toString().trim();
+                    String TaskAssociatedPrice = priceAutocompleteView.getText().toString().trim();
+                    String selectedCategory_string = tasksCategories.getText().toString().trim();
+                    d = dbHelper.insertDraftTasks(USERNAME, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
+                    if (d) {
+                        Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
+                        finish();
                     }
-                }else{
-                    this.finish();
-
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
                 }
-                return true;
+            } else {
+                this.finish();
+
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -197,7 +192,7 @@ public class AddTasks extends AppCompatActivity {
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
                             if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
-                                houseOfCommons houseOfCommons = new houseOfCommons();
+                                HouseOfCommons houseOfCommons = new HouseOfCommons();
                                 if (!TaskAssociatedPrice.isEmpty() && houseOfCommons.priceCheck(TaskAssociatedPrice)){
                                     willPriceFormat(TaskAssociatedPrice);
                                     if (!selectedDate_String.isEmpty() && selectedDate_String != null && houseOfCommons.dateCheck(selectedDate_String)){
@@ -207,7 +202,7 @@ public class AddTasks extends AppCompatActivity {
                                                 if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
                                                     try {
                                                         //insert task to db if dates are cool
-                                                        houseOfCommons commons = new houseOfCommons();
+                                                        HouseOfCommons commons = new HouseOfCommons();
                                                         Double randomTaskId = commons.generateRandomId();
                                                         Integer defaultTaskState = 0;
                                                         String defaultParentTaskId = "0.0";
@@ -418,7 +413,7 @@ private void selectTime(){
                 formattedMinute = "" + minute;
             }
             selected_time = formattedHour + ":" + formattedMinute;
-            houseOfCommons houseOfCommons = new houseOfCommons();
+            HouseOfCommons houseOfCommons = new HouseOfCommons();
             selectTime_AutocompleteView.setText(houseOfCommons.FormatTime(hour, minute));
         }
     },hour, minute,false);

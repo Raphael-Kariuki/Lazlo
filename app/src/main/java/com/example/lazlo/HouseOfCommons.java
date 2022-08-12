@@ -2,11 +2,14 @@ package com.example.lazlo;
 
 
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class houseOfCommons {
+public class HouseOfCommons {
 
 
     //function that generates a random number between 0 and 1000 formatted to 4 decimal places
@@ -84,5 +87,19 @@ public class houseOfCommons {
         return matcher.matches();
     }
 
-
+    public static String crypto(String passphrase) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        byte[] getBytes = md.digest(passphrase.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : getBytes){
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+    public static boolean passwordCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+<>?.;,:'|/`]).{8,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
 }

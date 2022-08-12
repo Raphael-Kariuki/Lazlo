@@ -96,10 +96,10 @@ public class forgotPassword extends AppCompatActivity {
     }
 
     public boolean updateTempPassphrase(String emailAddress){
-        SignUp signUp = new SignUp();
         boolean b = false;
         try {
-            b = dbHelper.updateByEmail(emailAddress,signUp.crypto("gloriana"));
+            HouseOfCommons houseOfCommons = new HouseOfCommons();
+            b = dbHelper.updateByEmail(emailAddress,houseOfCommons.crypto("gloriana"));
             System.out.println("Update success");
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Update error: " + e);

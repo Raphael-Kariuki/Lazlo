@@ -80,11 +80,11 @@ public class inHousePasswordReset extends AppCompatActivity {
                     if (!inHouse_confirmPasswordText.isEmpty()){
                         if (inHouse_passwordText.length() >= 8){
                             if (inHouse_passwordText.equals(inHouse_confirmPasswordText)){
-                                SignUp signUp = new SignUp();
-                                if (signUp.passwordCheck(inHouse_confirmPasswordText)){
+                                HouseOfCommons houseOfCommons = new HouseOfCommons();
+                                if (houseOfCommons.passwordCheck(inHouse_confirmPasswordText)){
                                     boolean b = false;
                                     try {
-                                        b = dbHelper.updateByRandomUserId(randUserId, signUp.crypto(inHouse_passwordText));
+                                        b = dbHelper.updateByRandomUserId(randUserId, houseOfCommons.crypto(inHouse_passwordText));
                                     } catch (NoSuchAlgorithmException e) {
                                         e.printStackTrace();
                                     }

@@ -152,7 +152,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                         if (!completedIndividualTaskCategory_str.isEmpty() ){
                             if ( (completedIndividualTaskCategory_str.equals("Shopping") || completedIndividualTaskCategory_str.equals("Work") || completedIndividualTaskCategory_str.equals("School") || completedIndividualTaskCategory_str.equals("Business") || completedIndividualTaskCategory_str.equals("Home") )){
                                 if (!completedIndividualTaskBills_str.isEmpty()){
-                                    houseOfCommons houseOfCommons = new houseOfCommons();
+                                    HouseOfCommons houseOfCommons = new HouseOfCommons();
                                     if (houseOfCommons.priceCheck(completedIndividualTaskBills_str)){
                                         AddTasks addTasks = new AddTasks();
                                         addTasks.willPriceFormat(completedIndividualTaskBills_str);
@@ -167,7 +167,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                                            LocalDateTime date_now = LocalDateTime.now();
                                                            if (completedTaskDateDeadline2Insert.compareTo(date_now) > 0 || completedTaskDateDeadline2Insert.compareTo(date_now) == 0){
                                                                boolean b =false;
-                                                               Double randomTaskId = com.example.lazlo.houseOfCommons.generateRandomId();
+                                                               Double randomTaskId = HouseOfCommons.generateRandomId();
                                                                Integer defaultTaskState = 0;
                                                                String newParentTaskId = String.format(new Locale("en", "KE"),"%s:%s",parentTaskId,randTaskId);
                                                                try {
@@ -373,7 +373,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                 }else{
                     time2Insert = hour + ":" + minute;
                 }
-                houseOfCommons houseOfCommons = new houseOfCommons();
+                HouseOfCommons houseOfCommons = new HouseOfCommons();
                 completedIndividualTaskTimeDeadline_TextInputEdit.setText(houseOfCommons.FormatTime(hour, minute));
             }
         },hour, minute,false);
@@ -412,7 +412,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
          * the date , however if the first digit is greater than 31 then the format is yyyy-MM-dd meaning the user hasn't made any change to the date.
          * It is as from the db
          * */
-        String new_date = houseOfCommons.parseDate(Date);
+        String new_date = HouseOfCommons.parseDate(Date);
 
         /*
          * Formatting dates are tricky.

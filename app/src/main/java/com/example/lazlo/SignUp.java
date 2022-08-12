@@ -17,12 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 /**/
 import android.os.Bundle;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class SignUp extends AppCompatActivity {
 
     EditText username, email, password, confirmPassword;
@@ -105,8 +99,8 @@ public class SignUp extends AppCompatActivity {
 
 
             //import class with common methods
-            houseOfCommons commons = new houseOfCommons();
-            Double randomUserId = commons.generateRandomId();
+            HouseOfCommons commons = new HouseOfCommons();
+            Double randomUserId = HouseOfCommons.generateRandomId();
 
             String username1 = username.getText().toString().trim();
             String email1 = email.getText().toString().trim();
@@ -125,7 +119,7 @@ public class SignUp extends AppCompatActivity {
                         if (!password1.isEmpty()){      //if pass 1 is not empty, proceed
                             if (!password2.isEmpty()){      //if pass 2 is not empty, proceed
                                 if (password1.equals(password2)){       //if pass 1 matches pass 2, proceed
-                                    if (passwordCheck(password1)){      //run password against function that checks that the password is in the required format
+                                    if (HouseOfCommons.passwordCheck(password1)){      //run password against function that checks that the password is in the required format
                                         if (!isUserNameExist(username1)){
                                             SignupUsername_inputLayout.setErrorEnabled(false);
                                             SignupEmail_inputLayout.setErrorEnabled(false);
@@ -134,7 +128,7 @@ public class SignUp extends AppCompatActivity {
 
                                                 try {
                                                     //initialize the db insert function, return true if successful and otherwise
-                                                    b = dbHelper.insertUserData(username1,randomUserId,email1,crypto(password1),null);
+                                                    b = dbHelper.insertUserData(username1,randomUserId,email1, HouseOfCommons.crypto(password1),null);
                                                 }catch (Exception e){
                                                     Toast.makeText(SignUp.this, "Database error", Toast.LENGTH_SHORT).show();
                                                 }
@@ -249,12 +243,7 @@ public class SignUp extends AppCompatActivity {
         Must contain a symbols
         Must be between 8 and 20 characters
         * */
-    public boolean passwordCheck(String passphrase){
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+<>?.;,:'|/`]).{8,20}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(passphrase);
-        return matcher.matches();
-    }
+
 
 
 
@@ -263,15 +252,7 @@ public class SignUp extends AppCompatActivity {
     SHA-512 is in play
     The user provided password is converted to bytes, encrypted with sha-512 then converted to hex
     * */
-    public String crypto(String passphrase) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        byte[] getBytes = md.digest(passphrase.getBytes(StandardCharsets.UTF_8));
-        StringBuilder sb = new StringBuilder();
-        for (byte b : getBytes){
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
+
 
     //function to check whether the entered username exists in the db so as to provide feedback to the user
     public boolean isUserNameExist(String username){

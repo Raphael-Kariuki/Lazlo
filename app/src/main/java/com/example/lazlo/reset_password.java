@@ -11,7 +11,6 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -58,11 +57,11 @@ public class reset_password extends AppCompatActivity {
                         if (!confirmPasswordText.isEmpty()){
                             if (passwordText.length() >= 8){
                                     if (passwordText.equals(confirmPasswordText)){
-                                        SignUp signUp = new SignUp();
-                                        if (signUp.passwordCheck(confirmPasswordText)){
+                                        HouseOfCommons houseOfCommons = new HouseOfCommons();
+                                        if (houseOfCommons.passwordCheck(confirmPasswordText)){
                                             boolean b = false;
                                             try {
-                                                b = dbHelper.updateByEmail(emailAddress, signUp.crypto(passwordText));
+                                                b = dbHelper.updateByEmail(emailAddress, houseOfCommons.crypto(passwordText));
                                             } catch (NoSuchAlgorithmException e) {
                                                 e.printStackTrace();
                                             }

@@ -73,7 +73,7 @@ public class IndividualCompletedTask extends AppCompatActivity {
 
         spf = getSharedPreferences("user_details",MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
-
+//TODO: check why incorrent id is passed along, ID from task list rather than the new one. Occurs only in cases of rescheduling
         selectedTaskId = getIntent().getLongExtra("selectedTaskId",-1);
         System.out.println("Current id:" + selectedTaskId + " "+ randUserId);
         if (selectedTaskId < 0){

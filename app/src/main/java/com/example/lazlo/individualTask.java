@@ -195,7 +195,7 @@ public class individualTask extends AppCompatActivity {
                 * the date , however if the first digit is greater than 31 then the format is yyyy-MM-dd meaning the user hasn't made any change to the date.
                 * It is as from the db
                 * */
-                houseOfCommons houseOfCommons = new houseOfCommons();
+                HouseOfCommons houseOfCommons = new HouseOfCommons();
                 String new_date = houseOfCommons.parseDate(updateDate);
 
 
@@ -301,7 +301,7 @@ public class individualTask extends AppCompatActivity {
                 }else{
                     timeDate2update = hour + ":" + minute;
                 }
-                houseOfCommons houseOfCommons = new houseOfCommons();
+                HouseOfCommons houseOfCommons = new HouseOfCommons();
                 individualTaskTimeDeadline_TextInputEdit.setText(houseOfCommons.FormatTime(hour, minute));
             }
         },hour, minute,false);
