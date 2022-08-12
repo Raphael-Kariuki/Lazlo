@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
         //TODO: remove username from taskList completely replace with userId
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL, taskParentTaskId DOUBLE NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL, parentTaskId VARCHAR NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
 
@@ -229,8 +229,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to obtain all tasks by categories
-    public Cursor getAllByCategories(String uname, String category) {
-        return this.getWritableDatabase().query("TaskList", null, "UserName=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(uname), String.valueOf(category)}, null, null, null);
+    public Cursor getAllByCategoriesForPendingTasks(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, null);
     }
 
     //function to obtain all tasks by categories
@@ -243,8 +243,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllTasksById(Long taskId, Double randUserId) {
-        return this.getWritableDatabase().rawQuery("Select distinct ctl.randTaskId as completedTaskRandomId," +
-                        "tl._id,tl.TaskTitle as completedTaskTitle," +
+        return this.getWritableDatabase().rawQuery("Select distinct " +
+                        "ctl.randTaskId as completedTaskRandomId," +
+                        "tl.TaskTitle as completedTaskTitle," +
                         "tl.TaskDescription as completedTaskDescription," +
                         "tl.TaskCategory as completedTaskCategory," +
                         "tl.TaskAssociatedPrice as completedTaskPredictedSpending," +
@@ -252,8 +253,10 @@ public class DBHelper extends SQLiteOpenHelper {
                         " tl.TaskCreationTime as completedTaskCreationDate," +
                         "ctl.taskStartTime as completedTaskStartDate, " +
                         "ctl.taskCompleteTime as completedTaskCompletionDate," +
-                        "ctl.taskDuration as completedTaskActualDuration " +
-                        " from TaskList tl inner join Completed_N_DeletedTasks ctl on tl.randUserId = ctl.randUserId " +
+                        "ctl.taskDuration as completedTaskActualDuration," +
+                        " ctl.taskTrial as completedTaskTrials" +
+                        " from TaskList tl inner join Completed_N_DeletedTasks ctl " +
+                        "on tl.randTaskId = ctl.randTaskId " +
                         "where ctl.randUserId = ? and ctl._id = ? and tl.taskState = 5",
                 new String[]{String.valueOf(randUserId), String.valueOf(taskId)});
     }
@@ -286,7 +289,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //method to insert task, executed on addTasks.java
     public boolean insertTasks(Double randTaskId, Double randUserId, String taskTitle, String taskDescription, String taskCategory,
-                               Double taskAssociatedPrice, LocalDateTime taskDeadline, long taskCreationTime, Integer taskState, Double taskParentTaskId) {
+                               Double taskAssociatedPrice, LocalDateTime taskDeadline, long taskCreationTime, Integer taskState, String parentTaskId) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (randTaskId != null && String.valueOf(randTaskId).length() > 0)
@@ -304,8 +307,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         if (taskState != null && String.valueOf(taskState).length() > 0)
             contentValues.put("taskState", taskState);
-        if (taskParentTaskId != null && String.valueOf(taskParentTaskId).length() > 0)
-            contentValues.put("taskReschedule", taskParentTaskId);
+        if (parentTaskId != null && parentTaskId.length() > 0)
+            contentValues.put("parentTaskId", parentTaskId);
         long result = DB.insert("TaskList", null, contentValues);
         DB.close();
         return result != -1;
@@ -438,7 +441,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor obtainCompletedTaskDetailsByRandomTaskId(Double randUserId, Double randTaskId) {
-        return this.getWritableDatabase().query("TaskList", new String[]{"TaskTitle", "TaskDescription", "TaskCategory", "TaskAssociatedPrice", "TaskDeadline"}, "randUserId = ? and randTaskId = ?", new String[]{String.valueOf(randUserId), String.valueOf(randTaskId)}, null, null, null);
+        return this.getWritableDatabase().query("TaskList", new String[]{"TaskTitle", "TaskDescription", "TaskCategory", "TaskAssociatedPrice", "TaskDeadline","parentTaskId"}, "randUserId = ? and randTaskId = ?", new String[]{String.valueOf(randUserId), String.valueOf(randTaskId)}, null, null, null);
     }
 
 

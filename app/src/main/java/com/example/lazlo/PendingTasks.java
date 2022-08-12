@@ -4,7 +4,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /*added code*/
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.os.Bundle;
 import android.widget.SearchView;
@@ -58,7 +56,7 @@ public class PendingTasks extends AppCompatActivity {
         case android.R.id.home:
         case R.id.myAccount :
             //add the function to perform here
-            startActivity(new Intent(this, Account.class));
+            startActivity(new Intent(this, TasksHomePage.class));
             return(true);
         case R.id.exit:
             //add the function to perform here
@@ -70,7 +68,7 @@ public class PendingTasks extends AppCompatActivity {
             editor.apply();
             startActivity(i);
             return(true);
-
+//TODO:encrypt content sent to sharedPreferences
 
     }
         return(super.onOptionsItemSelected(item));
@@ -132,11 +130,11 @@ public class PendingTasks extends AppCompatActivity {
         Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
 
                 populateHomeTasks();
             }
@@ -147,10 +145,10 @@ public class PendingTasks extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 populateShoppingTasks();
             }
         });
@@ -159,11 +157,11 @@ public class PendingTasks extends AppCompatActivity {
         Work.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 populateWorkTasks();
             }
         });
@@ -171,11 +169,11 @@ public class PendingTasks extends AppCompatActivity {
         School.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 populateSchoolTasks();
             }
         });
@@ -184,10 +182,10 @@ public class PendingTasks extends AppCompatActivity {
         Business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.black));
+                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                 businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
                 populateBusinessTasks();
             }
@@ -213,15 +211,9 @@ public class PendingTasks extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //This is called when a task is deleted from the list view
-    //receives a category string obtained from the deleted task, why? A deleted task will have a similar category with the rest that are rendered then.
-    //We don't want  that when a task is deleted, the view jumps to a different category. User experience is key, no matter the lines of code required
-    //that is then used to retrieve content from db of that specific category
-    // and call a function to repopulate the task list
-    //TODO:find a way to shorten this preceding bulk of code
 
     private void SetOrRefreshListView(){
-        cursor = dbHelper.getAllByCategories(user_name,categoryToPopulate);
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,categoryToPopulate);
         System.out.println(categoryToPopulate);
         taskListPopulate();
 
@@ -232,7 +224,7 @@ public class PendingTasks extends AppCompatActivity {
     private void SetOrRefreshListView2(){
         String tempCategory = this.getIntent().getStringExtra("tempCategory");
         if (tempCategory != null){
-            cursor = dbHelper.getAllByCategories(user_name,tempCategory);
+            cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,tempCategory);
 
             //highlight the obtained category button
             switch (tempCategory) {
@@ -261,7 +253,7 @@ public class PendingTasks extends AppCompatActivity {
 
             // if the activity is loaded without addTasks preceding it, that means the tempCategory string will be null
             // thus render the default/ first category, home and highlight to guide user
-            cursor = dbHelper.getAllByCategories(user_name,"Home");
+            cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Home");
             homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
            // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
         }
@@ -281,7 +273,6 @@ public class PendingTasks extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        cursor.close();
     }
 
 
@@ -302,31 +293,31 @@ public class PendingTasks extends AppCompatActivity {
 
     //obtain Home category content and populate list view on Home button click
     private  void populateHomeTasks(){
-        cursor = dbHelper.getAllByCategories(user_name,"Home");
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Home");
         taskListPopulate();
 
     }
     //obtain Shopping category content and populate list view on Shopping button click
     private  void populateShoppingTasks(){
-        cursor = dbHelper.getAllByCategories(user_name,"Shopping");
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Shopping");
         taskListPopulate();
 
     }
     //obtain Work category content and populate list view on Work button click
     private  void populateWorkTasks(){
-        cursor = dbHelper.getAllByCategories(user_name,"Work");
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Work");
         taskListPopulate();
 
     }
     //obtain School category content and populate list view on School button click
     private  void populateSchoolTasks(){
-        cursor = dbHelper.getAllByCategories(user_name,"School");
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"School");
         taskListPopulate();
 
     }
     //obtain Business category content and populate list view on Business button click
     private  void populateBusinessTasks(){
-        cursor = dbHelper.getAllByCategories(user_name,"Business");
+        cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Business");
         taskListPopulate();
 
     }

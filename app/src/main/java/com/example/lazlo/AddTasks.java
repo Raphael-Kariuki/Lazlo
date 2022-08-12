@@ -197,10 +197,11 @@ public class AddTasks extends AppCompatActivity {
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
                             if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
-                                if (!TaskAssociatedPrice.isEmpty() && priceCheck(TaskAssociatedPrice)){
+                                houseOfCommons houseOfCommons = new houseOfCommons();
+                                if (!TaskAssociatedPrice.isEmpty() && houseOfCommons.priceCheck(TaskAssociatedPrice)){
                                     willPriceFormat(TaskAssociatedPrice);
-                                    if (!selectedDate_String.isEmpty() && selectedDate_String != null && dateCheck(selectedDate_String)){
-                                        if (!selectedTime_String.isEmpty() && selectedTime_String != null && timeCheck(selectedTime_String)){
+                                    if (!selectedDate_String.isEmpty() && selectedDate_String != null && houseOfCommons.dateCheck(selectedDate_String)){
+                                        if (!selectedTime_String.isEmpty() && selectedTime_String != null && houseOfCommons.timeCheck(selectedTime_String)){
                                             if (willDateFormat(selectedDateTime)){
                                                 date_now = LocalDateTime.now();
                                                 if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
@@ -209,7 +210,7 @@ public class AddTasks extends AppCompatActivity {
                                                         houseOfCommons commons = new houseOfCommons();
                                                         Double randomTaskId = commons.generateRandomId();
                                                         Integer defaultTaskState = 0;
-                                                        Double defaultParentTaskId = 0.0;
+                                                        String defaultParentTaskId = "0.0";
                                                         b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState,defaultParentTaskId);
 
                                                     }catch(Exception e){
@@ -316,24 +317,8 @@ public class AddTasks extends AppCompatActivity {
         });
 
     }
-    public boolean dateCheck(String passphrase){
-        String regex = "^(?=.*[0-9])(?=.*[-]).{10}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(passphrase);
-        return matcher.matches();
-    }
-    public boolean timeCheck(String passphrase){
-        String regex = "^(?=.*[0-9])(?=.*[:]).{3,9}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(passphrase);
-        return matcher.matches();
-    }
-    public boolean priceCheck(String passphrase){
-        String regex = "^(?=.*[0-9]).{1,6}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(passphrase);
-        return matcher.matches();
-    }
+
+
     public boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
@@ -403,7 +388,7 @@ public class AddTasks extends AppCompatActivity {
                         Price = Double.parseDouble(priceToParse);
                         return true;
                     }catch(java.lang.NumberFormatException e){
-                        System.out.println("Price Exception" + e);
+                        e.printStackTrace();
                         return false;
                     }
                 }else {

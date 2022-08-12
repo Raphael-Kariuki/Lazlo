@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,7 +33,9 @@ public class IndividualCompletedTask extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            this.finish();
+            Intent back2CompletedTasksView = new Intent(getApplicationContext(), CompletedTasks.class);
+            back2CompletedTasksView.putExtra("category2Populate", completedTaskCategory_str);
+            startActivity(back2CompletedTasksView);
             return true;
         }
         return super.onOptionsItemSelected(item);

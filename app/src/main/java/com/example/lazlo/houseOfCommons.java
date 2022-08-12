@@ -3,12 +3,14 @@ package com.example.lazlo;
 
 
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class houseOfCommons {
 
 
     //function that generates a random number between 0 and 1000 formatted to 4 decimal places
-    public Double generateRandomId() {
+    public static Double generateRandomId() {
         Double entropy = Math.random() * 1000;
         String pattern = "###.####";
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
@@ -43,7 +45,7 @@ public class houseOfCommons {
 
         return time;
     }
-    public String parseDate(String toDecideOn){
+    public static String parseDate(String toDecideOn){
         String regex = "";
         String new_day = "",new_month = "",new_year = "",new_date;
         if(toDecideOn.contains("-")){
@@ -63,5 +65,24 @@ public class houseOfCommons {
         new_date = new_day + "-" + new_month + "-" + new_year;
         return new_date;
     }
+    public boolean priceCheck(String passphrase){
+        String regex = "^(?=.*[0-9]).{1,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
+    public boolean dateCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[-]).{10}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
+    public boolean timeCheck(String passphrase){
+        String regex = "^(?=.*[0-9])(?=.*[:]).{3,9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(passphrase);
+        return matcher.matches();
+    }
+
 
 }

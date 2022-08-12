@@ -43,12 +43,13 @@
         <entry key="app/src/main/res/drawable/triad.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/trois.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/uno.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/white.xml" value="0.1435" />
         <entry key="app/src/main/res/layout-v28/activity_dashboard.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/layout-v28/fragment_work.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_alarm_broadcast.xml" value="0.20625" />
-        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.18329466357308585" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
