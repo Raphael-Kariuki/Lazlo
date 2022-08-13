@@ -6,6 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -101,5 +104,9 @@ public class HouseOfCommons {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(passphrase);
         return matcher.matches();
+    }
+    public static Date getDateFromLocalDateTime(LocalDateTime localDateTime){
+        return Date.from(localDateTime.atZone(ZoneId.of("GMT+3")).toInstant());
+        //Date.from(localDateTime.now(ZoneId.of("GMT+3")).atZone(ZoneId.systemDefault()).toInstant());
     }
 }

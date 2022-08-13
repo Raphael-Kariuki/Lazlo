@@ -165,7 +165,6 @@ public class Login extends AppCompatActivity {
     public boolean loginCheck(Cursor cursor, String passCheck) throws NoSuchAlgorithmException {
 
         //import class to access it's crypto function
-        HouseOfCommons houseOfCommons = new HouseOfCommons();
 
         //initialize a boolean so that it can assigned a value in a loop and accessed outside it
         boolean a = false;
@@ -173,7 +172,7 @@ public class Login extends AppCompatActivity {
         //iterate through the non-null cursor
         if (cursor != null && cursor.moveToNext()) {
             //check whether the value at the password column matches that entered
-            if (cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(houseOfCommons.crypto(passCheck))) {
+            if (cursor.getString(cursor.getColumnIndexOrThrow("password")).equals(HouseOfCommons.crypto(passCheck))) {
 
                 //obtain randomUser Id to be stored in shared preferences
                 randomUserId = cursor.getDouble(cursor.getColumnIndexOrThrow("randUserId"));

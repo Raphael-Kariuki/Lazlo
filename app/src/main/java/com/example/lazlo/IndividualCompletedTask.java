@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -115,7 +117,7 @@ public class IndividualCompletedTask extends AppCompatActivity {
             completedTaskPredictedSpending.setText(String.format(new Locale("en","KE"),"%d", completedTaskPredictedSpending_long));
 
             completedTaskDeadline_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDeadline"));
-            completedTaskDeadline.setText(completedTaskDeadline_str);
+            completedTaskDeadline.setText("" + returnFormattedDeadline(completedTaskDeadline_str));
 
             completedTaskCreationDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
             completedTaskCreationDate.setText(returnDate(completedTaskCreationDate_long));
@@ -133,10 +135,15 @@ public class IndividualCompletedTask extends AppCompatActivity {
         }
     }
     private String returnDate(long epochDate){
-        String pattern = "dd-MM-yyyy HH:mm:ss";
+        String pattern = "EEE LLL dd HH:mm:ss yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("en", "KE"));
         return simpleDateFormat.format(new Date(epochDate));
     }
+    private String returnFormattedDeadline(String localDateTimeDeadline){
+        Date newDate = HouseOfCommons.getDateFromLocalDateTime(LocalDateTime.parse(localDateTimeDeadline));
+        return returnDate(newDate.getTime());
+    }
+
     /*
     * long hours = totalTaskDuration/3600000;
       long minutes = totalTaskDuration/60000;

@@ -51,4 +51,5 @@
     <string name="nov">Nov</string>
     <string name="dec">Dec</string>
     <string name="hash_tag">#</string>
+    <string name="create">Create</string>
 </resources>

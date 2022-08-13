@@ -31,7 +31,7 @@ public class performTask extends AppCompatActivity {
     AppCompatImageButton btnStartTask2,btnPauseTask, btnResumeTask;
     AppCompatButton btnCancelDoingTask, btnCompleteDoingTask;
     int taskState;
-    AlertDialog.Builder builder;
+
     long totalTaskDuration;
     DBHelper dbHelper;
     MaterialTextView runningTaskTitle,runningTaskDescription,runningTaskCategory,runningTaskBills,runningTaskDeadline;
@@ -193,13 +193,13 @@ public class performTask extends AppCompatActivity {
         });
 
         //requires context and when placed inside setOnClickListener, it picks that as the context thus needs to be outside
-        builder = new AlertDialog.Builder(this, androidx.appcompat.R.style.Theme_AppCompat);
 
         btnCancelDoingTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cancelTaskDate = new Date().getTime();
                 taskState = 4;
+                AlertDialog.Builder builder = new AlertDialog.Builder(performTask.this);
 
                 builder.setCancelable(true);
                 builder.setTitle("Cancel working on a task");
@@ -506,7 +506,8 @@ public class performTask extends AppCompatActivity {
 
     public Date stringToDate(String date){
         Date newDate = null;
-        DateFormat format = new SimpleDateFormat("EEE LLL dd HH:mm:ss z yyyy");
+        DateFormat format = new SimpleDateFormat("EEE LLL dd HH:mm:ss z yyyy", new Locale("en", "KE"));
+
         try{
            newDate = format.parse(date);
         }catch(Exception e){
@@ -524,7 +525,6 @@ public class performTask extends AppCompatActivity {
             return false;
         }
     }
-//TODO:obtain deadline from db as can be changed, then task perform in which case the task will still show the old deadline
 
     //function that receives a date string returns a localDateTime
     private LocalDateTime LocalDateTimeFormat(String selectedDate){
@@ -600,8 +600,6 @@ public class performTask extends AppCompatActivity {
     public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
         return LocalDateTime.parse(string, dateTimeFormatter);
     }
-    private Date getDateFromLocalDateTime(LocalDateTime localDateTime){
-        return Date.from(localDateTime.now(ZoneId.of("GMT+3")).atZone(ZoneId.systemDefault()).toInstant());
-    }
+
 
 }

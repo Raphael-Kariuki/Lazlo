@@ -43,6 +43,7 @@ public class individualTask extends AppCompatActivity {
   Double randomTaskId, randUserId;
   SharedPreferences spf;
   boolean f;
+  String updateDateTime;
 
     @Override
     public void onBackPressed(){
@@ -120,7 +121,11 @@ public class individualTask extends AppCompatActivity {
                 startTask.putExtra("taskDescription", Description);
                 startTask.putExtra("taskCategory", Category);
                 startTask.putExtra("taskBills", Bills);
-                startTask.putExtra("taskDeadline", Deadline);
+                if (updateDateTime != null){
+                    startTask.putExtra("taskDeadline", updateDateTime);
+                }else{
+                    startTask.putExtra("taskDeadline", Deadline);
+                }
                 startActivity(startTask);
             }
         });
@@ -201,7 +206,7 @@ public class individualTask extends AppCompatActivity {
 
                 //combine the date and time ready for formatting
 
-                String updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
+                updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
                 if (!updateTitle.isEmpty()){
                     if (!updateDescription.isEmpty()){
                         if (!updateCategory.isEmpty() && (updateCategory.equals("Shopping") || updateCategory.equals("Work") || updateCategory.equals("School") || updateCategory.equals("Business") || updateCategory.equals("Home") )){

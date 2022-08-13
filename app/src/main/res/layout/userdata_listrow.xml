@@ -61,7 +61,6 @@
             android:layout_marginTop="7dp"
             android:textColor="@color/black"
             android:textSize="11sp"
-            android:text="24-07-2022 15:54"
             android:clickable="false"
             />
 
