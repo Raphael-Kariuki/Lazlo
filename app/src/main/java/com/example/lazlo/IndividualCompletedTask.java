@@ -1,5 +1,6 @@
 package com.example.lazlo;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,14 +22,18 @@ import java.util.Locale;
 
 
 public class IndividualCompletedTask extends AppCompatActivity {
-    long selectedTaskId;
+    Long selectedTaskId;
     SharedPreferences spf;
     Double randUserId;
-    MaterialTextView completedTaskTitle,completedTaskCategory,completedTaskCreationDate, completedTaskDeadline,completedTaskStartDate,completedTaskCompletionDate,completedTaskPredictedDuration,completedTaskActualDuration,completedTaskPredictedSpending,completedTaskActualSpending,completedTaskDescription;
+    MaterialTextView completedTaskTitle,completedTaskCategory,completedTaskCreationDate,
+            completedTaskDeadline,completedTaskStartDate,completedTaskCompletionDate,
+            completedTaskPredictedDuration,completedTaskActualDuration,completedTaskPredictedSpending,
+            completedTaskActualSpending,completedTaskDescription;
     DBHelper dbHelper;
     Double randTaskId;
-    String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str,completedTaskDeadline_str;
-    long completedTaskStartDate_long, completedTaskCompletionDate_long,completedTaskActualDuration_long,completedTaskPredictedSpending_long, completedTaskCreationDate_long;
+    String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str,completedTaskDeadline_str,completedTaskPredictedDuration_str;
+    Long completedTaskStartDate_long, completedTaskCompletionDate_long,completedTaskActualDuration_long,
+            completedTaskPredictedSpending_long, completedTaskCreationDate_long;
 
 
 
@@ -116,7 +121,7 @@ public class IndividualCompletedTask extends AppCompatActivity {
             completedTaskPredictedSpending.setText(String.format(new Locale("en","KE"),"%d", completedTaskPredictedSpending_long));
 
             completedTaskDeadline_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDeadline"));
-            completedTaskDeadline.setText("" + returnFormattedDeadline(completedTaskDeadline_str));
+            completedTaskDeadline.setText(String.format(new Locale("en","KE"),"%s",returnFormattedDeadline(completedTaskDeadline_str)));
 
             completedTaskCreationDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
             completedTaskCreationDate.setText(returnDate(completedTaskCreationDate_long));
@@ -129,6 +134,13 @@ public class IndividualCompletedTask extends AppCompatActivity {
 
             completedTaskActualDuration_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
             completedTaskActualDuration.setText(HouseOfCommons.returnDuration(completedTaskActualDuration_long));
+
+
+            completedTaskPredictedDuration_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskPredictedDuration"));
+            String[] durationPlusUnits = HouseOfCommons.processPredictedTaskDurationForPopulation(completedTaskPredictedDuration_str);
+            completedTaskPredictedDuration.setText(String.format(new Locale("en", "KE"),"%s %s",durationPlusUnits[0],durationPlusUnits[1]));
+
+
         }else{
             System.out.println("Error populating view");
         }

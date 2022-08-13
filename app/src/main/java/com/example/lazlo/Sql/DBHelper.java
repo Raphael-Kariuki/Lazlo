@@ -249,7 +249,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         "tl.TaskCategory as completedTaskCategory," +
                         "tl.TaskAssociatedPrice as completedTaskPredictedSpending," +
                         "tl.TaskDeadline as completedTaskDeadline," +
-                        " tl.TaskCreationTime as completedTaskCreationDate," +
+                        " tl.TaskCreationTime as completedTaskCreationDate, " +
+                        "tl.taskPredictedDuration as completedTaskPredictedDuration," +
                         "ctl.taskStartTime as completedTaskStartDate, " +
                         "ctl.taskCompleteTime as completedTaskCompletionDate," +
                         "ctl.taskDuration as completedTaskActualDuration," +
@@ -376,8 +377,8 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("TaskAssociatedPrice", TaskAssociatedPrice);
         if (TaskDeadline != null && String.valueOf(TaskDeadline).length() > 0)
             cv.put("TaskDeadline", String.valueOf(TaskDeadline));
-        if (predictedTaskDuration != null && String.valueOf(predictedTaskDuration).length() > 0)
-            cv.put("TaskPredictedDuration", String.valueOf(predictedTaskDuration));
+        if (predictedTaskDuration != null && predictedTaskDuration.length() > 0)
+            cv.put("TaskPredictedDuration", predictedTaskDuration);
         if (cv.size() > 0)
             rv = this.getWritableDatabase().update("TaskList", cv, "_id=? and randUserId = ?", new String[]{String.valueOf(id),String.valueOf(randUserId)});
         this.getWritableDatabase().close();
