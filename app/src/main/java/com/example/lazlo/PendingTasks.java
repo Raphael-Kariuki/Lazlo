@@ -122,6 +122,7 @@ public class PendingTasks extends AppCompatActivity {
         addNewTasks();
 
         populateHomeTasks();
+        homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
         tasks_listView.setTextFilterEnabled(true);
 
         //TODO:Simplify this background setup with 9-patch drawables
@@ -229,36 +230,44 @@ public class PendingTasks extends AppCompatActivity {
             //highlight the obtained category button
             switch (tempCategory) {
                 case "Home":
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
-                    // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     break;
                 case "Business":
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
-                    // Business.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
                     break;
                 case "School":
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
-                    // School.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     break;
                 case "Work":
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
-                    // Work.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     break;
                 case "Shopping":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.orange));
-                    //  Shopping.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
                     break;
-            }
-        }else {
 
-            // if the activity is loaded without addTasks preceding it, that means the tempCategory string will be null
-            // thus render the default/ first category, home and highlight to guide user
-            cursor = dbHelper.getAllByCategoriesForPendingTasks(randomUserId,"Home");
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-           // Home.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+            }
         }
-        //receives a cursor that is specific by name, any cursor placed before it with the name cursor, works. CAUTION!!
-        taskListPopulate();
+
 
     }
 
@@ -371,7 +380,7 @@ public class PendingTasks extends AppCompatActivity {
                             }
                             if (b){
                                 Toast.makeText(PendingTasks.this, "task delete successfully", Toast.LENGTH_SHORT).show();
-                                SetOrRefreshListView();
+                                //SetOrRefreshListView();
                             }else{
                                 Toast.makeText(PendingTasks.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
                             }

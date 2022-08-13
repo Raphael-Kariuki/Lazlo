@@ -29,8 +29,7 @@
                     android:layout_height="wrap_content"
                     app:boxBackgroundColor="@color/white"
                     app:boxStrokeColor="@color/black"
-                    app:hintAnimationEnabled="true"
-                    app:hintEnabled="false"
+                    android:hint="@string/task_title"
                     app:startIconDrawable="@drawable/ic_baseline_topic_24"
                     app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                     app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -60,7 +59,7 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     app:boxBackgroundColor="@color/white"
                     app:boxStrokeColor="@color/black"
-                    app:hintEnabled="false"
+                    app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_baseline_notes_24"
                     app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                     app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -87,7 +86,7 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     app:boxBackgroundColor="@color/white"
                     app:boxStrokeColor="@color/black"
-                    app:hintEnabled="false"
+                    app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_baseline_category_24"
                     app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                     app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -114,7 +113,7 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     app:boxBackgroundColor="@color/white"
                     app:boxStrokeColor="@color/black"
-                    app:hintEnabled="false"
+                    app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
                     app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                     app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -149,7 +148,7 @@
                         android:layout_weight="1"
                         app:boxBackgroundColor="@color/white"
                         app:boxStrokeColor="@color/black"
-                        app:hintEnabled="false"
+                        app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_baseline_date_range_24"
                         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -179,7 +178,7 @@
                         android:layout_weight="1"
                         app:boxBackgroundColor="@color/white"
                         app:boxStrokeColor="@color/black"
-                        app:hintEnabled="false"
+                        app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_baseline_access_time_24"
                         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -216,7 +215,7 @@
                         android:layout_height="wrap_content"
                         app:boxBackgroundColor="@color/white"
                         app:boxStrokeColor="@color/black"
-                        app:hintEnabled="false"
+                        app:hintEnabled="true"
                         app:endIconMode="clear_text"
                         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -246,7 +245,7 @@
                         android:layout_height="wrap_content"
                         app:boxBackgroundColor="@color/white"
                         app:boxStrokeColor="@color/black"
-                        app:hintEnabled="false"
+                        app:hintEnabled="true"
                         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
                         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
                         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
@@ -280,24 +279,6 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btnStartTask"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/pie"
-                        android:backgroundTint="@color/black"
-                        android:gravity="center_horizontal"
-                        android:src="@drawable/ic_baseline_play_arrow_24"
-                        app:backgroundTint="@color/black" />
-                </LinearLayout>
 
 
 

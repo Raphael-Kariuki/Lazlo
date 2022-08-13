@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,10 +58,20 @@ public class individualTask extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), PendingTasks.class));
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.individual_task_menu, menu);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            this.finish();
-            return true;
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.startTask:
+                startTaskAction();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -104,7 +115,6 @@ public class individualTask extends AppCompatActivity {
 
 
 
-        btnStartTask = findViewById(R.id.btnStartTask);
 
 
 
@@ -135,50 +145,7 @@ public class individualTask extends AppCompatActivity {
             }
         }
 
-        //needs to be below obtaining the currentId from final page else we'll be sending blanks
-        btnStartTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startTask = new Intent(getApplicationContext(), performTask.class );
-                startTask.putExtra("taskId", currentId);
-                startTask.putExtra("randomTaskId", randomTaskId);
-                /*
-                * Why checks, to counter the situation whereby a task is edited and performed on the fly
-                * Without performing this checks, the updated version of the task won't be populated showing wrong facts
-                * */
-                if (updateDateTime != null){
-                    startTask.putExtra("taskTitle", updateTitle);
-                }else{
-                    startTask.putExtra("taskTitle", Titre);
-                }
 
-                if (updateDateTime != null){
-                    startTask.putExtra("taskDescription", updateDescription);
-                }else{
-                    startTask.putExtra("taskDescription", Description);
-                }
-
-                if (updateDateTime != null){
-                    startTask.putExtra("taskCategory", updateCategory);
-                }else{
-                    startTask.putExtra("taskCategory", Category);
-                }
-
-                if (updateDateTime != null){
-                    startTask.putExtra("taskBills", updatePrice);
-                }else{
-                    startTask.putExtra("taskBills", Bills);
-                }
-
-                if (updateDateTime != null){
-                    startTask.putExtra("taskDeadline", updateDateTime);
-                }else{
-                    startTask.putExtra("taskDeadline", Deadline);
-                }
-
-                startActivity(startTask);
-            }
-        });
 
         individualTaskTimeDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -483,7 +450,46 @@ public class individualTask extends AppCompatActivity {
         }
     }
 
+private void startTaskAction(){
+    Intent startTask = new Intent(getApplicationContext(), performTask.class );
+    startTask.putExtra("taskId", currentId);
+    startTask.putExtra("randomTaskId", randomTaskId);
+    /*
+     * Why checks, to counter the situation whereby a task is edited and performed on the fly
+     * Without performing this checks, the updated version of the task won't be populated showing wrong facts
+     * */
+    if (updateDateTime != null){
+        startTask.putExtra("taskTitle", updateTitle);
+    }else{
+        startTask.putExtra("taskTitle", Titre);
+    }
 
+    if (updateDateTime != null){
+        startTask.putExtra("taskDescription", updateDescription);
+    }else{
+        startTask.putExtra("taskDescription", Description);
+    }
+
+    if (updateDateTime != null){
+        startTask.putExtra("taskCategory", updateCategory);
+    }else{
+        startTask.putExtra("taskCategory", Category);
+    }
+
+    if (updateDateTime != null){
+        startTask.putExtra("taskBills", updatePrice);
+    }else{
+        startTask.putExtra("taskBills", Bills);
+    }
+
+    if (updateDateTime != null){
+        startTask.putExtra("taskDeadline", updateDateTime);
+    }else{
+        startTask.putExtra("taskDeadline", Deadline);
+    }
+
+    startActivity(startTask);
+}
 
 
 

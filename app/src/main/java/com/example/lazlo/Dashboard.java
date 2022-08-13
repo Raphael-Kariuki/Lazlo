@@ -2,6 +2,7 @@ package com.example.lazlo;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -15,15 +16,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.github.mikephil.charting.animation.Easing;
@@ -42,7 +40,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -55,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Dashboard extends AppCompatActivity {
     MaterialAutoCompleteTextView monthsSelectionDropDownOnDashBoard;
@@ -81,7 +79,6 @@ public class Dashboard extends AppCompatActivity {
     ListView showSpendingListView;
     PieChart pieChart;
     BarChart barChart;
-    FloatingActionButton hamburger_menu;
     NumberFormat numberFormat;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
@@ -89,13 +86,14 @@ public class Dashboard extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_bar_menu, menu);
         return true;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
         case android.R.id.home:
             this.finish();
             return true;
@@ -127,6 +125,7 @@ public class Dashboard extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         // showing the back button in action bar
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Dashboard");
 
@@ -162,90 +161,77 @@ public class Dashboard extends AppCompatActivity {
         int eMonth = calendar.get(Calendar.MONTH);
         int eDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        startDuration_choice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //set startDatePicker dialog
-                datePickerDialog = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        String formattedMonth, formattedDay;
-                        if (monthOfYear + 1 <= 9) {
-                            formattedMonth = "0" + (monthOfYear + 1);
-                        } else {
-                            formattedMonth = String.valueOf(monthOfYear + 1);
-                        }
-                        if (dayOfMonth < 10) {
-                            formattedDay = "0" + dayOfMonth;
-                        } else {
-                            formattedDay = String.valueOf(dayOfMonth);
-                        }
-                        startDuration_choice.setText(formattedDay + "-" + formattedMonth + "-" + year);
-                    }
-                }, sYear, sMonth, sDay);
-                datePickerDialog.show();
+        startDuration_choice.setOnClickListener(view -> {
+            //set startDatePicker dialog
+            datePickerDialog = new DatePickerDialog(Dashboard.this, (datePicker, year, monthOfYear, dayOfMonth) -> {
+                String formattedMonth, formattedDay;
+                if (monthOfYear + 1 <= 9) {
+                    formattedMonth = "0" + (monthOfYear + 1);
+                } else {
+                    formattedMonth = String.valueOf(monthOfYear + 1);
+                }
+                if (dayOfMonth < 10) {
+                    formattedDay = "0" + dayOfMonth;
+                } else {
+                    formattedDay = String.valueOf(dayOfMonth);
+                }
+                startDuration_choice.setText(String.format(new Locale("en","KE"),"%s-%s-%s",formattedDay,formattedMonth,year));
+            }, sYear, sMonth, sDay);
+            datePickerDialog.show();
 
-            }
         });
-        endDuration_choice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //set endDatePicker dialog
-                datePickerDialog2 = new DatePickerDialog(Dashboard.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+        endDuration_choice.setOnClickListener(view -> {
+            //set endDatePicker dialog
+            datePickerDialog2 = new DatePickerDialog(Dashboard.this, (datePicker, year, monthOfYear, dayOfMonth) -> {
 
-                        String formattedMonth, formattedDay;
-                        if (monthOfYear + 1 <= 9) {
-                            formattedMonth = "0" + (monthOfYear + 1);
-                        } else {
-                            formattedMonth = String.valueOf(monthOfYear + 1);
-                        }
-                        if (dayOfMonth < 10) {
-                            formattedDay = "0" + dayOfMonth;
-                        } else {
-                            formattedDay = String.valueOf(dayOfMonth);
-                        }
-                        endDuration_choice.setText(formattedDay + "-" + formattedMonth + "-" + year);
-                    }
-                }, eYear, eMonth, eDay);
-                datePickerDialog2.show();
-            }
+                String formattedMonth, formattedDay;
+                if (monthOfYear + 1 <= 9) {
+                    formattedMonth = "0" + (monthOfYear + 1);
+                } else {
+                    formattedMonth = String.valueOf(monthOfYear + 1);
+                }
+                if (dayOfMonth < 10) {
+                    formattedDay = "0" + dayOfMonth;
+                } else {
+                    formattedDay = String.valueOf(dayOfMonth);
+                }
+                endDuration_choice.setText(String.format(new Locale("en","KE"),"%s-%s-%s",formattedDay,formattedMonth,year));
+            }, eYear, eMonth, eDay);
+            datePickerDialog2.show();
         });
 
         btnShowPredictedSpending = findViewById(R.id.btnShowPredictedSpending);
 
-        btnShowPredictedSpending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnShowPredictedSpending.setOnClickListener(view -> {
 
-                selectedStart_duration = startDuration_choice.getText().toString().trim();
-                selectedEnd_duration = endDuration_choice.getText().toString().trim();
+            selectedStart_duration = Objects.requireNonNull(startDuration_choice.getText()).toString().trim();
+            selectedEnd_duration = Objects.requireNonNull(endDuration_choice.getText()).toString().trim();
 
-                if (!selectedStart_duration.isEmpty()) {
-                    if (!selectedEnd_duration.isEmpty()) {
-                        startDateLayout.setErrorEnabled(false);
-                        endDateLayout.setErrorEnabled(false);
+            if (!selectedStart_duration.isEmpty()) {
+                if (!selectedEnd_duration.isEmpty()) {
+                    startDateLayout.setErrorEnabled(false);
+                    endDateLayout.setErrorEnabled(false);
 
-                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
 
-                        selectedStart_duration_String = getDateFromString(selectedStart_duration + " 00:01", dateTimeFormatter);
-                        selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 00:01", dateTimeFormatter);
+                    selectedStart_duration_String = getDateFromString(selectedStart_duration + " 00:01", dateTimeFormatter);
+                    selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 00:01", dateTimeFormatter);
 
-                        sumTotalView.setText("" + numberFormat.format(populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String)));
-                        populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
-
-                    } else {
-                        endDateLayout.setErrorEnabled(true);
-                        startDateLayout.setErrorEnabled(false);
-                        endDateLayout.setError("Select start date");
-                    }
+                    Integer sum = populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String);
+                    String formattedSum = numberFormat.format(sum);
+                    sumTotalView.setText(String.format(new Locale("en","KE"),"%s",formattedSum));
+                    populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
 
                 } else {
-                    startDateLayout.setErrorEnabled(true);
-                    endDateLayout.setErrorEnabled(false);
-                    startDateLayout.setError("Select start date");
+                    endDateLayout.setErrorEnabled(true);
+                    startDateLayout.setErrorEnabled(false);
+                    endDateLayout.setError("Select start date");
                 }
+
+            } else {
+                startDateLayout.setErrorEnabled(true);
+                endDateLayout.setErrorEnabled(false);
+                startDateLayout.setError("Select start date");
             }
         });
 
@@ -290,23 +276,17 @@ public class Dashboard extends AppCompatActivity {
         initializeBarChart();
         setupBarChart();
 
-        btnMonthlySpendingView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               monthlyTable.setVisibility(View.VISIBLE);
-                customViewLayout.setVisibility(View.INVISIBLE);
-                getSumOfSpendingPerMonth(randUserId);
+        btnMonthlySpendingView.setOnClickListener(view -> {
+           monthlyTable.setVisibility(View.VISIBLE);
+            customViewLayout.setVisibility(View.INVISIBLE);
+            getSumOfSpendingPerMonth(randUserId);
 
-            }
         });
 
-        btnCustomSpendingView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDuration_choice.requestFocus();
-                customViewLayout.setVisibility(View.VISIBLE);
-                monthlyTable.setVisibility(View.INVISIBLE);
-            }
+        btnCustomSpendingView.setOnClickListener(view -> {
+            startDuration_choice.requestFocus();
+            customViewLayout.setVisibility(View.VISIBLE);
+            monthlyTable.setVisibility(View.INVISIBLE);
         });
 
         //obtain views to populate monthly stats
@@ -314,27 +294,25 @@ public class Dashboard extends AppCompatActivity {
         totalCompletedTasksPerMonth = findViewById(R.id.totalTasksCompletedPerMonth);
         totalPendingTasksPerMonth = findViewById(R.id.totalTasksPendingPerMonth);
 
-        totalTasksPerMonth.setText("" + populateTotalTasksView(randUserId));
-        totalCompletedTasksPerMonth.setText("" + populateCompletedTasksView(randUserId));
-        totalPendingTasksPerMonth.setText("" + populatePendingTasksView(randUserId));
+        totalTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populateTotalTasksView(randUserId)));
+        //String.format(new Locale("en", "KE"),"%s",)
+        totalCompletedTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populateCompletedTasksView(randUserId)));
+        totalPendingTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populatePendingTasksView(randUserId)));
 
 
         monthsSelectionDropDownOnDashBoard = findViewById(R.id.monthsSelectionDropDownOnDashBoard);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.Months, android.R.layout.simple_dropdown_item_1line);
         monthsSelectionDropDownOnDashBoard.setAdapter(adapter);
-        monthsSelectionDropDownOnDashBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedMonth = (String) adapterView.getItemAtPosition(i);
-                monthIndex = i;
-                //getSumOfTasksPerMonthForDashBoard
-                totalTasksPerMonth.setText("" + populateTotalTasksPerMonthView(randUserId, monthIndex + 1));
-                totalCompletedTasksPerMonth.setText("" + populateCompletedTasksPerMonthView(randUserId, monthIndex + 1));
-                totalPendingTasksPerMonth.setText("" + populatePendingTasksPerMonthView(randUserId, monthIndex + 1));
+        monthsSelectionDropDownOnDashBoard.setOnItemClickListener((adapterView, view, i, l) -> {
+            selectedMonth = (String) adapterView.getItemAtPosition(i);
+            monthIndex = i;
+            //getSumOfTasksPerMonthForDashBoard
+            totalTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populateTotalTasksPerMonthView(randUserId, monthIndex + 1)));
+            totalCompletedTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populateCompletedTasksPerMonthView(randUserId, monthIndex + 1)));
+            totalPendingTasksPerMonth.setText(String.format(new Locale("en", "KE"),"%s",populatePendingTasksPerMonthView(randUserId, monthIndex + 1)));
 
 
-            }
         });
 
 
@@ -376,7 +354,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public int populateSpendingView(Double randUserId,LocalDateTime startDate, LocalDateTime endDate) {
-        int spendingSum = 0;
+        int spendingSum = 1;
         Cursor cursor = getSpendingSumCursor(randUserId, startDate, endDate);
 
         if (cursor.moveToFirst()) {
@@ -389,7 +367,6 @@ public class Dashboard extends AppCompatActivity {
             spendingSum = 0;
         }
 
-        Toast.makeText(this, "" + spendingSum, Toast.LENGTH_SHORT).show();
         return spendingSum;
     }
 
@@ -567,11 +544,11 @@ public class Dashboard extends AppCompatActivity {
             }
 
 
-            if (monthLySumCursor.moveToFirst()) {
+            if (monthLySumCursor != null && monthLySumCursor.moveToFirst()) {
                 int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
                 //set text to view
                 monthlyTextViews[i -1].setTextSize(12);
-                monthlyTextViews[i - 1].setText("" +  numberFormat.format(monthlySpendingSum));
+                monthlyTextViews[i - 1].setText(String.format(new Locale("en","KE"),"%s",numberFormat.format(monthlySpendingSum)));
             }
         }
     }
@@ -580,9 +557,9 @@ public class Dashboard extends AppCompatActivity {
 
 
     public long[] getSumOfSpendingPerMonthForBarChart(Double randUserId) {
-        long spendingPerMonth[] = new long[12];
-        Cursor monthLySumCursor = null;
-        int monthlySpendingSum = 0;
+        long[] spendingPerMonth = new long[12];
+        Cursor monthLySumCursor ;
+        int monthlySpendingSum;
 
         for (int i = 0; i < 12; i++) {
             //obtain monthly date ranges
@@ -640,7 +617,6 @@ public class Dashboard extends AppCompatActivity {
 
     public void setupBarChart(){
         long[] bills = getSumOfSpendingPerMonthForBarChart(randUserId);
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
         ArrayList<BarEntry> barDatum = new ArrayList<>();
 
@@ -650,7 +626,6 @@ public class Dashboard extends AppCompatActivity {
         BarDataSet barDataSet = new BarDataSet(barDatum,"Spending");
         barDataSet.setValueTextSize(8f);
 
-        ArrayList<Integer> colors = new ArrayList<>();
 
 
         int startColor = rgb("#dd2c00");
@@ -673,7 +648,7 @@ public class Dashboard extends AppCompatActivity {
 
 
     public long[] getSpendingTotalPerCategory(Double randUserId){
-        Cursor cursor = null;
+        Cursor cursor;
         long[] bills = new long[5];
         String[] categories = {"Home","Shopping", "Business","Work","School"};
 

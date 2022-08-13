@@ -90,6 +90,7 @@
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/menu/individual_task.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/menu/task_bar_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/splash_Image.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/trial_image.xml" value="0.1165" />
