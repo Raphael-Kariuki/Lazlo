@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -35,11 +36,16 @@ public class rescheduleCompletedTask extends AppCompatActivity {
 
 
 TextInputLayout completedIndividualTaskTitle_TextLayout,completedIndividualTaskDescription_TextLayout,completedIndividualTaskCategory_TextLayout
-        ,completedIndividualTaskBills_TextLayout,completedIndividualTaskDateDeadline_TextLayout,completedIndividualTaskTimeDeadline_TextLayout;
-TextInputEditText completedIndividualTaskTitle_TextInputEdit,completedIndividualTaskDescription_TextInputEdit,completedIndividualTaskBills_TextInputEdit,completedIndividualTaskDateDeadline_TextInputEdit,completedIndividualTaskTimeDeadline_TextInputEdit;
-String completedIndividualTaskTitle_str,completedIndividualTaskDescription_str,completedIndividualTaskCategory_str,completedIndividualTaskBills_str,completedIndividualTaskDateDeadline_str,completedIndividualTaskTimeDeadline_str;
+        ,completedIndividualTaskBills_TextLayout,completedIndividualTaskDateDeadline_TextLayout,completedIndividualTaskTimeDeadline_TextLayout
+        ,completedIndividualTaskPredictedDuration_TextInputLayout,completedIndividualTaskPredictedDurationUnits_TextInputLayout;
+TextInputEditText completedIndividualTaskTitle_TextInputEdit,completedIndividualTaskDescription_TextInputEdit,
+        completedIndividualTaskBills_TextInputEdit,completedIndividualTaskDateDeadline_TextInputEdit,
+        completedIndividualTaskTimeDeadline_TextInputEdit,completedIndividualTaskPredictedDuration_TextInputEditText;
+String completedIndividualTaskTitle_str,completedIndividualTaskDescription_str,completedIndividualTaskCategory_str,
+        completedIndividualTaskBills_str,completedIndividualTaskDateDeadline_str,completedIndividualTaskTimeDeadline_str,
+        completedIndividualTaskPredictedDurationUnits_str,completedIndividualTaskPredictedDuration_str;
 MaterialButton btnCompletedTaskSave;
-AutoCompleteTextView completedIndividualTaskCategory_AutoCompleteTextView;
+AutoCompleteTextView completedIndividualTaskCategory_AutoCompleteTextView,completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView;
 
 long task2RescheduleId;
 SharedPreferences spf;
@@ -75,6 +81,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
         completedIndividualTaskBills_TextLayout = findViewById(R.id.completedIndividualTaskBills_TextLayout);
         completedIndividualTaskDateDeadline_TextLayout = findViewById(R.id.completedIndividualTaskDateDeadline_TextLayout);
         completedIndividualTaskTimeDeadline_TextLayout = findViewById(R.id.completedIndividualTaskTimeDeadline_TextLayout);
+        completedIndividualTaskPredictedDuration_TextInputLayout = findViewById(R.id.completedIndividualTaskPredictedDuration_TextInputLayout);
+        completedIndividualTaskPredictedDurationUnits_TextInputLayout = findViewById(R.id.completedIndividualTaskPredictedDurationUnits_TextInputLayout);
 
 
         completedIndividualTaskTitle_TextInputEdit = findViewById(R.id.completedIndividualTaskTitle_TextInputEdit);
@@ -83,6 +91,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
         completedIndividualTaskBills_TextInputEdit = findViewById(R.id.completedIndividualTaskBills_TextInputEdit);
         completedIndividualTaskDateDeadline_TextInputEdit = findViewById(R.id.completedIndividualTaskDateDeadline_TextInputEdit);
         completedIndividualTaskTimeDeadline_TextInputEdit = findViewById(R.id.completedIndividualTaskTimeDeadline_TextInputEdit);
+        completedIndividualTaskPredictedDuration_TextInputEditText = findViewById(R.id.completedIndividualTaskPredictedDuration_TextInputEditText);
+        completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView = findViewById(R.id.completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView);
 
         btnCompletedTaskSave = findViewById(R.id.btnCompletedTaskSave);
 
@@ -106,6 +116,9 @@ LocalDateTime completedTaskDateDeadline2Insert;
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
         completedIndividualTaskCategory_AutoCompleteTextView.setAdapter(adapter);
+        ArrayAdapter<CharSequence> unitsCompletedTasksAdapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.durationUnits, android.R.layout.simple_dropdown_item_1line);
+        completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView.setAdapter(unitsCompletedTasksAdapter);
+        completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> completedIndividualTaskPredictedDurationUnits_str = (String) adapterView.getItemAtPosition(i));
 
         completedIndividualTaskTimeDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +134,6 @@ LocalDateTime completedTaskDateDeadline2Insert;
         });
 
 
-        //TODO:process input and prepare for insertion remembering while in inserting use new taskId plus process taskParentId.
 
         /*
          * Question that pops up is whether to retain the previous task _id or use a new one. I think it's wise to delete the task and only update that it's a rescheduled
@@ -145,6 +157,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                 completedIndividualTaskBills_str = completedIndividualTaskBills_TextInputEdit.getText().toString().trim();
                 completedIndividualTaskDateDeadline_str = completedIndividualTaskDateDeadline_TextInputEdit.getText().toString().trim();
                 completedIndividualTaskTimeDeadline_str = completedIndividualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
+                completedIndividualTaskPredictedDuration_str = completedIndividualTaskPredictedDuration_TextInputEditText.getText().toString().trim();
 
 
                 if (!completedIndividualTaskTitle_str.isEmpty()){
@@ -156,55 +169,100 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                     if (houseOfCommons.priceCheck(completedIndividualTaskBills_str)){
                                         AddTasks addTasks = new AddTasks();
                                         addTasks.willPriceFormat(completedIndividualTaskBills_str);
-                                        if (!completedIndividualTaskDateDeadline_str.isEmpty()){
-                                            if (houseOfCommons.dateCheck(completedIndividualTaskDateDeadline_str)){
-                                                if (!completedIndividualTaskTimeDeadline_str.isEmpty()){
-                                                    if (houseOfCommons.timeCheck(completedIndividualTaskTimeDeadline_str)){
+                                        if (!completedIndividualTaskPredictedDuration_str.isEmpty()){
+                                            if(HouseOfCommons.durationCheck(completedIndividualTaskPredictedDuration_str)){
+                                                if (!completedIndividualTaskPredictedDurationUnits_str.isEmpty()){
+                                                    if (!completedIndividualTaskDateDeadline_str.isEmpty()){
+                                                        if (houseOfCommons.dateCheck(completedIndividualTaskDateDeadline_str)){
+                                                            if (!completedIndividualTaskTimeDeadline_str.isEmpty()){
+                                                                if (houseOfCommons.timeCheck(completedIndividualTaskTimeDeadline_str)){
 
-                                                       String formattedDate = returnFormattedDateTime(completedIndividualTaskDateDeadline_str,completedIndividualTaskTimeDeadline_str);
+                                                                    String formattedDate = returnFormattedDateTime(completedIndividualTaskDateDeadline_str,completedIndividualTaskTimeDeadline_str);
 
-                                                       if (willDateFormat(formattedDate)){
-                                                           LocalDateTime date_now = LocalDateTime.now();
-                                                           if (completedTaskDateDeadline2Insert.compareTo(date_now) > 0 || completedTaskDateDeadline2Insert.compareTo(date_now) == 0){
-                                                               boolean b =false;
-                                                               Double randomTaskId = HouseOfCommons.generateRandomId();
-                                                               Integer defaultTaskState = 0;
-                                                               String newParentTaskId = String.format(new Locale("en", "KE"),"%s:%s",parentTaskId,randTaskId);
-                                                               try {
-                                                                   b = dbHelper.insertTasks(randomTaskId,randUserId,completedIndividualTaskTitle_str,completedIndividualTaskDescription_str,completedIndividualTaskCategory_str
-                                                                   , addTasks.Price, completedTaskDateDeadline2Insert,new Date().getTime(),defaultTaskState,newParentTaskId);
-                                                               }catch (Exception e){
-                                                                   e.printStackTrace();
-                                                               }
-                                                               if (b){
-                                                                   Toast.makeText(rescheduleCompletedTask.this, "Rescheduled successfully", Toast.LENGTH_SHORT).show();
-                                                                   Intent back2CompletedTasksView = new Intent(getApplicationContext(), PendingTasks.class);
-                                                                   back2CompletedTasksView.putExtra("tempCategory",completedIndividualTaskCategory_str);
-                                                                   startActivity(back2CompletedTasksView);
-                                                               }else{
-                                                                   Toast.makeText(rescheduleCompletedTask.this, "Rescheduling failed", Toast.LENGTH_SHORT).show();
-                                                               }
-                                                           }else {
-                                                               completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
-                                                               completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
-                                                               completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
-                                                               completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
-                                                               completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
-                                                               completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
-                                                               completedIndividualTaskTimeDeadline_TextLayout.setError("Choose a later time");
-                                                           }
+                                                                    if (willDateFormat(formattedDate)){
 
-                                                       }else{
-                                                           Toast.makeText(rescheduleCompletedTask.this, "Error formatting date", Toast.LENGTH_LONG).show();
-                                                       }
+                                                                        LocalDateTime date_now = LocalDateTime.now();
+
+                                                                        if (completedTaskDateDeadline2Insert.compareTo(date_now) > 0 || completedTaskDateDeadline2Insert.compareTo(date_now) == 0){
+
+                                                                            String duration = HouseOfCommons.processPredictedDuration(completedIndividualTaskPredictedDuration_str,completedIndividualTaskPredictedDurationUnits_str);
+                                                                            boolean b =false;
+                                                                            Double randomTaskId = HouseOfCommons.generateRandomId();
+                                                                            Integer defaultTaskState = 0;
+                                                                            String newParentTaskId = String.format(new Locale("en", "KE"),"%s:%s",parentTaskId,randTaskId);
+                                                                            try {
+                                                                                b = dbHelper.insertTasks(randomTaskId,randUserId,completedIndividualTaskTitle_str,completedIndividualTaskDescription_str,completedIndividualTaskCategory_str
+                                                                                        , addTasks.Price, completedTaskDateDeadline2Insert,new Date().getTime(),duration,defaultTaskState,newParentTaskId);
+                                                                            }catch (Exception e){
+                                                                                e.printStackTrace();
+                                                                            }
+                                                                            if (b){
+                                                                                Toast.makeText(rescheduleCompletedTask.this, "Rescheduled successfully", Toast.LENGTH_SHORT).show();
+                                                                                Intent back2CompletedTasksView = new Intent(getApplicationContext(), PendingTasks.class);
+                                                                                back2CompletedTasksView.putExtra("tempCategory",completedIndividualTaskCategory_str);
+                                                                                startActivity(back2CompletedTasksView);
+                                                                            }else{
+                                                                                Toast.makeText(rescheduleCompletedTask.this, "Rescheduling failed", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        }else {
+                                                                            completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
+                                                                            completedIndividualTaskTimeDeadline_TextLayout.setError("Choose a later time");
+                                                                            completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                                            completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                                        }
+
+                                                                    }else{
+                                                                        Toast.makeText(rescheduleCompletedTask.this, "Error formatting date", Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }else{
+                                                                    completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
+                                                                    completedIndividualTaskTimeDeadline_TextLayout.setError("Enter a proper date");
+                                                                    completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                                    completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                                }
+                                                            }else{
+                                                                completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
+                                                                completedIndividualTaskTimeDeadline_TextLayout.setError("Choose a time");
+                                                                completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                                completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+
+                                                            }
+                                                        }else{
+                                                            completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(true);
+                                                            completedIndividualTaskDateDeadline_TextLayout.setError("Choose a date");
+                                                            completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                            completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                        }
                                                     }else{
                                                         completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
                                                         completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
                                                         completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
                                                         completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
-                                                        completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
-                                                        completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
-                                                        completedIndividualTaskTimeDeadline_TextLayout.setError("Enter a proper date");
+                                                        completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(true);
+                                                        completedIndividualTaskDateDeadline_TextLayout.setError("Tap to choose a date");
+                                                        completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                                        completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                        completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                                     }
                                                 }else{
                                                     completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
@@ -212,28 +270,37 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                                     completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
                                                     completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
                                                     completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
-                                                    completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
-                                                    completedIndividualTaskTimeDeadline_TextLayout.setError("Choose a time");
+                                                    completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                                    completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                    completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(true);
+                                                    completedIndividualTaskPredictedDurationUnits_TextInputLayout.setError("Choose a unit of duration");
 
                                                 }
+
                                             }else{
                                                 completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
                                                 completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
                                                 completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
                                                 completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
-                                                completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(true);
-                                                completedIndividualTaskDateDeadline_TextLayout.setError("Choose a date");
+                                                completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                                 completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                                completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(true);
+                                                completedIndividualTaskPredictedDuration_TextInputLayout.setError("Enter a valid duration amount");
+                                                completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                             }
+
                                         }else{
                                             completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
                                             completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
                                             completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
                                             completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
-                                            completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(true);
-                                            completedIndividualTaskDateDeadline_TextLayout.setError("Tap to choose a date");
+                                            completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                             completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                            completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(true);
+                                            completedIndividualTaskPredictedDuration_TextInputLayout.setError("Empty predicted duration");
+                                            completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                         }
+
 
                                     }else{
                                         completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
@@ -243,6 +310,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                         completedIndividualTaskCategory_TextLayout.setError("Enter a money figure");
                                         completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                         completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                        completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                        completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                     }
                                 }else{
                                     completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
@@ -252,6 +321,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                     completedIndividualTaskCategory_TextLayout.setError("Enter a price");
                                     completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                     completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                    completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                    completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                 }
                             }else{
                                 completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
@@ -261,6 +332,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                 completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
                                 completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                 completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                             }
 
                         }else{
@@ -271,6 +344,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                             completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
                             completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                             completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                            completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                            completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                         }
                     }else{
                         completedIndividualTaskTitle_TextLayout.setErrorEnabled(false);
@@ -280,6 +355,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                         completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
                         completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                         completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                        completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                        completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                     }
                 }else{
                     completedIndividualTaskTitle_TextLayout.setErrorEnabled(true);
@@ -289,6 +366,8 @@ LocalDateTime completedTaskDateDeadline2Insert;
                     completedIndividualTaskBills_TextLayout.setErrorEnabled(false);
                     completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                     completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                    completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                    completedIndividualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                 }
 
 

@@ -7,7 +7,6 @@
     <string name="password">password</string>
     <string name="sign_up">Sign up</string>
     <string name="create_new_task">Create new task</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="add_task">Add task</string>
     <string name="save_task">Save task</string>
     <string name="save_as_draft">save as draft</string>
@@ -88,5 +87,10 @@
         <item>October</item>
         <item>November</item>
         <item>December</item>
+    </string-array>
+    <string-array name="durationUnits">
+        <item>hrs</item>
+        <item>min</item>
+        <item>sec</item>
     </string-array>
 </resources>

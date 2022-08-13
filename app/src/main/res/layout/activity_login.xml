@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:padding="@dimen/activity_vertical_margin"
-        android:src="@drawable/ic_baseline_login_24" />
+        android:src="@drawable/ic_baseline_login_24"
+         />
 
     <TextView
         android:id="@+id/app_title1"

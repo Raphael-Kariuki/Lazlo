@@ -59,7 +59,7 @@
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.24960505529225907" />
         <entry key="app/src/main/res/layout/activity_in_house_password_reset.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_individual_completed_task.xml" value="0.24960505529225907" />
-        <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_individual_task.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15675675675675677" />
         <entry key="app/src/main/res/layout/activity_my_account.xml" value="0.25" />
@@ -68,7 +68,7 @@
         <entry key="app/src/main/res/layout/activity_pending_tasks.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_perfom_task.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_perform_task.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_reschedule_completed_task.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_reschedule_completed_task.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_searchable.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />

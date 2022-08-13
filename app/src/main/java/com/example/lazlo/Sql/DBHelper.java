@@ -18,8 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //method executed on app creation
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        //TODO: remove username from taskList completely replace with userId
-        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL, taskState INTEGER NOT NULL, parentTaskId VARCHAR NOT NULL)");
+        DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL,TaskPredictedDuration VARCHAR NOT NULL, taskState INTEGER NOT NULL, parentTaskId VARCHAR NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
 
@@ -289,7 +288,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //method to insert task, executed on addTasks.java
     public boolean insertTasks(Double randTaskId, Double randUserId, String taskTitle, String taskDescription, String taskCategory,
-                               Double taskAssociatedPrice, LocalDateTime taskDeadline, long taskCreationTime, Integer taskState, String parentTaskId) {
+                               Double taskAssociatedPrice, LocalDateTime taskDeadline, Long taskCreationTime,String taskPredictedDuration, Integer taskState, String parentTaskId) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         if (randTaskId != null && String.valueOf(randTaskId).length() > 0)
@@ -304,6 +303,8 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("TaskAssociatedPrice", taskAssociatedPrice);
         if (String.valueOf(taskCreationTime).length() > 1)
             contentValues.put("taskCreationTime", String.valueOf(taskCreationTime));
+        if (String.valueOf(taskPredictedDuration).length() > 1)
+            contentValues.put("taskPredictedDuration", String.valueOf(taskPredictedDuration));
         if (taskDeadline != null) contentValues.put("TaskDeadline", String.valueOf(taskDeadline));
         if (taskState != null && String.valueOf(taskState).length() > 0)
             contentValues.put("taskState", taskState);
@@ -363,11 +364,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to updateTask task details
-    public boolean updateTask(long id, String UserName, String TaskTitle, String TaskDescription, String TaskCategory,
-                              String TaskAssociatedPrice, LocalDateTime TaskDeadline) {
+    public boolean updateTask(long id,Double randUserId, String TaskTitle, String TaskDescription, String TaskCategory,
+                              String TaskAssociatedPrice, LocalDateTime TaskDeadline,String predictedTaskDuration) {
         long rv = 0;
         ContentValues cv = new ContentValues();
-        if (UserName != null && UserName.length() > 0) cv.put("UserName", UserName);
         if (TaskTitle != null && TaskTitle.length() > 0) cv.put("TaskTitle", TaskTitle);
         if (TaskDescription != null && TaskDescription.length() > 0)
             cv.put("TaskDescription", TaskDescription);
@@ -376,8 +376,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("TaskAssociatedPrice", TaskAssociatedPrice);
         if (TaskDeadline != null && String.valueOf(TaskDeadline).length() > 0)
             cv.put("TaskDeadline", String.valueOf(TaskDeadline));
+        if (predictedTaskDuration != null && String.valueOf(predictedTaskDuration).length() > 0)
+            cv.put("TaskPredictedDuration", String.valueOf(predictedTaskDuration));
         if (cv.size() > 0)
-            rv = this.getWritableDatabase().update("TaskList", cv, "_id=?", new String[]{String.valueOf(id)});
+            rv = this.getWritableDatabase().update("TaskList", cv, "_id=? and randUserId = ?", new String[]{String.valueOf(id),String.valueOf(randUserId)});
         this.getWritableDatabase().close();
         return rv != -1;
     }

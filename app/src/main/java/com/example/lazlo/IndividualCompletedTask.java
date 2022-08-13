@@ -75,7 +75,6 @@ public class IndividualCompletedTask extends AppCompatActivity {
 
         spf = getSharedPreferences("user_details",MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
-//TODO: check why incorrent id is passed along, ID from task list rather than the new one. Occurs only in cases of rescheduling
         selectedTaskId = getIntent().getLongExtra("selectedTaskId",-1);
         System.out.println("Current id:" + selectedTaskId + " "+ randUserId);
         if (selectedTaskId < 0){
@@ -129,7 +128,7 @@ public class IndividualCompletedTask extends AppCompatActivity {
             completedTaskCompletionDate.setText(returnDate(completedTaskCompletionDate_long));
 
             completedTaskActualDuration_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
-            completedTaskActualDuration.setText(returnDuration(completedTaskActualDuration_long));
+            completedTaskActualDuration.setText(HouseOfCommons.returnDuration(completedTaskActualDuration_long));
         }else{
             System.out.println("Error populating view");
         }
@@ -149,24 +148,5 @@ public class IndividualCompletedTask extends AppCompatActivity {
       long minutes = totalTaskDuration/60000;
       long seconds = totalTaskDuration/1000;
     * */
-    private String returnDuration(long duration){
-        String formattedDuration;
-        if (duration > 3600000){
-            long hours = duration/3600000;
-            long minutes = duration/60000;
-            long seconds = duration/1000;
-            formattedDuration  = hours + "hr " + minutes + " min " + seconds + " secs";
 
-        }else if(duration > 600000 ){
-            long minutes = duration/60000;
-            long seconds = duration/1000;
-            formattedDuration  = minutes + " min " + seconds + " secs";
-        }else if(duration > 1000){
-            long seconds = duration/1000;
-            formattedDuration  = seconds + " secs";
-        }else {
-            formattedDuration = "< 1s";
-        }
-        return formattedDuration;
-    }
 }

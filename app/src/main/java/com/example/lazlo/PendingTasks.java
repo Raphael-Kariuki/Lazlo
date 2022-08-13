@@ -68,7 +68,7 @@ public class PendingTasks extends AppCompatActivity {
             editor.apply();
             startActivity(i);
             return(true);
-//TODO:encrypt content sent to sharedPreferences
+//TODO:encrypt content sent to sharedPreferences. Not possible. Find a way to encrypt the file itself
 
     }
         return(super.onOptionsItemSelected(item));

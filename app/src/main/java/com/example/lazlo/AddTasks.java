@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -31,17 +32,17 @@ import java.util.Locale;
 
 
 public class AddTasks extends AppCompatActivity {
-    TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView;
+    TextInputEditText task_title,task_description,select_date,priceAutocompleteView,selectTime_AutocompleteView,predictedDuration_TextInputEditText;
     DatePickerDialog datePickerDialog;
     MaterialButton btn_saveTasks;
     DBHelper dbHelper;
     SharedPreferences tasks_sharedPrefs;
     LocalDateTime selected_date,date_now;
-    AutoCompleteTextView tasksCategories;
-    String selected_category, selected_time;
+    AutoCompleteTextView tasksCategories,predictedDurationUnits_AutoCompleteTextView;
+    String selected_category, selected_time, predictedDuration,predictedDurationUnits;
     Double Price;
     TextInputLayout taskTitle_TextLayout,taskDescription_TextLayout,tasksCategoryTextLayout,
-            price_TextLayout,selectedDate_TextInputLayout,selectedTime_TextInputLayout;
+            price_TextLayout,selectedDate_TextInputLayout,selectedTime_TextInputLayout,predictedDuration_TextInputLayout,predictedDurationUnits_TextInputLayout;
     boolean b,d;
 
 //method to parse date input from adding task
@@ -103,6 +104,11 @@ public class AddTasks extends AppCompatActivity {
         priceAutocompleteView = findViewById(R.id.priceAutoCompleteView);
         tasksCategories = findViewById(R.id.tasksAutoCompleteView);
         selectTime_AutocompleteView = findViewById(R.id.selectTime_AutocompleteView);
+        predictedDuration_TextInputEditText = findViewById(R.id.predictedDuration_TextInputEditText);
+        predictedDurationUnits_AutoCompleteTextView = findViewById(R.id.predictedDurationUnits_AutoCompleteTextView);
+
+
+
 
         taskTitle_TextLayout = findViewById(R.id.taskTitle_TextLayout);
         taskDescription_TextLayout = findViewById(R.id.taskDescription_TextLayout);
@@ -110,6 +116,8 @@ public class AddTasks extends AppCompatActivity {
         price_TextLayout = findViewById(R.id.price_TextLayout);
         selectedDate_TextInputLayout = findViewById(R.id.selectedDate_TextInputLayout);
         selectedTime_TextInputLayout = findViewById(R.id.selectedTime_TextInputLayout);
+        predictedDuration_TextInputLayout = findViewById(R.id.predictedDuration_TextInputLayout);
+        predictedDurationUnits_TextInputLayout = findViewById(R.id.predictedDurationUnits_TextInputLayout);
 
         btn_saveTasks = findViewById(R.id.btn_saveTask);
 
@@ -127,6 +135,9 @@ public class AddTasks extends AppCompatActivity {
         tasksCategories.setAdapter(adapter);
         tasksCategories.setOnItemClickListener((adapterView, view, i, l) -> selected_category = (String) adapterView.getItemAtPosition(i));
 
+        ArrayAdapter<CharSequence> unitsAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.durationUnits, android.R.layout.simple_dropdown_item_1line);
+        predictedDurationUnits_AutoCompleteTextView.setAdapter(unitsAdapter);
+        predictedDurationUnits_AutoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> predictedDurationUnits = (String) adapterView.getItemAtPosition(i));
 
 
 
@@ -186,75 +197,122 @@ public class AddTasks extends AppCompatActivity {
                 String selectedCategory_string = tasksCategories.getText().toString().trim();
                 String selectedTime_String = selectTime_AutocompleteView.getText().toString().trim();
                 String selectedDateTime = selectedDate_String + " " + selected_time;
+                String predictedDuration = predictedDuration_TextInputEditText.getText().toString().trim();
 
                 //process inputs
                 if (!taskTitle_String.isEmpty()){
                     if (!taskDescription_String.isEmpty()){
                         if (!selectedCategory_string.isEmpty()){
                             if ( (selectedCategory_string.equals("Shopping") || selectedCategory_string.equals("Work") || selectedCategory_string.equals("School") || selectedCategory_string.equals("Business") || selectedCategory_string.equals("Home") )){
-                                HouseOfCommons houseOfCommons = new HouseOfCommons();
-                                if (!TaskAssociatedPrice.isEmpty() && houseOfCommons.priceCheck(TaskAssociatedPrice)){
+                                if (!TaskAssociatedPrice.isEmpty() && HouseOfCommons.priceCheck(TaskAssociatedPrice)){
                                     willPriceFormat(TaskAssociatedPrice);
-                                    if (!selectedDate_String.isEmpty() && selectedDate_String != null && houseOfCommons.dateCheck(selectedDate_String)){
-                                        if (!selectedTime_String.isEmpty() && selectedTime_String != null && houseOfCommons.timeCheck(selectedTime_String)){
-                                            if (willDateFormat(selectedDateTime)){
-                                                date_now = LocalDateTime.now();
-                                                if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
-                                                    try {
-                                                        //insert task to db if dates are cool
-                                                        HouseOfCommons commons = new HouseOfCommons();
-                                                        Double randomTaskId = commons.generateRandomId();
-                                                        Integer defaultTaskState = 0;
-                                                        String defaultParentTaskId = "0.0";
-                                                        b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),defaultTaskState,defaultParentTaskId);
+                                    if (!predictedDuration.isEmpty()){
+                                        if (HouseOfCommons.durationCheck(predictedDuration)){
+                                            if (!predictedDurationUnits.isEmpty()){
+                                                if (!selectedDate_String.isEmpty() && selectedDate_String != null && HouseOfCommons.dateCheck(selectedDate_String)){
+                                                    if (!selectedTime_String.isEmpty() && selectedTime_String != null && HouseOfCommons.timeCheck(selectedTime_String)){
+                                                        if (willDateFormat(selectedDateTime)){
+                                                            date_now = LocalDateTime.now();
+                                                            if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0) {
+                                                                try {
 
-                                                    }catch(Exception e){
-                                                        System.out.println("Db insertion error: " + e);
+                                                                    String duration = HouseOfCommons.processPredictedDuration(predictedDuration,predictedDurationUnits);
+                                                                    Double randomTaskId = HouseOfCommons.generateRandomId();
+                                                                    Integer defaultTaskState = 0;
+                                                                    String defaultParentTaskId = "0.0";
+                                                                    b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),duration,defaultTaskState,defaultParentTaskId);
+
+                                                                }catch(Exception e){
+                                                                    System.out.println("Db insertion error: " + e);
+                                                                }
+                                                                if (b){
+                                                                    Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
+                                                                    Intent categoryStringToSendToPendingTasks = new Intent(getApplicationContext(), PendingTasks.class);
+                                                                    categoryStringToSendToPendingTasks.putExtra("tempCategory", selected_category);
+                                                                    startActivity(categoryStringToSendToPendingTasks);
+                                                                    //finish();
+                                                                }else {
+                                                                    Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }else{
+                                                                Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
+                                                                select_date.setText("");
+                                                            }
+                                                        }else{
+                                                            selectedDate_TextInputLayout.setErrorEnabled(true);
+                                                            selectedDate_TextInputLayout.setError("select date");
+                                                            selectedTime_TextInputLayout.setErrorEnabled(true);
+                                                            selectedTime_TextInputLayout.setError("select time");
+                                                            taskTitle_TextLayout.setErrorEnabled(false);
+                                                            taskDescription_TextLayout.setErrorEnabled(false);
+                                                            price_TextLayout.setErrorEnabled(false);
+                                                            tasksCategoryTextLayout.setErrorEnabled(false);
+                                                            predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                            predictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                        }
+
+                                                    }else{
+                                                        selectedDate_TextInputLayout.setErrorEnabled(false);
+                                                        selectedTime_TextInputLayout.setErrorEnabled(true);
+                                                        selectedTime_TextInputLayout.setError("select time");
+                                                        taskTitle_TextLayout.setErrorEnabled(false);
+                                                        taskDescription_TextLayout.setErrorEnabled(false);
+                                                        price_TextLayout.setErrorEnabled(false);
+                                                        tasksCategoryTextLayout.setErrorEnabled(false);
+                                                        predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                        predictedDuration_TextInputLayout.setErrorEnabled(false);
                                                     }
-                                                    if (b){
-                                                        Toast.makeText(getApplicationContext(), "Task inserted successfully", Toast.LENGTH_LONG).show();
-                                                        Intent categoryStringToSendToPendingTasks = new Intent(getApplicationContext(), PendingTasks.class);
-                                                        categoryStringToSendToPendingTasks.putExtra("tempCategory", selected_category);
-                                                        startActivity(categoryStringToSendToPendingTasks);
-                                                        //finish();
-                                                    }else {
-                                                        Toast.makeText(getApplicationContext(), "Task insert failure", Toast.LENGTH_LONG).show();
-                                                    }
+
+
                                                 }else{
-                                                    Toast.makeText(getApplicationContext(), "Choose another date", Toast.LENGTH_LONG).show();
-                                                    select_date.setText("");
+                                                    selectedDate_TextInputLayout.setErrorEnabled(true);
+                                                    selectedDate_TextInputLayout.setError("Blank deadline");
+                                                    taskTitle_TextLayout.setErrorEnabled(false);
+                                                    taskDescription_TextLayout.setErrorEnabled(false);
+                                                    price_TextLayout.setErrorEnabled(false);
+                                                    tasksCategoryTextLayout.setErrorEnabled(false);
+                                                    selectedTime_TextInputLayout.setErrorEnabled(false);
+                                                    predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                    predictedDuration_TextInputLayout.setErrorEnabled(false);
                                                 }
-                                            }else{
-                                                selectedDate_TextInputLayout.setErrorEnabled(true);
-                                                selectedDate_TextInputLayout.setError("select date");
-                                                selectedTime_TextInputLayout.setErrorEnabled(true);
-                                                selectedTime_TextInputLayout.setError("select time");
+                                            }else {
+                                                selectedDate_TextInputLayout.setErrorEnabled(false);
+                                                selectedTime_TextInputLayout.setErrorEnabled(false);
                                                 taskTitle_TextLayout.setErrorEnabled(false);
                                                 taskDescription_TextLayout.setErrorEnabled(false);
                                                 price_TextLayout.setErrorEnabled(false);
                                                 tasksCategoryTextLayout.setErrorEnabled(false);
+                                                predictedDuration_TextInputLayout.setErrorEnabled(false);
+                                                predictedDurationUnits_TextInputLayout.setErrorEnabled(true);
+                                                predictedDurationUnits_TextInputLayout.setError("Choose a unit of duration");
                                             }
 
                                         }else{
                                             selectedDate_TextInputLayout.setErrorEnabled(false);
-                                            selectedTime_TextInputLayout.setErrorEnabled(true);
-                                            selectedTime_TextInputLayout.setError("select time");
+                                            selectedTime_TextInputLayout.setErrorEnabled(false);
                                             taskTitle_TextLayout.setErrorEnabled(false);
                                             taskDescription_TextLayout.setErrorEnabled(false);
                                             price_TextLayout.setErrorEnabled(false);
                                             tasksCategoryTextLayout.setErrorEnabled(false);
+                                            predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                            predictedDuration_TextInputLayout.setErrorEnabled(true);
+                                            predictedDuration_TextInputLayout.setError("Enter a valid duration amount");
                                         }
 
 
                                     }else{
-                                        selectedDate_TextInputLayout.setErrorEnabled(true);
-                                        selectedDate_TextInputLayout.setError("Blank deadline");
+                                        selectedDate_TextInputLayout.setErrorEnabled(false);
+                                        selectedTime_TextInputLayout.setErrorEnabled(false);
                                         taskTitle_TextLayout.setErrorEnabled(false);
                                         taskDescription_TextLayout.setErrorEnabled(false);
                                         price_TextLayout.setErrorEnabled(false);
                                         tasksCategoryTextLayout.setErrorEnabled(false);
-                                        selectedTime_TextInputLayout.setErrorEnabled(false);
+                                        predictedDuration_TextInputLayout.setErrorEnabled(true);
+                                        predictedDuration_TextInputLayout.setError("Empty predicted duration");
+                                        predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                        predictedDuration_TextInputLayout.setErrorEnabled(false);
                                     }
+
                                 }else{
                                     price_TextLayout.setErrorEnabled(true);
                                     price_TextLayout.setError("Enter a money figure");
@@ -263,6 +321,8 @@ public class AddTasks extends AppCompatActivity {
                                     tasksCategoryTextLayout.setErrorEnabled(false);
                                     selectedDate_TextInputLayout.setErrorEnabled(false);
                                     selectedTime_TextInputLayout.setErrorEnabled(false);
+                                    predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                    predictedDuration_TextInputLayout.setErrorEnabled(false);
                                 }
 
                             }  else{
@@ -273,6 +333,8 @@ public class AddTasks extends AppCompatActivity {
                                 price_TextLayout.setErrorEnabled(false);
                                 selectedDate_TextInputLayout.setErrorEnabled(false);
                                 selectedTime_TextInputLayout.setErrorEnabled(false);
+                                predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                predictedDuration_TextInputLayout.setErrorEnabled(false);
                             }
 
 
@@ -284,6 +346,8 @@ public class AddTasks extends AppCompatActivity {
                             price_TextLayout.setErrorEnabled(false);
                             selectedDate_TextInputLayout.setErrorEnabled(false);
                             selectedTime_TextInputLayout.setErrorEnabled(false);
+                            predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                            predictedDuration_TextInputLayout.setErrorEnabled(false);
                         }
                     }else{
                         taskDescription_TextLayout.setErrorEnabled(true);
@@ -293,6 +357,8 @@ public class AddTasks extends AppCompatActivity {
                         price_TextLayout.setErrorEnabled(false);
                         selectedDate_TextInputLayout.setErrorEnabled(false);
                         selectedTime_TextInputLayout.setErrorEnabled(false);
+                        predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                        predictedDuration_TextInputLayout.setErrorEnabled(false);
                     }
 
                 }else{
@@ -303,6 +369,8 @@ public class AddTasks extends AppCompatActivity {
                     price_TextLayout.setErrorEnabled(false);
                     selectedDate_TextInputLayout.setErrorEnabled(false);
                     selectedTime_TextInputLayout.setErrorEnabled(false);
+                    predictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                    predictedDuration_TextInputLayout.setErrorEnabled(false);
                     }
 
 

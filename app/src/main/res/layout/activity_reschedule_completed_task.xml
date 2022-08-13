@@ -185,6 +185,67 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/completedIndividualTaskPredictedDurationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/deadlineLayout"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/completedIndividualTaskPredictedDuration_TextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:padding="5dp"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="false"
+                        app:endIconMode="clear_text"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        app:startIconDrawable="@drawable/ic_baseline_access_time_24"
+                        android:layout_weight="1"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/completedIndividualTaskPredictedDuration_TextInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Predicted duration"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/completedIndividualTaskPredictedDurationUnits_TextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="false"
+                        app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                        app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                        android:layout_weight="3"
+                        >
+
+                        <AutoCompleteTextView
+                            android:id="@+id/completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCompletedTaskSave"
