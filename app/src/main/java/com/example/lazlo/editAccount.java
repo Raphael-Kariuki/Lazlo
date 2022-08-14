@@ -1,17 +1,32 @@
 package com.example.lazlo;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class editAccount extends AppCompatActivity {
 TextInputEditText editUsername_TextInputEdit,editAboutYou_TextInputEdit,editEmail_TextInput;
@@ -21,6 +36,7 @@ SharedPreferences spf;
 Double randUserId;
 String uname, status, emailAddress;
 Cursor success;
+ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +52,9 @@ Cursor success;
 
         dbHelper = new DBHelper(this);
 
+
+        profilePicture = findViewById(R.id.profilePicture);
+
         editUsername_TextInputEdit = findViewById(R.id.editUsername_TextInputEdit);
         editAboutYou_TextInputEdit = findViewById(R.id.editAboutYou_TextInput);
 
@@ -50,10 +69,92 @@ Cursor success;
         editEmail_TextInput.setText(emailAddress);
 
 
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                chooseProfilePicture();
+            }
+        });
+
+        setProfilePicture(randUserId);
 
 
     }
+    private void setProfilePicture(Double randUserId){
+        Cursor profilePictureCursor = null;
+        byte[] profilePictureBytes = new byte[0];
+        try {
+            profilePictureCursor = dbHelper.getProfilePicture(randUserId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (profilePictureCursor != null && profilePictureCursor.moveToFirst()){
+            profilePictureBytes = profilePictureCursor.getBlob(profilePictureCursor.getColumnIndexOrThrow("profilePicture"));
+            profilePictureCursor.close();
+        }
+        if (profilePictureCursor != null && !profilePictureCursor.isClosed()) {
+            profilePictureCursor.close();
+        }
+        if (profilePictureBytes != null){
+            Bitmap profilePicture2Set = BitmapFactory.decodeByteArray(profilePictureBytes,0,profilePictureBytes.length);
+            profilePicture.setImageBitmap(profilePicture2Set);
+        }
+
+
+    }
+    private void chooseProfilePicture(){
+        Intent profilePic = new Intent();
+        profilePic.setType("image/*");
+        profilePic.setAction(Intent.ACTION_GET_CONTENT);
+
+        launchSomeActivity.launch(profilePic);
+
+    }
+
+    ActivityResultLauncher<Intent> launchSomeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        Bitmap selectedImageBitmap = null;
+                        try {
+                            selectedImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        /*
+                        *      private byte[] imagemTratada(byte[] imagem_img){
+
+                                    while (imagem_img.length > 500000){
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(imagem_img, 0, imagem_img.length);
+                                        Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.8), (int)(bitmap.getHeight()*0.8), true);
+                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                        resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                        imagem_img = stream.toByteArray();
+                                    }
+                                    return imagem_img;
+
+        }
+                        * */
+                        //Bitmap resized = Bitmap.createScaledBitmap(selectedImageBitmap,(int) (selectedImageBitmap.getWidth()*0.5), (int) (selectedImageBitmap.getHeight()*0.5),true);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        selectedImageBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        byte[] byteArray = stream.toByteArray();
+                        boolean b =  dbHelper.updateProfilePicture(byteArray,randUserId);
+                        if (b){
+                            profilePicture.setImageBitmap(selectedImageBitmap);
+                            Toast.makeText(this, "Upload success", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(this, "upload failed", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
     @Override
     public void onBackPressed() {
         if (!editUsername_TextInputEdit.getText().toString().trim().isEmpty()){

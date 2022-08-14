@@ -7,7 +7,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class DBHelper extends SQLiteOpenHelper {
     //create database
@@ -20,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase DB) {
         DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL,TaskPredictedDuration VARCHAR NOT NULL, taskState INTEGER NOT NULL, parentTaskId VARCHAR NOT NULL)");
         DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
-        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR)");
+        DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR,profilePicture BLOB)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
@@ -188,6 +190,16 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = DB.insert("userDetails", null, contentValues);
         DB.close();
         return result != -1;
+    }
+    public boolean updateProfilePicture(byte[] imageByteArray, Double randUserId){
+        long returnValue;
+        ContentValues cv = new ContentValues();
+        if (imageByteArray != null) cv.put("profilePicture", Arrays.toString(imageByteArray));
+        returnValue = this.getWritableDatabase().update("userDetails",cv,"randUserId = ?",new String[]{String.valueOf(randUserId)});
+        return returnValue != -1;
+    }
+    public Cursor getProfilePicture(Double randUserId){
+        return this.getWritableDatabase().query("userDetails",new String[]{"profilePicture"},"randUserId = ?", new String[]{String.valueOf(randUserId)},null,null,null);
     }
 
     //function to delete task by id when item on listview is clicked
