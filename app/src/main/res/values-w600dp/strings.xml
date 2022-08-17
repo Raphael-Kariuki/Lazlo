@@ -23,4 +23,12 @@
     <string name="dec">Dec</string>
     <string name="hash_tag">#</string>
     <string name="create">Create</string>
+    <string name="search">Search</string>
+    <string name="my_account">My account</string>
+    <string name="sort">Sort</string>
+    <string name="by_date">By date</string>
+    <string name="by_price">By price</string>
+    <string name="by_duration">By duration</string>
+    <string name="by_creation_time">By creation time</string>
+    <string name="logout">Logout</string>
 </resources>

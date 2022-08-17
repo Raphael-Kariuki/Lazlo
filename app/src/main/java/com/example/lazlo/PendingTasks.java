@@ -1,5 +1,6 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -10,14 +11,11 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.os.Bundle;
 import android.widget.SearchView;
@@ -42,9 +40,10 @@ public class PendingTasks extends AppCompatActivity {
     SimpleCursorAdapter simpleCursorAdapter;
     AppCompatTextView uname;
     MaterialButton Home, School, Work, Business, Shopping;
-    String categoryToPopulate;
+    String categoryToPopulate, categoryToPopulateOnSort;
     Double randomUserId;
     TextView homeUnder, schoolUnder, workUnder, businessUnder, shoppingUnder;
+    Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
 
     @Override
     public void onBackPressed(){
@@ -68,6 +67,73 @@ public class PendingTasks extends AppCompatActivity {
             editor.apply();
             startActivity(i);
             return(true);
+
+        case R.id.myDashboard:
+            startActivity(new Intent(this, Dashboard.class));
+            return (true);
+        case R.id.sortByDates:
+            if (stateToDetermineSortDeadlines == null){
+                    Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByDeadlineAsc(randomUserId,categoryToPopulateOnSort);
+                    simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                    tasks_listView.setAdapter(simpleCursorAdapter);
+                    simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortDeadlines = 1;
+            } else if (stateToDetermineSortDeadlines == 1){
+                    Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByDeadlineDesc(randomUserId,categoryToPopulateOnSort);
+                    simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                    tasks_listView.setAdapter(simpleCursorAdapter);
+                    simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortDeadlines = null;
+            }
+        case R.id.sortByPrice:
+            if (stateToDetermineSortPrice == null){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksByPriceAsc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortPrice = 1;
+            } else if (stateToDetermineSortPrice == 1){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksByPriceDesc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortPrice = null;
+            }
+        case R.id.sortByDuration:
+            if (stateToDetermineSortDuration == null){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByDurationAsc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortDuration = 1;
+            } else if (stateToDetermineSortDuration == 1){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByDurationDesc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortDuration = null;
+            }
+        case R.id.sortByCreationTime:
+            if (stateToDetermineSortCreation == null){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByCreationDateAsc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortCreation = 1;
+
+            } else if (stateToDetermineSortCreation == 1){
+                Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByCreationDateDesc(randomUserId,categoryToPopulateOnSort);
+                simpleCursorAdapter = new SimpleCursorAdapter(PendingTasks.this, R.layout.userdata_listrow,cursor,new String[]{"TaskTitle","TaskDescription","TaskAssociatedPrice"},new int[]{R.id.taskTitle,R.id.taskDescription,R.id.TaskAssociatedPrice},0);
+                tasks_listView.setAdapter(simpleCursorAdapter);
+                simpleCursorAdapter.notifyDataSetChanged();
+                stateToDetermineSortCreation = null;
+            }
+
+
+
+
+
+
 //TODO:encrypt content sent to sharedPreferences. Not possible. Find a way to encrypt the file itself
 
     }
@@ -82,6 +148,7 @@ public class PendingTasks extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         // showing the back button in action bar
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Pending tasks");
 
@@ -123,80 +190,70 @@ public class PendingTasks extends AppCompatActivity {
 
         populateHomeTasks();
         homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+        categoryToPopulateOnSort = "Home";
         tasks_listView.setTextFilterEnabled(true);
 
         //TODO:Simplify this background setup with 9-patch drawables
 
         //process Home button
-        Home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-
-                populateHomeTasks();
-            }
+        Home.setOnClickListener(view -> {
+            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            categoryToPopulateOnSort = "Home";
+            populateHomeTasks();
         });
 
         //process the Shopping click
-        Shopping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                populateShoppingTasks();
-            }
+        Shopping.setOnClickListener(view -> {
+            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            categoryToPopulateOnSort = "Shopping";
+            populateShoppingTasks();
         });
 
         //process the Work click
-        Work.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                populateWorkTasks();
-            }
+        Work.setOnClickListener(view -> {
+            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            categoryToPopulateOnSort = "Work";
+            populateWorkTasks();
         });
         //process the School click
-        School.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                populateSchoolTasks();
-            }
+        School.setOnClickListener(view -> {
+            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            categoryToPopulateOnSort = "School";
+            populateSchoolTasks();
         });
 
         //process the Business click
-        Business.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                populateBusinessTasks();
-            }
+        Business.setOnClickListener(view -> {
+            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
+            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+            categoryToPopulateOnSort = "Business";
+            populateBusinessTasks();
         });
 
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.task_bar_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -266,6 +323,7 @@ public class PendingTasks extends AppCompatActivity {
                     break;
 
             }
+            taskListPopulate();
         }
 
 
@@ -290,13 +348,10 @@ public class PendingTasks extends AppCompatActivity {
     //process add task floating button and redirect to add tasks page
     private void addNewTasks(){
         btn_addTasks =  findViewById(R.id.btn_addTasks);
-        btn_addTasks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddTasks.class);
-                intent.putExtra("username", user_name);
-                startActivity(intent);
-            }
+        btn_addTasks.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(),AddTasks.class);
+            intent.putExtra("username", user_name);
+            startActivity(intent);
         });
     }
 
@@ -338,65 +393,51 @@ public class PendingTasks extends AppCompatActivity {
             tasks_listView.setAdapter(simpleCursorAdapter);
 
             //setup a click listener for a task
-            tasks_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getApplicationContext(),individualTask.class);
-                    intent.putExtra("my_id_extra", l);
-                    startActivity(intent);
-                }
+            tasks_listView.setOnItemClickListener((adapterView, view, i, l) -> {
+                Intent intent = new Intent(getApplicationContext(),individualTask.class);
+                intent.putExtra("my_id_extra", l);
+                startActivity(intent);
             });
 
             //setup a long-click listener for a task
-            tasks_listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            tasks_listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
 
-                    //call and assign function that return a string : taskTitle
-                    String taskTitle = getTaskTitleForDeletion(l);
+                //call and assign function that return a string : taskTitle
+                String taskTitle = getTaskTitleForDeletion(l);
 
-                    //create and show a dialog to ensure that the user wants to delete the long-clicked task
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PendingTasks.this);
-                    builder.setCancelable(true);
-                    builder.setTitle("Delete task");
-                    builder.setMessage("Are you sure you want to delete task " + taskTitle + " ?");
+                //create and show a dialog to ensure that the user wants to delete the long-clicked task
+                AlertDialog.Builder builder = new AlertDialog.Builder(PendingTasks.this);
+                builder.setCancelable(true);
+                builder.setTitle("Delete task");
+                builder.setMessage("Are you sure you want to delete task " + taskTitle + " ?");
 
 
-                    //if yes, delete task and repopulate list view
-                    builder.setPositiveButton("Yes, Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            boolean b = false;
-                            try {
+                //if yes, delete task and repopulate list view
+                builder.setPositiveButton("Yes, Delete", (dialogInterface, i1) -> {
+                    boolean b = false;
+                    try {
 
-                                b = dbHelper.deleteTask(l, randomUserId);
-                                Cursor Cursor = dbHelper.getTaskById(l, randomUserId);
-                                categoryToPopulate = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+                        b = dbHelper.deleteTask(l, randomUserId);
+                        Cursor cursor = dbHelper.getTaskById(l, randomUserId);
+                        categoryToPopulate = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
 
 
 
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-                            if (b){
-                                Toast.makeText(PendingTasks.this, "task delete successfully", Toast.LENGTH_SHORT).show();
-                                //SetOrRefreshListView();
-                            }else{
-                                Toast.makeText(PendingTasks.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    if (b){
+                        Toast.makeText(PendingTasks.this, "task delete successfully", Toast.LENGTH_SHORT).show();
+                        SetOrRefreshListView();
+                    }else{
+                        Toast.makeText(PendingTasks.this, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                    //if no, close dialog and continue
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-                    builder.show();
-                    return true;
-                }
+                //if no, close dialog and continue
+                builder.setNegativeButton("No", (dialogInterface, i12) -> dialogInterface.cancel());
+                builder.show();
+                return true;
             });
         }else {
             //necessary to re-obtain updated task list from the db
@@ -415,7 +456,7 @@ public class PendingTasks extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        if (getTitleForDeletionConfirm.moveToFirst()){
+        if (getTitleForDeletionConfirm!= null && getTitleForDeletionConfirm.moveToFirst()){
             taskTitle = getTitleForDeletionConfirm.getString(getTitleForDeletionConfirm.getColumnIndexOrThrow("TaskTitle"));
         }
         return taskTitle;

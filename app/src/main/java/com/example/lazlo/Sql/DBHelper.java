@@ -241,10 +241,44 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //function to obtain all tasks by categories
     public Cursor getAllByCategoriesForPendingTasks(Double randUserId, String category) {
-        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, null);
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskCreationTime DESC");
+    }
+    //sort list view by deadline asc
+    public Cursor getAllByCategoriesForPendingTasksSortByDeadlineAsc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskDeadline ASC");
+    }
+    //sort list view by deadline desc
+    public Cursor getAllByCategoriesForPendingTasksSortByDeadlineDesc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskDeadline DESC");
+    }
+    //sort list view by price asc
+    public Cursor getAllByCategoriesForPendingTasksByPriceAsc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskAssociatedPrice ASC");
+    }
+    //sort list view by price desc
+    public Cursor getAllByCategoriesForPendingTasksByPriceDesc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskAssociatedPrice DESC");
     }
 
-    //function to obtain all tasks by categories
+    //sort list view by creation time asc
+    public Cursor getAllByCategoriesForPendingTasksSortByCreationDateAsc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskCreationTime ASC");
+    }
+
+    //sort list view by creation time  desc
+    public Cursor getAllByCategoriesForPendingTasksSortByCreationDateDesc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskCreationTime DESC");
+    }
+    //sort list view by duration asc
+    public Cursor getAllByCategoriesForPendingTasksSortByDurationAsc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskPredictedDuration ASC");
+    }
+    //sort list view by duration desc
+    public Cursor getAllByCategoriesForPendingTasksSortByDurationDesc(Double randUserId, String category) {
+        return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskPredictedDuration DESC");
+    }
+
+    //function to obtain all tasks by categories, used in completed tasks
     public Cursor getAllByCategories(Double randUserId, String category) {
         return this.getWritableDatabase().rawQuery("Select distinct tl._id,tl.TaskTitle as completedTaskTitle,tl.TaskDescription as completedTaskDescription," +
                         "tl.TaskCategory as completedTaskCategory,tl.TaskAssociatedPrice as completedTaskAssociatedPrice,tl.TaskDeadline as completedTaskDeadline" +
