@@ -1,11 +1,9 @@
 package com.example.lazlo;
 
-import static com.example.lazlo.AddTasks.getDateFromString;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,12 +13,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
@@ -32,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class individualTask extends AppCompatActivity {
   TextInputLayout individualTaskTitle_TextLayout,individualTaskDescription_TextLayout,individualTaskCategory_TextLayout,
@@ -42,7 +37,6 @@ public class individualTask extends AppCompatActivity {
           individualTaskTimeDeadline_TextInputEdit,individualTaskPredictedDuration_TextInputEditText;
   AutoCompleteTextView individualTaskCategory_TextInputEdit,individualTaskPredictedDurationUnits_AutoCompleteTextView;
   MaterialButton btnSave;
-  AppCompatImageButton btnStartTask;
   DBHelper dbHelper;
   long currentId;
   Cursor cursor;
@@ -58,7 +52,7 @@ public class individualTask extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), PendingTasks.class));
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(@NonNull Menu menu){
         getMenuInflater().inflate(R.menu.individual_task_menu, menu);
         return true;
     }
@@ -85,6 +79,7 @@ public class individualTask extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         // showing the back button in action bar
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("View and edit individual task");
 
@@ -126,12 +121,7 @@ public class individualTask extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> unitsIndividualTaskEditAdapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.durationUnits, android.R.layout.simple_dropdown_item_1line);
         individualTaskPredictedDurationUnits_AutoCompleteTextView.setAdapter(unitsIndividualTaskEditAdapter);
-        individualTaskPredictedDurationUnits_AutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                predictedDurationUnits = (String) adapterView.getItemAtPosition(i);
-            }
-        });
+        individualTaskPredictedDurationUnits_AutoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> predictedDurationUnits = (String) adapterView.getItemAtPosition(i));
 
         currentId = this.getIntent().getLongExtra("my_id_extra",-1);
         if (currentId < 0){
@@ -147,127 +137,103 @@ public class individualTask extends AppCompatActivity {
 
 
 
-        individualTaskTimeDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectTime();
-            }
-        });
-        individualTaskDateDeadline_TextInputEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar calendar = Calendar.getInstance();
-                int mYear = calendar.get(Calendar.YEAR);
-                int mMonth = calendar.get(Calendar.MONTH);
-                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        individualTaskTimeDeadline_TextInputEdit.setOnClickListener(view -> selectTime());
+        individualTaskDateDeadline_TextInputEdit.setOnClickListener(view -> {
+            final Calendar calendar = Calendar.getInstance();
+            int mYear = calendar.get(Calendar.YEAR);
+            int mMonth = calendar.get(Calendar.MONTH);
+            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-                //date picker dialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(individualTask.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String formattedMonth,formattedDay;
-                        if (monthOfYear + 1 <= 9){
-                            formattedMonth = "0" + (monthOfYear + 1) ;
-                        }else{
-                            formattedMonth = String.valueOf(monthOfYear + 1);
-                        }
-                        if(dayOfMonth < 10){
-                            formattedDay = "0" + dayOfMonth;
-                        }else{
-                            formattedDay = String.valueOf(dayOfMonth);
-                        }
-                        individualTaskDateDeadline_TextInputEdit.setText(formattedDay + "-" + formattedMonth + "-" + year);
-                    }
-                }, mYear,mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateTitle = individualTaskTitle_TextInputEdit.getText().toString().trim();
-                updateDescription = individualTaskDescription_TextInputEdit.getText().toString().trim();
-                updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
-                updatePrice = individualTaskBills_TextInputEdit.getText().toString().trim();
-                String updateDate = individualTaskDateDeadline_TextInputEdit.getText().toString().trim();
-                String updateTime = individualTaskTimeDeadline_TextInputEdit.getText().toString().trim();
-                predictedDuration = individualTaskPredictedDuration_TextInputEditText.getText().toString().trim();
-
-
-                /*
-                * Formatting dates are tricky.
-                * What the code below does is take the time section HH:ss PM/AM split it first to obtain "HH" and "mm PM".
-                * The further split "mm PM/AM" to "mm" and "PM/AM"
-                * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
-                * */
-                String[] timeDeh = updateTime.split(":", 2);
-
-                String new_hour, new_minute;
-                if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 2){
-                    new_hour = "0" + timeDeh[0];
+            //date picker dialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(individualTask.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                String formattedMonth,formattedDay;
+                if (monthOfYear + 1 <= 9){
+                    formattedMonth = "0" + (monthOfYear + 1) ;
                 }else{
-                    new_hour = timeDeh[0];
+                    formattedMonth = String.valueOf(monthOfYear + 1);
                 }
-                new_minute = timeDeh[1].split(" ", 2)[0];
-                //===============================
+                if(dayOfMonth < 10){
+                    formattedDay = "0" + dayOfMonth;
+                }else{
+                    formattedDay = String.valueOf(dayOfMonth);
+                }
+                individualTaskDateDeadline_TextInputEdit.setText(String.format(new Locale("en","KE"),"%s-%s-%s",formattedDay,formattedMonth,year));
+            }, mYear,mMonth, mDay);
+            datePickerDialog.show();
+        });
+        btnSave.setOnClickListener(view -> {
+            updateTitle = Objects.requireNonNull(individualTaskTitle_TextInputEdit.getText()).toString().trim();
+            updateDescription = Objects.requireNonNull(individualTaskDescription_TextInputEdit.getText()).toString().trim();
+            updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
+            updatePrice = Objects.requireNonNull(individualTaskBills_TextInputEdit.getText()).toString().trim();
+            String updateDate = Objects.requireNonNull(individualTaskDateDeadline_TextInputEdit.getText()).toString().trim();
+            String updateTime = Objects.requireNonNull(individualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
+            predictedDuration = Objects.requireNonNull(individualTaskPredictedDuration_TextInputEditText.getText()).toString().trim();
 
-                //this is necessary when the user doesn't make a change on the date
-                /*
-                * The db output of date is yyyy-MM-dd while the dateDialog one is dd-MM-yyyy, so this is there to cater
-                * for all situations, if the first digit after stripping the date is less than 31 then format is dd-MM-yyyy meaning user has changed
-                * the date , however if the first digit is greater than 31 then the format is yyyy-MM-dd meaning the user hasn't made any change to the date.
-                * It is as from the db
-                * */
-                String new_date = HouseOfCommons.parseDate(updateDate);
-                //combine the date and time ready for formatting
 
-                updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
-                if (!updateTitle.isEmpty()){
-                    if (!updateDescription.isEmpty()){
-                        if (!updateCategory.isEmpty()){
-                            AddTasks addTasks = new AddTasks();
-                            if (!updatePrice.isEmpty()){
-                                if (HouseOfCommons.priceCheck(updatePrice)){
-                                    addTasks.willPriceFormat(updatePrice);
-                                    if (!predictedDuration.isEmpty()){
-                                        if (!predictedDurationUnits.isEmpty()){
-                                            if (!updateDate.isEmpty()){
-                                                if (!updateTime.isEmpty()){
-                                                    if (willDateFormat(updateDateTime)){
-                                                        LocalDateTime date_now = LocalDateTime.now();
-                                                        if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
-                                                            String duration = HouseOfCommons.processPredictedDuration(predictedDuration,predictedDurationUnits);
-                                                            try {
-                                                                f = dbHelper.updateTask(currentId,randUserId,updateTitle,updateDescription,updateCategory,updatePrice,selected_date, duration);
-                                                            }catch (Exception e){
-                                                                e.printStackTrace();
-                                                            }
-                                                            if (f){
-                                                                Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
-                                                            }else{
-                                                                Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
-                                                            }
+            /*
+            * Formatting dates are tricky.
+            * What the code below does is take the time section HH:ss PM/AM split it first to obtain "HH" and "mm PM".
+            * The further split "mm PM/AM" to "mm" and "PM/AM"
+            * Format the hour by adding a zero when hour is below 9, then split "mm PM" to obtain minutes
+            * */
+            String[] timeDeh = updateTime.split(":", 2);
+
+            String new_hour, new_minute;
+            if(Integer.parseInt(timeDeh[0]) < 10 && timeDeh[0].length() < 2){
+                new_hour = "0" + timeDeh[0];
+            }else{
+                new_hour = timeDeh[0];
+            }
+            new_minute = timeDeh[1].split(" ", 2)[0];
+            //===============================
+
+            //this is necessary when the user doesn't make a change on the date
+            /*
+            * The db output of date is yyyy-MM-dd while the dateDialog one is dd-MM-yyyy, so this is there to cater
+            * for all situations, if the first digit after stripping the date is less than 31 then format is dd-MM-yyyy meaning user has changed
+            * the date , however if the first digit is greater than 31 then the format is yyyy-MM-dd meaning the user hasn't made any change to the date.
+            * It is as from the db
+            * */
+            String new_date = HouseOfCommons.parseDate(updateDate);
+            //combine the date and time ready for formatting
+
+            updateDateTime = new_date + " " +new_hour + ":" + new_minute ;
+            if (!updateTitle.isEmpty()){
+                if (!updateDescription.isEmpty()){
+                    if (!updateCategory.isEmpty()){
+                        AddTasks addTasks = new AddTasks();
+                        if (!updatePrice.isEmpty()){
+                            if (HouseOfCommons.priceCheck(updatePrice)){
+                                addTasks.willPriceFormat(updatePrice);
+                                if (!predictedDuration.isEmpty()){
+                                    if (!predictedDurationUnits.isEmpty()){
+                                        if (!updateDate.isEmpty()){
+                                            if (!updateTime.isEmpty()){
+                                                if (willDateFormat(updateDateTime)){
+                                                    LocalDateTime date_now = LocalDateTime.now();
+                                                    if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
+                                                        String duration = HouseOfCommons.processPredictedDuration(predictedDuration,predictedDurationUnits);
+                                                        try {
+                                                            f = dbHelper.updateTask(currentId,randUserId,updateTitle,updateDescription,updateCategory,updatePrice,selected_date, duration);
+                                                        }catch (Exception e){
+                                                            e.printStackTrace();
                                                         }
-                                                    }else{
-                                                        individualTaskTitle_TextLayout.setErrorEnabled(false);
-                                                        individualTaskDescription_TextLayout.setErrorEnabled(false);
-                                                        individualTaskCategory_TextLayout.setErrorEnabled(false);
-                                                        individualTaskBills_TextLayout.setErrorEnabled(false);
-                                                        individualTaskDateDeadline_TextLayout.setErrorEnabled(true);
-                                                        individualTaskDateDeadline_TextLayout.setError("Select new date");
-                                                        individualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
-                                                        individualTaskTimeDeadline_TextLayout.setError("Select new time");
-                                                        individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
-                                                        individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                                        if (f){
+                                                            Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
+                                                        }else{
+                                                            Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
+                                                        }
                                                     }
                                                 }else{
                                                     individualTaskTitle_TextLayout.setErrorEnabled(false);
                                                     individualTaskDescription_TextLayout.setErrorEnabled(false);
                                                     individualTaskCategory_TextLayout.setErrorEnabled(false);
                                                     individualTaskBills_TextLayout.setErrorEnabled(false);
-                                                    individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                                                    individualTaskDateDeadline_TextLayout.setErrorEnabled(true);
+                                                    individualTaskDateDeadline_TextLayout.setError("Select new date");
                                                     individualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
-                                                    individualTaskTimeDeadline_TextLayout.setError("Select time");
+                                                    individualTaskTimeDeadline_TextLayout.setError("Select new time");
                                                     individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                                                     individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                                 }
@@ -277,8 +243,8 @@ public class individualTask extends AppCompatActivity {
                                                 individualTaskCategory_TextLayout.setErrorEnabled(false);
                                                 individualTaskBills_TextLayout.setErrorEnabled(false);
                                                 individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
-                                                individualTaskDateDeadline_TextLayout.setError("Select time");
-                                                individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                                                individualTaskTimeDeadline_TextLayout.setErrorEnabled(true);
+                                                individualTaskTimeDeadline_TextLayout.setError("Select time");
                                                 individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                                                 individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                             }
@@ -288,13 +254,11 @@ public class individualTask extends AppCompatActivity {
                                             individualTaskCategory_TextLayout.setErrorEnabled(false);
                                             individualTaskBills_TextLayout.setErrorEnabled(false);
                                             individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                                            individualTaskDateDeadline_TextLayout.setError("Select time");
                                             individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
                                             individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                                             individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
-                                            individualTaskPredictedDurationUnits_TextInputLayout.setError("Choose a unit of duration");
-
                                         }
-
                                     }else{
                                         individualTaskTitle_TextLayout.setErrorEnabled(false);
                                         individualTaskDescription_TextLayout.setErrorEnabled(false);
@@ -302,50 +266,52 @@ public class individualTask extends AppCompatActivity {
                                         individualTaskBills_TextLayout.setErrorEnabled(false);
                                         individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                         individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
-                                        individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(true);
-                                        individualTaskPredictedDuration_TextInputLayout.setError("Empty predicted duration");
+                                        individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                                         individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
+                                        individualTaskPredictedDurationUnits_TextInputLayout.setError("Choose a unit of duration");
+
                                     }
 
                                 }else{
                                     individualTaskTitle_TextLayout.setErrorEnabled(false);
                                     individualTaskDescription_TextLayout.setErrorEnabled(false);
                                     individualTaskCategory_TextLayout.setErrorEnabled(false);
-                                    individualTaskBills_TextLayout.setErrorEnabled(true);
-                                    individualTaskBills_TextLayout.setError("Wrong price syntax");
+                                    individualTaskBills_TextLayout.setErrorEnabled(false);
                                     individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                     individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
-                                    individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                                    individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(true);
+                                    individualTaskPredictedDuration_TextInputLayout.setError("Empty predicted duration");
                                     individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                                 }
+
                             }else{
                                 individualTaskTitle_TextLayout.setErrorEnabled(false);
                                 individualTaskDescription_TextLayout.setErrorEnabled(false);
                                 individualTaskCategory_TextLayout.setErrorEnabled(false);
                                 individualTaskBills_TextLayout.setErrorEnabled(true);
-                                individualTaskBills_TextLayout.setError("Enter a price figure");
+                                individualTaskBills_TextLayout.setError("Wrong price syntax");
                                 individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                 individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
                                 individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                                 individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                             }
-
                         }else{
                             individualTaskTitle_TextLayout.setErrorEnabled(false);
                             individualTaskDescription_TextLayout.setErrorEnabled(false);
-                            individualTaskCategory_TextLayout.setErrorEnabled(true);
-                            individualTaskCategory_TextLayout.setError("Choose a category");
-                            individualTaskBills_TextLayout.setErrorEnabled(false);
+                            individualTaskCategory_TextLayout.setErrorEnabled(false);
+                            individualTaskBills_TextLayout.setErrorEnabled(true);
+                            individualTaskBills_TextLayout.setError("Enter a price figure");
                             individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                             individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
                             individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                             individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                         }
-                    }else {
+
+                    }else{
                         individualTaskTitle_TextLayout.setErrorEnabled(false);
-                        individualTaskDescription_TextLayout.setError("Empty description");
-                        individualTaskDescription_TextLayout.setErrorEnabled(true);
-                        individualTaskCategory_TextLayout.setErrorEnabled(false);
+                        individualTaskDescription_TextLayout.setErrorEnabled(false);
+                        individualTaskCategory_TextLayout.setErrorEnabled(true);
+                        individualTaskCategory_TextLayout.setError("Choose a category");
                         individualTaskBills_TextLayout.setErrorEnabled(false);
                         individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                         individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
@@ -353,9 +319,9 @@ public class individualTask extends AppCompatActivity {
                         individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                     }
                 }else {
-                    individualTaskTitle_TextLayout.setErrorEnabled(true);
-                    individualTaskTitle_TextLayout.setError("Empty title");
-                    individualTaskDescription_TextLayout.setErrorEnabled(false);
+                    individualTaskTitle_TextLayout.setErrorEnabled(false);
+                    individualTaskDescription_TextLayout.setError("Empty description");
+                    individualTaskDescription_TextLayout.setErrorEnabled(true);
                     individualTaskCategory_TextLayout.setErrorEnabled(false);
                     individualTaskBills_TextLayout.setErrorEnabled(false);
                     individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
@@ -363,11 +329,21 @@ public class individualTask extends AppCompatActivity {
                     individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
                     individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
                 }
-
-
-
-
+            }else {
+                individualTaskTitle_TextLayout.setErrorEnabled(true);
+                individualTaskTitle_TextLayout.setError("Empty title");
+                individualTaskDescription_TextLayout.setErrorEnabled(false);
+                individualTaskCategory_TextLayout.setErrorEnabled(false);
+                individualTaskBills_TextLayout.setErrorEnabled(false);
+                individualTaskDateDeadline_TextLayout.setErrorEnabled(false);
+                individualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
+                individualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
+                individualTaskPredictedDurationUnits_TextInputLayout.setErrorEnabled(false);
             }
+
+
+
+
         });
 
 
@@ -424,17 +400,14 @@ public class individualTask extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                if (hour < 10){
-                    timeDate2update = "0" + hour + ":" + minute;
-                }else{
-                    timeDate2update = hour + ":" + minute;
-                }
-                HouseOfCommons houseOfCommons = new HouseOfCommons();
-                individualTaskTimeDeadline_TextInputEdit.setText(houseOfCommons.FormatTime(hour, minute));
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour1, minute1) -> {
+            if (hour1 < 10){
+                timeDate2update = "0" + hour1 + ":" + minute1;
+            }else{
+                timeDate2update = hour1 + ":" + minute1;
             }
+            HouseOfCommons houseOfCommons = new HouseOfCommons();
+            individualTaskTimeDeadline_TextInputEdit.setText(houseOfCommons.FormatTime(hour1, minute1));
         },hour, minute,false);
         timePickerDialog.show();
     }
@@ -442,7 +415,7 @@ public class individualTask extends AppCompatActivity {
     private boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
         try {
-            selected_date = getDateFromString(selectedDate, dateTimeFormatter);
+            selected_date = HouseOfCommons.getDateFromString(selectedDate, dateTimeFormatter);
             return true;
         }catch (IllegalArgumentException e){
             System.out.println("Date Exception" + e);

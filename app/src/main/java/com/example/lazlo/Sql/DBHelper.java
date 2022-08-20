@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -21,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
         DB.execSQL("create Table if not exists TaskList(_id INTEGER PRIMARY KEY ,randTaskId DOUBLE UNIQUE NOT NULL,randUserId DOUBLE NOT NULL,TaskTitle TEXT NOT NULL,TaskDescription TEXT NOT NULL, TaskCategory TEXT NOT NULL,TaskAssociatedPrice DOUBLE ,TaskCreationTime LONG NOT NULL,TaskDeadline LOCALDATETIME NOT NULL,TaskPredictedDuration VARCHAR NOT NULL, taskState INTEGER NOT NULL, parentTaskId VARCHAR NOT NULL)");
-        DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , UserName TEXT ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
+        DB.execSQL("create Table if not exists TaskListDrafts(_id INTEGER PRIMARY KEY , randUserId DOUBLE NOT NULL  ,TaskTitle VARCHAR ,TaskDescription VARCHAR , TaskCategory VARCHAR ,TaskAssociatedPrice VARCHAR ,TaskDeadline VARCHAR )");
         DB.execSQL("create Table if not exists userDetails(_id INTEGER PRIMARY KEY ,randUserId DOUBLE UNIQUE NOT NULL, userName TEXT UNIQUE NOT NULL,email VARCHAR UNIQUE NOT NULL, password PASSWORD NOT NULL, Status VARCHAR,profilePicture BLOB)");
 
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
@@ -235,8 +234,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to obtain all saved drafts
-    public Cursor getAllDrafts(String uname) {
-        return this.getWritableDatabase().query("TaskListDrafts", null, "UserName=?", new String[]{String.valueOf(uname)}, null, null, null);
+    public Cursor getAllDrafts(Double randUSerId) {
+        return this.getWritableDatabase().query("TaskListDrafts", null, "randUserId=?", new String[]{String.valueOf(randUSerId)}, null, null, null);
     }
 
     //function to obtain all tasks by categories
@@ -376,11 +375,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //function to insert draft tasks
-    public boolean insertDraftTasks(String userName, String taskTitle, String taskDescription, String taskCategory,
+    public boolean insertDraftTasks(Double randUserId, String taskTitle, String taskDescription, String taskCategory,
                                     String taskAssociatedPrice, String taskDeadline) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("UserName", userName);
+        contentValues.put("randomUserId", randUserId);
         contentValues.put("TaskTitle", taskTitle);
         contentValues.put("TaskDescription", taskDescription);
         contentValues.put("TaskCategory", taskCategory);

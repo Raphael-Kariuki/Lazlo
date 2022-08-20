@@ -1,6 +1,5 @@
 package com.example.lazlo;
 
-import static com.example.lazlo.AddTasks.getDateFromString;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -363,7 +362,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
     private boolean willDateFormat(String selectedDate){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         try {
-            completedTaskDateDeadline2Insert = getDateFromString(selectedDate, dateTimeFormatter);
+            completedTaskDateDeadline2Insert = HouseOfCommons.getDateFromString(selectedDate, dateTimeFormatter);
             return true;
         }catch (IllegalArgumentException e){
             System.out.println("Date Exception" + e);
