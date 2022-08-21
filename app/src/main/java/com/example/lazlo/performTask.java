@@ -17,7 +17,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,7 +33,6 @@ public class performTask extends AppCompatActivity {
     Double randomUserId;
     Double randomTaskId;
     String Title ,Description, Category, Bills,Deadline;
-    LocalDateTime formattedLocalDateTime;
     long startTaskDate;
     long pauseTaskDate;
     long resumeTaskDate;
@@ -120,8 +118,8 @@ public class performTask extends AppCompatActivity {
             }else{
                 //insert to db
 
-                //have to format deadline from string to localDatTime coz it was sent via intent as string
-                c = insertDetailsOnTaskStart(randomUserId, randomTaskId,LocalDateTimeFormat(Deadline),startTaskDate,null,null,null,null,null,null,1,1);
+                //have to parse deadline from string to localDatTime coz it was sent via intent as string
+                c = insertDetailsOnTaskStart(randomUserId, randomTaskId,LocalDateTime.parse(Deadline),startTaskDate,null,null,null,null,null,null,1,1);
             }
             if (b){
                 Toast.makeText(performTask.this, "updateTask success", Toast.LENGTH_SHORT).show();
@@ -306,7 +304,8 @@ public class performTask extends AppCompatActivity {
 
 
 
-                    boolean d = insertCompletedTaskOnComplete(randUserId,randTaskId,LocalDateTimeFormat(Deadline),taskStartTime,taskPauseTime,
+                    //deadline has to parsed from string to localDateTime as it was sent via an intent
+                    boolean d = insertCompletedTaskOnComplete(randUserId,randTaskId,LocalDateTime.parse(Deadline),taskStartTime,taskPauseTime,
                             taskResumeTime,taskCancelTime,taskCompleteTime,taskDuration,taskType,taskTrial);
 
                             if (d){
@@ -465,21 +464,6 @@ public class performTask extends AppCompatActivity {
         }
         return success;
 
-    }
-
-    //function that receives a date string returns a localDateTime
-    private LocalDateTime LocalDateTimeFormat(String selectedDate){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-L-d HH:mm");
-        try {
-            formattedLocalDateTime = getDateFromString(selectedDate, dateTimeFormatter);
-        }catch (IllegalArgumentException e){
-            System.out.println("Date Exception" + e);
-        }
-        return formattedLocalDateTime;
-    }
-
-    public static LocalDateTime getDateFromString(String string,DateTimeFormatter dateTimeFormatter){
-        return LocalDateTime.parse(string, dateTimeFormatter);
     }
 
 
