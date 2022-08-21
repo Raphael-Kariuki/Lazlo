@@ -1,19 +1,22 @@
 package com.example.lazlo;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.lazlo.Sql.DBHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -67,41 +70,38 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
         holder.taskTitle.setText(taskTitle);
         holder.taskDescription.setText(taskDescription);
         holder.TaskAssociatedPrice.setText(String.format(new Locale("en","KE"),"%s%s","Ksh ",taskAssociatedPrice));
-        holder.optionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext, holder.optionsButton);
-                popupMenu.inflate(R.menu.flow_menu);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
-                            case R.id.viewEditTask:
+        holder.optionsButton.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(mContext, holder.optionsButton);
+            popupMenu.inflate(R.menu.flow_menu);
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()){
+                    case R.id.viewEditTask:
 
-                                Bundle bundle = new Bundle();
-                                bundle.putString("taskTitle", model.getTaskTitle());
-                                bundle.putString("taskDescription", model.getTaskDescription());
-                                bundle.putString("taskAssociatedPrice", model.getTaskAssociatedPrice());
-                                bundle.putString("taskCategory", model.getTaskCategory());
-                                bundle.putString("taskDeadline", model.getTaskDeadline());
-                                bundle.putString("taskCreationTime", model.getTaskCreationTime());
-                                bundle.putString("taskPredictedDuration", model.getTaskPredictedDuration());
-                                bundle.putString("taskState", model.getTaskState());
-                                bundle.putString("parentTaskId", model.getParentTaskId());
-                                Intent intent = new Intent(mContext,individualTask.class);
-                                intent.putExtra("individualTaskDetails", bundle);
-                                mContext.startActivity(intent);
-                                break;
-                            case R.id.performTask:
-                                break;
-                            case R.id.deleteTask:
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
-            }
+                        Bundle bundle = new Bundle();
+                        bundle.putDouble("randTaskId", model.getRandTaskId());
+                        bundle.putDouble("randUserId", model.getRandUserId());
+                        bundle.putString("taskTitle", model.getTaskTitle());
+                        bundle.putString("taskDescription", model.getTaskDescription());
+                        bundle.putString("taskAssociatedPrice", model.getTaskAssociatedPrice());
+                        bundle.putString("taskCategory", model.getTaskCategory());
+                        bundle.putString("taskDeadline", model.getTaskDeadline());
+                        bundle.putString("taskCreationTime", model.getTaskCreationTime());
+                        bundle.putString("taskPredictedDuration", model.getTaskPredictedDuration());
+                        bundle.putString("taskState", model.getTaskState());
+                        bundle.putString("parentTaskId", model.getParentTaskId());
+                        Intent intent = new Intent(mContext,individualTask.class);
+                        intent.putExtra("individualTaskDetails", bundle);
+                        mContext.startActivity(intent);
+                        break;
+                    case R.id.performTask:
+                        break;
+                    case R.id.deleteTask:
+
+                        break;
+                }
+                return false;
+            });
+            popupMenu.show();
         });
 
 

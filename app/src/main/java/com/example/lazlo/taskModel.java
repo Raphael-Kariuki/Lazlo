@@ -7,8 +7,10 @@ public class taskModel {
     private Double randTaskId,randUserId;
 
     //constructor
-    taskModel(String taskTitle, String taskDescription, String taskAssociatedPrice,String taskCategory,String taskCreationTime
+    taskModel(Double randTaskId,Double randUserId,String taskTitle, String taskDescription, String taskAssociatedPrice,String taskCategory,String taskCreationTime
     ,String taskDeadline,String taskPredictedDuration,String taskState,String parentTaskId){
+        this.randTaskId = randTaskId;
+        this.randUserId = randUserId;
         this.taskTitle = taskTitle;
         this.taskDescription = taskDescription;
         this.taskAssociatedPrice = taskAssociatedPrice;

@@ -1014,3 +1014,70 @@ parent="Theme.MaterialComponents.DayNight.NoActionBar"
                          }
                      });
                  }
+                 ---------------------------------------
+                     /*
+                     * public void showData(){
+                         String regex;
+                         try {
+                             cursor = dbHelper.getTaskById(currentId, randUserId);
+                         }catch (Exception e){
+                             Toast.makeText(this,"Error " + e + "occurred", Toast.LENGTH_LONG).show();
+                         }
+                         System.out.println("done...");
+                         if (cursor.moveToFirst()){
+                             randomTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
+
+                             Titre = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle"));
+                             individualTaskTitle_TextInputEdit.setText(Titre);
+
+
+                             Description = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
+                             individualTaskDescription_TextInputEdit.setText(Description);
+
+                             Category = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+                             individualTaskCategory_TextInputEdit.setText(Category);
+
+                             Bills = cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
+                             individualTaskBills_TextInputEdit.setText(Bills);
+
+                             String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
+
+
+                             if(timeDateToFormat.contains("T")){
+                                 regex = "T";
+                             }else{
+                                 regex = " ";
+                             }
+                             String[] dateTime = timeDateToFormat.split(regex, 2);
+                             individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
+                             individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
+
+                             Deadline = dateTime[0] + " " + dateTime[1];
+
+                             predictedDurationFromDb = cursor.getString(cursor.getColumnIndexOrThrow("TaskPredictedDuration"));
+                             String[] actualDurations = HouseOfCommons.processPredictedTaskDurationForPopulation(predictedDurationFromDb);
+                             individualTaskPredictedDuration_TextInputEditText.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[0]));
+                             individualTaskPredictedDurationUnits_AutoCompleteTextView.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[1]));
+
+                         }
+                         cursor.close();
+
+
+                     }
+                     * */
+
+                     --------------------------------------
+
+                     /*
+                         currentId = this.getIntent().getLongExtra("my_id_extra",-1);
+                             if (currentId < 0){
+                                 //do something as invalid id passed
+                                 finish();
+                             }else {
+                                 try {
+                                     //showData();
+                                 } catch (Exception e) {
+                                     System.out.println("Error: " + e);
+                                 }
+                             }
+                     * */
