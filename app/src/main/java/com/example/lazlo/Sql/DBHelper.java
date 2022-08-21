@@ -410,7 +410,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to updateTask task details
-    public boolean updateTask(long id,Double randUserId, String TaskTitle, String TaskDescription, String TaskCategory,
+    public boolean updateTask(Double randTaskId,Double randUserId, String TaskTitle, String TaskDescription, String TaskCategory,
                               String TaskAssociatedPrice, LocalDateTime TaskDeadline,String predictedTaskDuration) {
         long rv = 0;
         ContentValues cv = new ContentValues();
@@ -425,7 +425,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (predictedTaskDuration != null && predictedTaskDuration.length() > 0)
             cv.put("TaskPredictedDuration", predictedTaskDuration);
         if (cv.size() > 0)
-            rv = this.getWritableDatabase().update("TaskList", cv, "_id=? and randUserId = ?", new String[]{String.valueOf(id),String.valueOf(randUserId)});
+            rv = this.getWritableDatabase().update("TaskList", cv, "randTaskId =? and randUserId = ?", new String[]{String.valueOf(randTaskId),String.valueOf(randUserId)});
         this.getWritableDatabase().close();
         return rv != -1;
     }
