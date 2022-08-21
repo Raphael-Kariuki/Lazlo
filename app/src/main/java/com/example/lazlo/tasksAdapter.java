@@ -15,10 +15,14 @@ import java.util.ArrayList;
 
 public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHolder> {
     private final Context mContext;
-    private final ArrayList<taskModel> mTaskModelArrayList;
+    private ArrayList<taskModel> mTaskModelArrayList;
     public tasksAdapter(Context context, ArrayList<taskModel> taskModelArrayList){
         mContext = context;
         mTaskModelArrayList = taskModelArrayList;
+    }
+    public void filterList(ArrayList<taskModel> filteredList){
+        mTaskModelArrayList = filteredList;
+        notifyDataSetChanged();
     }
 
     public static class tasksViewHolder extends RecyclerView.ViewHolder {
