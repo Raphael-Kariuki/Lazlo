@@ -1,22 +1,18 @@
 package com.example.lazlo;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.lazlo.Sql.DBHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -33,10 +29,12 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
         notifyDataSetChanged();
     }
 
+
     public static class tasksViewHolder extends RecyclerView.ViewHolder {
         public TextView taskTitle;
         public TextView taskDescription;
         public TextView TaskAssociatedPrice;
+        public TextView TaskDeadline;
         public AppCompatImageButton optionsButton;
 
         //taskTitle
@@ -48,6 +46,7 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
             taskTitle = itemView.findViewById(R.id.taskTitle);
             taskDescription = itemView.findViewById(R.id.taskDescription);
             TaskAssociatedPrice = itemView.findViewById(R.id.TaskAssociatedPrice);
+            TaskDeadline = itemView.findViewById(R.id.TaskDeadline);
             optionsButton = itemView.findViewById(R.id.optionsButton);
         }
     }
@@ -66,10 +65,12 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
         String taskTitle = model.getTaskTitle();
         String taskDescription = model.getTaskDescription();
         String taskAssociatedPrice = model.getTaskAssociatedPrice();
+        String taskDeadline = model.getTaskDeadline();
 
         holder.taskTitle.setText(taskTitle);
         holder.taskDescription.setText(taskDescription);
         holder.TaskAssociatedPrice.setText(String.format(new Locale("en","KE"),"%s%s","Ksh ",taskAssociatedPrice));
+        holder.TaskDeadline.setText(HouseOfCommons.returnFormattedDeadline(taskDeadline));
         holder.optionsButton.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(mContext, holder.optionsButton);
             popupMenu.inflate(R.menu.flow_menu);
@@ -94,6 +95,14 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
                         mContext.startActivity(intent);
                         break;
                     case R.id.performTask:
+                        Intent startTask = new Intent(mContext, performTask.class );
+                        startTask.putExtra("randTaskId", model.getRandTaskId());
+                        startTask.putExtra("taskTitle", model.getTaskTitle());
+                        startTask.putExtra("taskDescription", model.getTaskDescription());
+                        startTask.putExtra("taskCategory", model.getTaskCategory());
+                        startTask.putExtra("taskBills", model.getTaskAssociatedPrice());
+                        startTask.putExtra("taskDeadline", model.getTaskDeadline());
+                        mContext.startActivity(startTask);
                         break;
                     case R.id.deleteTask:
 
