@@ -11,12 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHolder> {
     private final Context mContext;
-    private Cursor mCursor;
-    public tasksAdapter(Context context, Cursor cursor){
+    private final ArrayList<taskModel> mTaskModelArrayList;
+    public tasksAdapter(Context context, ArrayList<taskModel> taskModelArrayList){
         mContext = context;
-        mCursor = cursor;
+        mTaskModelArrayList = taskModelArrayList;
     }
 
     public static class tasksViewHolder extends RecyclerView.ViewHolder {
@@ -45,12 +47,11 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
 
     @Override
     public void onBindViewHolder(@NonNull tasksAdapter.tasksViewHolder holder, int position) {
-        if (!mCursor.moveToPosition(position)){
-            return;
-        }
-        String taskTitle = mCursor.getString(mCursor.getColumnIndexOrThrow("TaskTitle"));
-        String taskDescription = mCursor.getString(mCursor.getColumnIndexOrThrow("TaskDescription"));
-        String taskAssociatedPrice = mCursor.getString(mCursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
+        final taskModel model = mTaskModelArrayList.get(position);
+
+        String taskTitle = model.getTaskTitle();
+        String taskDescription = model.getTaskDescription();
+        String taskAssociatedPrice = model.getTaskAssociatedPrice();
 
         holder.taskTitle.setText(taskTitle);
         holder.taskDescription.setText(taskDescription);
@@ -61,16 +62,7 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
-    }
-    public void swapCursor(Cursor newCursor){
-        if (mCursor != null){
-            mCursor.close();
-        }
-        mCursor = newCursor;
-        if (newCursor != null){
-            notifyDataSetChanged();
-        }
+        return mTaskModelArrayList.size();
     }
 
 
