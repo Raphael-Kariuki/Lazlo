@@ -57,7 +57,7 @@ public class TasksHomePage extends AppCompatActivity {
         btnPendingTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), PendingTasks.class));
+                startActivity(new Intent(getApplicationContext(), tasks.class));
             }
         });
 

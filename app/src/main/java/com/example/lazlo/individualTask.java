@@ -41,6 +41,7 @@ public class individualTask extends AppCompatActivity {
   long currentId;
   Cursor cursor;
   String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline,predictedDurationUnits,predictedDurationFromDb,predictedDuration;
+  String individualTaskTitle,individualTaskDescription, individualTaskAssociatedPrice,individualTaskCategory,individualTaskCreationTime,individualTaskDeadline,individualTaskPredictedDurationFromDb, individualTaskState , individualParentTaskId;
   LocalDateTime selected_date;
   Double randomTaskId, randUserId;
   SharedPreferences spf;
@@ -123,17 +124,21 @@ public class individualTask extends AppCompatActivity {
         individualTaskPredictedDurationUnits_AutoCompleteTextView.setAdapter(unitsIndividualTaskEditAdapter);
         individualTaskPredictedDurationUnits_AutoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> predictedDurationUnits = (String) adapterView.getItemAtPosition(i));
 
-        currentId = this.getIntent().getLongExtra("my_id_extra",-1);
+        populateIndividualTask();
+/*
+    currentId = this.getIntent().getLongExtra("my_id_extra",-1);
         if (currentId < 0){
             //do something as invalid id passed
             finish();
         }else {
             try {
-                showData();
+                //showData();
             } catch (Exception e) {
                 System.out.println("Error: " + e);
             }
         }
+* */
+
 
 
 
@@ -169,6 +174,7 @@ public class individualTask extends AppCompatActivity {
             String updateDate = Objects.requireNonNull(individualTaskDateDeadline_TextInputEdit.getText()).toString().trim();
             String updateTime = Objects.requireNonNull(individualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
             predictedDuration = Objects.requireNonNull(individualTaskPredictedDuration_TextInputEditText.getText()).toString().trim();
+            predictedDurationUnits = Objects.requireNonNull(individualTaskPredictedDurationUnits_AutoCompleteTextView.getText()).toString().trim();
 
 
             /*
@@ -348,7 +354,8 @@ public class individualTask extends AppCompatActivity {
 
 
     }
-    public void showData(){
+    /*
+    * public void showData(){
         String regex;
         try {
             cursor = dbHelper.getTaskById(currentId, randUserId);
@@ -394,6 +401,43 @@ public class individualTask extends AppCompatActivity {
         }
         cursor.close();
 
+
+    }
+    * */
+
+    private void populateIndividualTask(){
+        Bundle bundle = getIntent().getBundleExtra("individualTaskDetails");
+        individualTaskTitle = bundle.getString("taskTitle");
+        individualTaskTitle_TextInputEdit.setText(individualTaskTitle);
+
+        individualTaskDescription  = bundle.getString("taskDescription");
+        individualTaskDescription_TextInputEdit.setText(individualTaskDescription);
+
+        individualTaskAssociatedPrice = bundle.getString("taskAssociatedPrice");
+        individualTaskBills_TextInputEdit.setText(individualTaskAssociatedPrice);
+
+        individualTaskCategory = bundle.getString("taskCategory");
+        individualTaskCategory_TextInputEdit.setText(individualTaskCategory);
+
+        individualTaskDeadline = bundle.getString("taskDeadline");
+        String regex;
+        if(individualTaskDeadline.contains("T")){
+            regex = "T";
+        }else{
+            regex = " ";
+        }
+        String[] dateTime = individualTaskDeadline.split(regex, 2);
+        individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
+        individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
+
+        Deadline = dateTime[0] + " " + dateTime[1];
+
+        individualTaskPredictedDurationFromDb = bundle.getString("taskPredictedDuration");
+        String[] actualDurations = HouseOfCommons.processPredictedTaskDurationForPopulation(individualTaskPredictedDurationFromDb);
+        individualTaskPredictedDuration_TextInputEditText.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[0]));
+        individualTaskPredictedDurationUnits_AutoCompleteTextView.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[1]));
+
+        //individualTaskState = bundle.getString("parentTaskId");
 
     }
     private void selectTime(){

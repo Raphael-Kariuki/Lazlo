@@ -278,6 +278,7 @@
                     app:cornerRadius="20dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     />
 
 

@@ -87,13 +87,21 @@ ArrayList<taskModel> taskModelArrayList;
         dbHelper = new DBHelper(this);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         cursor = dbHelper.getAllByCategoriesForPendingTasks(randUserId,"Home");
         taskModelArrayList = new ArrayList<>();
         while(cursor != null && cursor.moveToNext()){
             String taskTitle = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle"));
             String taskDescription = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
             String taskAssociatedPrice = cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
-            taskModelArrayList.add(new taskModel(taskTitle,taskDescription,taskAssociatedPrice));
+            String taskCategory = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+            String taskCreationTime = cursor.getString(cursor.getColumnIndexOrThrow("TaskCreationTime"));
+            String taskDeadline = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
+            String taskPredictedDuration = cursor.getString(cursor.getColumnIndexOrThrow("TaskPredictedDuration"));
+            String taskState = cursor.getString(cursor.getColumnIndexOrThrow("taskState"));
+            String parentTaskId = cursor.getString(cursor.getColumnIndexOrThrow("parentTaskId"));
+            taskModelArrayList.add(new taskModel(taskTitle,taskDescription,taskAssociatedPrice,taskCategory,
+                    taskCreationTime,taskDeadline,taskPredictedDuration, taskState , parentTaskId));
         }
         if (cursor != null){
             cursor.close();
