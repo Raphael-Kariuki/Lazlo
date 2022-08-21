@@ -5,9 +5,160 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".tasks">
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/homeTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_home_24"
+                android:padding="10dp"
+                android:text="@string/home"
+                android:textColor="@color/black"
+                android:textSize="9sp"
+
+
+                />
+
+            <TextView
+                android:id="@+id/homeUnder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+              />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/shoppingTasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_shopping_cart_24"
+                android:padding="10dp"
+                android:text="@string/shopping"
+                android:textColor="@color/black"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/shoppingUnder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                 />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/schoolTasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_school_24"
+                android:padding="10dp"
+                android:text="@string/school"
+                android:textColor="@color/black"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/schoolUnder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/businessTasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_business_24"
+                android:padding="10dp"
+                android:text="@string/business"
+                android:textColor="@color/black"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/businessUnder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/workTasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_baseline_work_24"
+                android:padding="10dp"
+                android:text="@string/work"
+                android:textColor="@color/black"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/workUnder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/menu"
+         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_addTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_task"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
