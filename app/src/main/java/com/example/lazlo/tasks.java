@@ -22,6 +22,7 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class tasks extends AppCompatActivity {
@@ -36,6 +37,7 @@ AppCompatButton Home, School, Work, Business, Shopping;
 TextView homeUnder, schoolUnder, workUnder, businessUnder, shoppingUnder;
 FloatingActionButton btn_addTasks;
 String user_name,categoryToPopulateOnSort;
+    Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -58,6 +60,54 @@ String user_name,categoryToPopulateOnSort;
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
+        switch (menuItem.getItemId()){
+            case R.id.sortByDates:
+                if(stateToDetermineSortDeadlines == null){
+                    taskModelArrayList.sort(taskModel.tasksDeadlineComparatorDesc);
+                    stateToDetermineSortDeadlines = 1;
+                }else if (stateToDetermineSortDeadlines == 1){
+                    taskModelArrayList.sort(taskModel.tasksDeadlineComparatorAsc);
+                    stateToDetermineSortDeadlines = null;
+                }
+                mAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByCreationTime:
+                if(stateToDetermineSortCreation == null){
+                    taskModelArrayList.sort(taskModel.tasksCreationComparatorDesc);
+                    stateToDetermineSortCreation = 1;
+                }else if (stateToDetermineSortCreation == 1){
+                    taskModelArrayList.sort(taskModel.tasksCreationComparatorAsc);
+                    stateToDetermineSortCreation = null;
+                }
+                mAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByPrice:
+                if(stateToDetermineSortPrice == null){
+                    taskModelArrayList.sort(taskModel.tasksPriceComparatorDesc);
+                    stateToDetermineSortPrice = 1;
+                }else if (stateToDetermineSortPrice == 1){
+                    taskModelArrayList.sort(taskModel.tasksPriceComparatorAsc);
+                    stateToDetermineSortPrice = null;
+                }
+                mAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByDuration:
+                if(stateToDetermineSortDuration == null){
+                    taskModelArrayList.sort(taskModel.tasksDurationComparatorDesc);
+                    stateToDetermineSortDuration = 1;
+                }else if (stateToDetermineSortDuration == 1){
+                    taskModelArrayList.sort(taskModel.tasksDurationComparatorAsc);
+                    stateToDetermineSortDuration = null;
+                }
+                mAdapter.notifyDataSetChanged();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     private void filter(String s) {
@@ -244,14 +294,15 @@ String user_name,categoryToPopulateOnSort;
             taskModelArrayList.add(new taskModel(randTaskId, randUserId,taskTitle,taskDescription,taskAssociatedPrice,taskCategory,
                     taskCreationTime,taskDeadline,taskPredictedDuration, taskState , parentTaskId));
         }
-        if (cursor != null){
-            cursor.close();
-        }
+
+
+        //Collections.sort(taskModelArrayList,taskModel.tasksComparator);
         mAdapter = new tasksAdapter(this,taskModelArrayList);
         recyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
 
     }
+
+
     //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
     // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
     private void SetOrRefreshListView2(){
@@ -298,6 +349,8 @@ String user_name,categoryToPopulateOnSort;
                     break;
 
             }
+            //call this so that new cursor is picked up
+            mAdapter.notifyDataSetChanged();
             taskListPopulate();
         }
 
