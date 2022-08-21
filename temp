@@ -966,3 +966,51 @@ parent="Theme.MaterialComponents.DayNight.NoActionBar"
                  editUsername_TextInputLayout.setError("Enter your new username");
                  editAboutYou_TextInputLayout.setErrorEnabled(false);
              }
+
+
+             -------------------------------
+             //flow menu
+                     holder.flowmenu.setOnClickListener(new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             PopupMenu popupMenu=new PopupMenu(context,holder.flowmenu);
+                             popupMenu.inflate(R.menu.flow_menu);
+                             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                 @Override
+                                 public boolean onMenuItemClick(MenuItem item) {
+                                     switch (item.getItemId()){
+                                         case R.id.edit_menu:
+                                             ///////
+                                             //edit operation
+                                             Bundle bundle=new Bundle();
+                                             bundle.putInt("id",model.getId());
+                                             bundle.putByteArray("avatar",model.getProavatar());
+                                             bundle.putString("name",model.getUsername());
+                                             Intent intent=new Intent(context,MainActivity.class);
+                                             intent.putExtra("userdata",bundle);
+                                             context.startActivity(intent);
+                                             break;
+                                         case R.id.delete_menu:
+                                             ///delete operation
+                                             DBmain dBmain=new DBmain(context);
+                                             sqLiteDatabase=dBmain.getReadableDatabase();
+                                             long recdelete=sqLiteDatabase.delete(TABLENAME,"id="+model.getId(),null);
+                                             if (recdelete!=-1){
+                                                 Toast.makeText(context, "data deleted", Toast.LENGTH_SHORT).show();
+                                                 //remove position after deleted
+                                                 modelArrayList.remove(position);
+                                                 //update data
+                                                 notifyDataSetChanged();
+                                             }
+                                             break;
+                                         default:
+                                             return false;
+                                     }
+                                     return false;
+                                 }
+                             });
+                             //display menu
+                             popupMenu.show();
+                         }
+                     });
+                 }
