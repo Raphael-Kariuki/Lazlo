@@ -202,9 +202,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //function to delete task by id when item on listview is clicked
-    public boolean deleteTask(long id, Double randUserId) {
+    public boolean deleteTask(Double randTaskId, Double randUserId) {
         long returnValue;
-        returnValue = this.getWritableDatabase().delete("TaskList", "_id=? and randUserId = ?", new String[]{String.valueOf(id), String.valueOf(randUserId)});
+        returnValue = this.getWritableDatabase().delete("TaskList", "randTaskId = ? and randUserId = ?", new String[]{String.valueOf(randTaskId), String.valueOf(randUserId)});
         return returnValue != -1;
     }
 
@@ -279,10 +279,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //function to obtain all tasks by categories, used in completed tasks
     public Cursor getAllByCategories(Double randUserId, String category) {
-        return this.getWritableDatabase().rawQuery("Select distinct tl._id,tl.TaskTitle as completedTaskTitle,tl.TaskDescription as completedTaskDescription," +
-                        "tl.TaskCategory as completedTaskCategory,tl.TaskAssociatedPrice as completedTaskAssociatedPrice,tl.TaskDeadline as completedTaskDeadline" +
-                        " from TaskList tl inner join Completed_N_DeletedTasks ctl on tl.randUserId = ctl.randUserId " +
-                        "where ctl.randUserId = ? and tl.TaskCategory = ? and tl.taskState = 5",
+        return this.getWritableDatabase().rawQuery("Select distinct " +
+                        "tl.randTaskId as completedTaskRandTaskId," +
+                        "tl.randUserId as completedTaskRandUserId," +
+                        "tl.TaskTitle as completedTaskTitle," +
+                        "tl.TaskDescription as completedTaskDescription," +
+                        "tl.TaskCategory as completedTaskCategory," +
+                        "tl.TaskAssociatedPrice as completedTaskAssociatedPrice," +
+                        "tl.TaskDeadline as completedTaskDeadline," +
+                        "tl.TaskCreationTime as completedTaskCreationDate, " +
+                        "tl.taskPredictedDuration as completedTaskPredictedDuration," +
+                        "ctl.taskStartTime as completedTaskStartDate, " +
+                        "ctl.taskCompleteTime as completedTaskCompletionDate," +
+                        "ctl.taskDuration as completedTaskActualDuration," +
+                        "ctl.taskTrial as completedTaskTrials," +
+                        "tl.taskState as completedTaskState" +
+                        " from TaskList tl inner join Completed_N_DeletedTasks ctl " +
+                        "on tl.randTaskId = ctl.randTaskId " +
+                        "where ctl.randUserId = ? and tl.TaskCategory = ? and tl.taskState = 5 order by completedTaskCompletionDate ",
                 new String[]{String.valueOf(randUserId), String.valueOf(category)});
     }
 

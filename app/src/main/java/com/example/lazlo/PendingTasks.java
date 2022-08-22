@@ -417,8 +417,8 @@ public class PendingTasks extends AppCompatActivity {
                     boolean b = false;
                     try {
 
-                        b = dbHelper.deleteTask(l, randomUserId);
-                        Cursor cursor = dbHelper.getTaskById(l, randomUserId);
+                       // b = dbHelper.deleteTask(l, randomUserId);
+                       // Cursor cursor = dbHelper.getTaskById(l, randomUserId);
                         categoryToPopulate = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
 
 
