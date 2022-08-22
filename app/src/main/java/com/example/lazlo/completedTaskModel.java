@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import java.util.Comparator;
+
 public class completedTaskModel {
 
 
@@ -140,4 +142,61 @@ public class completedTaskModel {
     public long getTaskStartTime() {
         return taskStartTime;
     }
+    public  static Comparator<completedTaskModel> tasksDeadlineComparatorAsc = (t1, t2) -> {
+        String taskDeadline1 = t1.getTaskDeadline();
+        String taskDeadline2 = t2.getTaskDeadline();
+
+        //ascending order
+        return taskDeadline1.compareTo(taskDeadline2);
+    };
+    public  static Comparator<completedTaskModel> tasksDeadlineComparatorDesc = (t1, t2) -> {
+        String taskDeadline1 = t1.getTaskDeadline();
+        String taskDeadline2 = t2.getTaskDeadline();
+
+        //descending order
+        return taskDeadline2.compareTo(taskDeadline1);
+    };
+    public  static Comparator<completedTaskModel> tasksPriceComparatorDesc = (t1, t2) -> {
+        String taskPrice1 = t1.getTaskAssociatedPrice();
+        String taskPrice2 = t2.getTaskAssociatedPrice();
+
+        //ascending order
+        return taskPrice1.compareTo(taskPrice2);
+    };
+    public  static Comparator<completedTaskModel> tasksPriceComparatorAsc = (t1, t2) -> {
+        String taskPrice1 = t1.getTaskDeadline();
+        String taskPrice2 = t2.getTaskDeadline();
+
+        //descending order
+        return taskPrice2.compareTo(taskPrice1);
+    };
+
+    public  static Comparator<completedTaskModel> tasksCreationComparatorDesc = (t1, t2) -> {
+        long tasksCreation1 = t1.getTaskCreationTime();
+        long tasksCreation2 = t2.getTaskCreationTime();
+
+        //ascending order
+        return String.valueOf(tasksCreation1).compareTo(String.valueOf(tasksCreation2));
+    };
+    public  static Comparator<completedTaskModel> tasksCreationComparatorAsc = (t1, t2) -> {
+        long tasksCreation1 = t1.getTaskCreationTime();
+        long tasksCreation2 = t2.getTaskCreationTime();
+
+        //descending order
+        return String.valueOf(tasksCreation2).compareTo(String.valueOf(tasksCreation1));
+    };
+    public  static Comparator<completedTaskModel> tasksDurationComparatorDesc = (t1, t2) -> {
+        String tasksDuration1 = t1.getTaskPredictedDuration();
+        String tasksDuration2 = t2.getTaskPredictedDuration();
+
+        //ascending order
+        return tasksDuration1.compareTo(tasksDuration2);
+    };
+    public  static Comparator<completedTaskModel> tasksDurationComparatorAsc = (t1, t2) -> {
+        String tasksDuration1 = t1.getTaskPredictedDuration();
+        String tasksDuration2 = t2.getTaskPredictedDuration();
+
+        //descending order
+        return tasksDuration2.compareTo(tasksDuration1);
+    };
 }

@@ -22,6 +22,10 @@ public class completedTasksAdapter extends RecyclerView.Adapter<completedTasksAd
         this.nContext = nContext;
         this.nTaskModelArrayList = completedTaskModelArrayList;
     }
+    public void complete_filterList(ArrayList<completedTaskModel> complete_filteredList){
+        nTaskModelArrayList = complete_filteredList;
+        notifyDataSetChanged();
+    }
 
     public static class completedTasksViewHolder extends RecyclerView.ViewHolder{
 

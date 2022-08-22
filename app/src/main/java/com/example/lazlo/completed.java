@@ -1,5 +1,6 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -11,11 +12,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class completed extends AppCompatActivity {
 
@@ -29,6 +35,114 @@ public class completed extends AppCompatActivity {
     String categoryToPopulateOnSort;
     Cursor completedTasksCursor;
     completedTasksAdapter completedTasksAdapter;
+    Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.task_bar_menu, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
+        searchView.setIconifiedByDefault(true);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s);
+                return false;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    private void filter(String s) {
+        ArrayList<completedTaskModel> complete_filteredList = new ArrayList<>();
+        for (completedTaskModel item: completedTaskModelArrayList){
+            Locale locale = new Locale("en","KE");
+            if (item.getTaskTitle().toLowerCase(locale).contains(s.toLowerCase(locale))
+                    || item.getTaskDescription().toLowerCase(locale).contains(s.toLowerCase(locale))){
+                complete_filteredList.add(item);
+
+            }
+        }
+        if (complete_filteredList.isEmpty()){
+            Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+        }
+        completedTasksAdapter.complete_filterList(complete_filteredList);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.myAccount:
+                startActivity(new Intent(getApplicationContext(), Account.class));
+                break;
+            case R.id.myDashboard:
+                startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                break;
+            case R.id.exit:
+                //add the function to perform here
+                SharedPreferences prf;
+                prf = getSharedPreferences("user_details", MODE_PRIVATE);
+                Intent i = new Intent(getApplicationContext(), Login.class);
+                SharedPreferences.Editor editor = prf.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(i);
+                break;
+            case R.id.sortByDates:
+                if (stateToDetermineSortDeadlines == null){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksDeadlineComparatorAsc);
+                    stateToDetermineSortDeadlines = 1;
+                }else if(stateToDetermineSortDeadlines == 1){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksDeadlineComparatorDesc);
+                    stateToDetermineSortDeadlines = null;
+                }
+                completedTasksAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByCreationTime:
+                if (stateToDetermineSortCreation == null){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksCreationComparatorAsc);
+                    stateToDetermineSortCreation = 1;
+                }else if(stateToDetermineSortCreation == 1){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksCreationComparatorDesc);
+                    stateToDetermineSortCreation = null;
+                }
+                completedTasksAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByDuration:
+                if (stateToDetermineSortDuration == null){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksDurationComparatorAsc);
+                    stateToDetermineSortDuration = 1;
+                }else if(stateToDetermineSortDuration == 1){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksDurationComparatorDesc);
+                    stateToDetermineSortDuration = null;
+                }
+                completedTasksAdapter.notifyDataSetChanged();
+                break;
+            case R.id.sortByPrice:
+                if (stateToDetermineSortPrice == null){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksPriceComparatorAsc);
+                    stateToDetermineSortPrice = 1;
+                }else if(stateToDetermineSortPrice == 1){
+                    completedTaskModelArrayList.sort(completedTaskModel.tasksPriceComparatorDesc);
+                    stateToDetermineSortPrice = null;
+                }
+                completedTasksAdapter.notifyDataSetChanged();
+                break;
+
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
