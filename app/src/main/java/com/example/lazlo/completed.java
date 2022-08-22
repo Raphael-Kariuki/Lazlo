@@ -185,6 +185,14 @@ public class completed extends AppCompatActivity {
         completed_recyclerView.setHasFixedSize(true);
 
 
+
+        //setup so that on activity load, the home tab is populated and highlighted
+        populateHomeTasks();
+        completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+        categoryToPopulateOnSort = "Home";
+
+
+
         //TODO:Simplify this background setup with 9-patch drawables
 
         //process Home button
@@ -290,12 +298,13 @@ public class completed extends AppCompatActivity {
             long completedTaskActualDuration = completedTasksCursor.getLong(completedTasksCursor.getColumnIndexOrThrow("completedTaskActualDuration"));
             int completedTaskTrials = completedTasksCursor.getInt(completedTasksCursor.getColumnIndexOrThrow("completedTaskTrials"));
             int completedTaskState = completedTasksCursor.getInt(completedTasksCursor.getColumnIndexOrThrow("completedTaskState"));
+            String completedTaskParentTaskId = completedTasksCursor.getString(completedTasksCursor.getColumnIndexOrThrow("completedTaskParentTaskId"));
 
 
             completedTaskModelArrayList.add(new completedTaskModel(completedTaskRandTaskId,completedTaskRandUserId,completedTaskTitle,
                     completedTaskDescription,completedTaskAssociatedPrice,completedTaskCategory,completedTaskDeadline,completedTaskCreationDate
                     ,completedTaskStartDate,completedTaskCompletionDate,completedTaskActualDuration,completedTaskPredictedDuration,
-                    completedTaskTrials,completedTaskState));
+                    completedTaskTrials,completedTaskState,completedTaskParentTaskId));
         }
         completedTasksAdapter = new completedTasksAdapter(this, completedTaskModelArrayList);
         completed_recyclerView.setAdapter(completedTasksAdapter);

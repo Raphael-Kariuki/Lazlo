@@ -293,7 +293,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         "ctl.taskCompleteTime as completedTaskCompletionDate," +
                         "ctl.taskDuration as completedTaskActualDuration," +
                         "ctl.taskTrial as completedTaskTrials," +
-                        "tl.taskState as completedTaskState" +
+                        "tl.taskState as completedTaskState," +
+                        "tl.parentTaskId as completedTaskParentTaskId" +
                         " from TaskList tl inner join Completed_N_DeletedTasks ctl " +
                         "on tl.randTaskId = ctl.randTaskId " +
                         "where ctl.randUserId = ? and tl.TaskCategory = ? and tl.taskState = 5 order by completedTaskCompletionDate ",

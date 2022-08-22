@@ -230,7 +230,7 @@
                             android:id="@+id/individualTaskPredictedDuration_TextInputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Predicted duration"
+                            android:hint="@string/predicted_duration"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
@@ -260,7 +260,7 @@
                             android:layout_height="match_parent"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
-                            android:hint="Unit"
+                            android:hint="@string/unit"
                             android:textSize="12sp"
                             android:textStyle="bold"
                             />

@@ -52,7 +52,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent back2CompletedTasksView = new Intent(getApplicationContext(), CompletedTasks.class);
+            Intent back2CompletedTasksView = new Intent(getApplicationContext(), completed.class);
             back2CompletedTasksView.putExtra("category2Populate",completedIndividualTaskCategory_str);
             startActivity(back2CompletedTasksView);
             return true;
@@ -103,11 +103,10 @@ LocalDateTime completedTaskDateDeadline2Insert;
         //obtain taskId
         randTaskId = returnTaskId(task2RescheduleId,randUserId);
 
-        //obtain details from taskList using previously obtained taskId
-        Cursor task2RescheduleDetailsCursor = obtainTaskDetailsByTaskId(randUserId, randTaskId);
+
 
         //populate the views with details from db on task to reschedule
-        setTextOnViews(task2RescheduleDetailsCursor);
+        setTextOnViews();
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),R.array.categories, android.R.layout.simple_dropdown_item_1line);
@@ -142,7 +141,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
             completedIndividualTaskDateDeadline_str = Objects.requireNonNull(completedIndividualTaskDateDeadline_TextInputEdit.getText()).toString().trim();
             completedIndividualTaskTimeDeadline_str = Objects.requireNonNull(completedIndividualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
             completedIndividualTaskPredictedDuration_str = Objects.requireNonNull(completedIndividualTaskPredictedDuration_TextInputEditText.getText()).toString().trim();
-
+            completedIndividualTaskPredictedDurationUnits_str = completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView.getText().toString().trim();
 
             if (!completedIndividualTaskTitle_str.isEmpty()){
                 if (!completedIndividualTaskDescription_str.isEmpty()){
@@ -181,7 +180,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                                                         }
                                                                         if (b){
                                                                             Toast.makeText(rescheduleCompletedTask.this, "Rescheduled successfully", Toast.LENGTH_SHORT).show();
-                                                                            Intent back2CompletedTasksView = new Intent(getApplicationContext(), PendingTasks.class);
+                                                                            Intent back2CompletedTasksView = new Intent(getApplicationContext(), tasks.class);
                                                                             back2CompletedTasksView.putExtra("tempCategory",completedIndividualTaskCategory_str);
                                                                             startActivity(back2CompletedTasksView);
                                                                         }else{
@@ -290,7 +289,7 @@ LocalDateTime completedTaskDateDeadline2Insert;
                                     completedIndividualTaskDescription_TextLayout.setErrorEnabled(false);
                                     completedIndividualTaskCategory_TextLayout.setErrorEnabled(false);
                                     completedIndividualTaskBills_TextLayout.setErrorEnabled(true);
-                                    completedIndividualTaskCategory_TextLayout.setError("Enter a money figure");
+                                    completedIndividualTaskBills_TextLayout.setError("Enter a money figure");
                                     completedIndividualTaskDateDeadline_TextLayout.setErrorEnabled(false);
                                     completedIndividualTaskTimeDeadline_TextLayout.setErrorEnabled(false);
                                     completedIndividualTaskPredictedDuration_TextInputLayout.setErrorEnabled(false);
@@ -384,32 +383,26 @@ LocalDateTime completedTaskDateDeadline2Insert;
         }
         return randTaskId;
     }
-    private Cursor obtainTaskDetailsByTaskId(Double randUserId, Double randTaskId){
-        //obtain details from taskList using previously obtained taskId
-        Cursor task2RescheduleDetailsCursor = null;
-        try {
-            task2RescheduleDetailsCursor = dbHelper.obtainCompletedTaskDetailsByRandomTaskId(randUserId, randTaskId);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return task2RescheduleDetailsCursor;
-    }
-    private void setTextOnViews(Cursor task2RescheduleDetailsCursor){
-        //instantiate variables
-        String taskTitle, taskDescription, taskCategory, taskAssociatedPrice,taskDeadline;
 
-        if (task2RescheduleDetailsCursor != null && task2RescheduleDetailsCursor.moveToFirst() ){
+    private void setTextOnViews(){
+        //instantiate variables
+        String taskTitle, taskDescription, taskCategory, taskAssociatedPrice,taskDeadline,taskPredictedDuration;
+
+
             try {
-                //assign variables with data from cursor
-                taskTitle = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("TaskTitle"));
-                taskDescription = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("TaskDescription"));
-                taskCategory = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("TaskCategory"));
-                taskAssociatedPrice = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
-                taskDeadline = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("TaskDeadline"));
-                parentTaskId = task2RescheduleDetailsCursor.getString(task2RescheduleDetailsCursor.getColumnIndexOrThrow("parentTaskId"));
+                //assign variables with data
+                Bundle bundle = getIntent().getBundleExtra("rescheduleCompletedTaskDetails");
+                taskTitle = bundle.getString("taskTitle");
+                taskDescription = bundle.getString("taskDescription");
+                taskCategory = bundle.getString("taskCategory");
+                taskAssociatedPrice = bundle.getString("taskAssociatedPrice");
+                taskDeadline = bundle.getString("taskDeadline");
+                taskPredictedDuration = bundle.getString("taskPredictedDuration");
+                parentTaskId = bundle.getString("parentTaskId");
 
 
                 String[] deadline = taskDeadline.split("T",2 );
+                String[] duration = HouseOfCommons.processPredictedTaskDurationForPopulation(taskPredictedDuration);
 
                 completedIndividualTaskTitle_TextInputEdit.setText(taskTitle);
                 completedIndividualTaskDescription_TextInputEdit.setText(taskDescription);
@@ -417,11 +410,13 @@ LocalDateTime completedTaskDateDeadline2Insert;
                 completedIndividualTaskBills_TextInputEdit.setText(taskAssociatedPrice);
                 completedIndividualTaskDateDeadline_TextInputEdit.setText(deadline[0]);
                 completedIndividualTaskTimeDeadline_TextInputEdit.setText(deadline[1]);
+                completedIndividualTaskPredictedDuration_TextInputEditText.setText(duration[0]);
+                completedIndividualTaskPredictedDurationUnits_AutoCompleteTextView.setText(duration[1]);
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
-    }
+
 
     private void selectTime(){
         Calendar calendar = Calendar.getInstance();

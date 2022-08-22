@@ -31,4 +31,14 @@
     <string name="by_duration">By duration</string>
     <string name="by_creation_time">By creation time</string>
     <string name="logout">Logout</string>
+    <string name="forget_n_password">Forget\n password</string>
+    <string name="enter_your_email_below_to_receive_a_temporary_password">Enter your email below to receive a temporary password</string>
+    <string name="todo">TODO</string>
+    <string name="new_credentials">New Credentials</string>
+    <string name="enter_your_new_password_and_confirm_below">Enter your new password and confirm below</string>
+    <string name="entry_image">entry image</string>
+    <string name="view">View</string>
+    <string name="reschedule">Reschedule</string>
+    <string name="predicted_duration">Predicted duration</string>
+    <string name="unit">Unit</string>
 </resources>

@@ -5,15 +5,17 @@ import java.util.Comparator;
 public class completedTaskModel {
 
 
-    private String taskTitle,taskDescription,taskCategory,taskAssociatedPrice,taskDeadline,taskPredictedDuration;
+    private String taskTitle,taskDescription,taskCategory,taskAssociatedPrice,taskDeadline,taskPredictedDuration,ParentTaskId;
     private long taskCreationTime,taskStartTime,taskCompleteTime,taskDuration;
     private Double randTaskId,randUserId;
-    private int taskTrial, taskState;
+    private int taskTrial;
+    private int taskState;
+    private String parentTaskId;
 
     completedTaskModel(Double randTaskId, Double randUserId, String taskTitle, String taskDescription,
                        String taskAssociatedPrice, String taskCategory ,String taskDeadline, long taskCreationTime, long taskStartTime,
                        long taskCompleteTime, long taskDuration
-            , String taskPredictedDuration, int taskTrial, int taskState){
+            , String taskPredictedDuration, int taskTrial, int taskState, String parentTaskId){
         this.randTaskId = randTaskId;
         this.randUserId = randUserId;
         this.taskTitle = taskTitle;
@@ -28,6 +30,7 @@ public class completedTaskModel {
         this.taskPredictedDuration = taskPredictedDuration;
         this.taskTrial = taskTrial;
         this.taskState = taskState;
+        this.parentTaskId = parentTaskId;
     }
     //getters and setters
 
@@ -142,6 +145,15 @@ public class completedTaskModel {
     public long getTaskStartTime() {
         return taskStartTime;
     }
+
+    public String getParentTaskId() {
+        return ParentTaskId;
+    }
+
+    public void setParentTaskId(String parentTaskId) {
+        ParentTaskId = parentTaskId;
+    }
+
     public  static Comparator<completedTaskModel> tasksDeadlineComparatorAsc = (t1, t2) -> {
         String taskDeadline1 = t1.getTaskDeadline();
         String taskDeadline2 = t2.getTaskDeadline();

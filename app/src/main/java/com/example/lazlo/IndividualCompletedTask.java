@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -20,7 +19,6 @@ import java.util.Locale;
 
 
 public class IndividualCompletedTask extends AppCompatActivity {
-    Long selectedTaskId;
     SharedPreferences spf;
     Double randUserId;
     MaterialTextView completedTaskTitle,completedTaskCategory,completedTaskCreationDate,
@@ -30,15 +28,18 @@ public class IndividualCompletedTask extends AppCompatActivity {
     DBHelper dbHelper;
     Double randTaskId;
     String completedTaskTitle_str,completedTaskDescription_str,completedTaskCategory_str,completedTaskDeadline_str,completedTaskPredictedDuration_str;
-    Long completedTaskStartDate_long, completedTaskCompletionDate_long,completedTaskActualDuration_long,
-            completedTaskPredictedSpending_long, completedTaskCreationDate_long;
+    Long completedTaskStartDate_long;
+    Long completedTaskCompletionDate_long;
+    Long completedTaskActualDuration_long;
+    String completedTaskPredictedSpending_str;
+    Long completedTaskCreationDate_long;
 
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent back2CompletedTasksView = new Intent(getApplicationContext(), CompletedTasks.class);
+            Intent back2CompletedTasksView = new Intent(getApplicationContext(), completed.class);
             back2CompletedTasksView.putExtra("category2Populate", completedTaskCategory_str);
             startActivity(back2CompletedTasksView);
             return true;
@@ -78,70 +79,56 @@ public class IndividualCompletedTask extends AppCompatActivity {
 
         spf = getSharedPreferences("user_details",MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
-        selectedTaskId = getIntent().getLongExtra("selectedTaskId",-1);
-        System.out.println("Current id:" + selectedTaskId + " "+ randUserId);
-        if (selectedTaskId < 0){
-            //do something as invalid id passed
-            finish();
-        }else {
-            try {
-                populateViewsWithData(selectedTaskId,randUserId);
-            } catch (Exception e) {
-                System.out.println("Error: " + e);
-            }
+
+        try {
+            populateViewsWithData();
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
 
 
 
     }
-    private void populateViewsWithData(long selectedTaskId,Double randUserId){
-        Cursor cursor = null;
-        try {
-            cursor  = dbHelper.getAllTasksById(selectedTaskId,randUserId);
-        }catch (Exception e){
-            System.out.println("Error: " + e);
-        }
+    private void populateViewsWithData(){
 
-        if (cursor != null && cursor.moveToFirst()){
-            randTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("completedTaskRandomId"));
+            Bundle bundle = getIntent().getBundleExtra("individualCompletedTaskDetails");
 
-            completedTaskTitle_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskTitle"));
+            randTaskId = bundle.getDouble("randTaskId", -1);
+
+            completedTaskTitle_str = bundle.getString("taskTitle");
             completedTaskTitle.setText(completedTaskTitle_str);
 
-            completedTaskDescription_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDescription"));
+            completedTaskDescription_str = bundle.getString("taskDescription");
             completedTaskDescription.setText(completedTaskDescription_str);
 
-            completedTaskCategory_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskCategory"));
+            completedTaskCategory_str = bundle.getString("taskCategory");
             completedTaskCategory.setText(String.format(new Locale("en","KE"),"%s%s", getString(R.string.hash_tag), completedTaskCategory_str));
 
-            completedTaskPredictedSpending_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskPredictedSpending"));
-            completedTaskPredictedSpending.setText(String.format(new Locale("en","KE"),"%d", completedTaskPredictedSpending_long));
+            completedTaskPredictedSpending_str = bundle.getString("taskAssociatedPrice");
+            completedTaskPredictedSpending.setText(String.format(new Locale("en","KE"),"%s %s","Kshs ", completedTaskPredictedSpending_str));
 
-            completedTaskDeadline_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskDeadline"));
+            completedTaskDeadline_str = bundle.getString("taskDeadline");
             completedTaskDeadline.setText(String.format(new Locale("en","KE"),"%s",HouseOfCommons.returnFormattedDeadline(completedTaskDeadline_str)));
 
-            completedTaskCreationDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCreationDate"));
+            completedTaskCreationDate_long = bundle.getLong("taskCreationTime",-1);
             completedTaskCreationDate.setText(HouseOfCommons.returnDate(completedTaskCreationDate_long));
 
-            completedTaskStartDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskStartDate"));
+            completedTaskStartDate_long = bundle.getLong("taskStartTime",-1);
             completedTaskStartDate.setText(HouseOfCommons.returnDate(completedTaskStartDate_long));
 
-            completedTaskCompletionDate_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskCompletionDate"));
+            completedTaskCompletionDate_long = bundle.getLong("taskCompleteTime",-1);
             completedTaskCompletionDate.setText(HouseOfCommons.returnDate(completedTaskCompletionDate_long));
 
-            completedTaskActualDuration_long = cursor.getLong(cursor.getColumnIndexOrThrow("completedTaskActualDuration"));
+            completedTaskActualDuration_long = bundle.getLong("taskDuration",-1);
             completedTaskActualDuration.setText(HouseOfCommons.returnDuration(completedTaskActualDuration_long));
 
 
-            completedTaskPredictedDuration_str = cursor.getString(cursor.getColumnIndexOrThrow("completedTaskPredictedDuration"));
+            completedTaskPredictedDuration_str = bundle.getString("taskPredictedDuration");
             String[] durationPlusUnits = HouseOfCommons.processPredictedTaskDurationForPopulation(completedTaskPredictedDuration_str);
             completedTaskPredictedDuration.setText(String.format(new Locale("en", "KE"),"%s %s",durationPlusUnits[0],durationPlusUnits[1]));
 
 
-        }else{
-            System.out.println("Error populating view");
-        }
     }
 
 
