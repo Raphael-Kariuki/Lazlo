@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,40 +38,18 @@ public class individualTask extends AppCompatActivity {
   AutoCompleteTextView individualTaskCategory_TextInputEdit,individualTaskPredictedDurationUnits_AutoCompleteTextView;
   MaterialButton btnSave;
   DBHelper dbHelper;
-  String selectedCategory;
-    String timeDate2update;
-
-    String Deadline;
-    String predictedDurationUnits;
-    String predictedDuration;
-  String individualTaskTitle;
-    String individualTaskDescription;
-    String individualTaskAssociatedPrice;
-    String individualTaskCategory;
-    String individualTaskDeadline;
-    String individualTaskPredictedDurationFromDb;
-    LocalDateTime selected_date;
-  Double randTaskId, randUserId;
+  long currentId;
+  Cursor cursor;
+  String selectedCategory,timeDate2update,Titre, Description, Category, Bills, Deadline,predictedDurationUnits,predictedDurationFromDb,predictedDuration;
+  LocalDateTime selected_date;
+  Double randomTaskId, randUserId;
   SharedPreferences spf;
-  boolean f, detailsUpdated;
+  boolean f;
   String updateDateTime,updateTitle,updateDescription,updateCategory,updatePrice;
-    Intent usedToSendCategoryIntent;
 
     @Override
     public void onBackPressed(){
-
-        /*check whether details have been updated, coz value might have changed on update
-        The boolean detailsUpdated is changed to true when save button is pressed.
-        if the details have changed use the updated category else use category used in initial population
-        * */
-        if (detailsUpdated){
-            usedToSendCategoryIntent.putExtra("tempCategory", updateCategory);
-        }else{
-            usedToSendCategoryIntent.putExtra("tempCategory", individualTaskCategory);
-        }
-        startActivity(usedToSendCategoryIntent);
-        //restore value to false
-        detailsUpdated = false;
+        startActivity(new Intent(getApplicationContext(), PendingTasks.class));
     }
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu){
@@ -95,16 +74,6 @@ public class individualTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_task);
 
-        usedToSendCategoryIntent = new Intent(getApplicationContext(), tasks.class);
-
-
-        /*
-        * used to check whether on viewing taskDetails, the user changed the values in the textInputs
-        * If at-least one has been changed, the values sent to perform task will be those used in in updating the record
-        * If none has been changed, the values used in populating the individual task views will be used to populate perform task
-        *
-        * */
-        detailsUpdated = false;
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -154,9 +123,17 @@ public class individualTask extends AppCompatActivity {
         individualTaskPredictedDurationUnits_AutoCompleteTextView.setAdapter(unitsIndividualTaskEditAdapter);
         individualTaskPredictedDurationUnits_AutoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> predictedDurationUnits = (String) adapterView.getItemAtPosition(i));
 
-        populateIndividualTask();
-
-
+        currentId = this.getIntent().getLongExtra("my_id_extra",-1);
+        if (currentId < 0){
+            //do something as invalid id passed
+            finish();
+        }else {
+            try {
+                showData();
+            } catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
+        }
 
 
 
@@ -185,9 +162,6 @@ public class individualTask extends AppCompatActivity {
             datePickerDialog.show();
         });
         btnSave.setOnClickListener(view -> {
-
-            //change value to true to signify probable change of values
-            detailsUpdated  = true;
             updateTitle = Objects.requireNonNull(individualTaskTitle_TextInputEdit.getText()).toString().trim();
             updateDescription = Objects.requireNonNull(individualTaskDescription_TextInputEdit.getText()).toString().trim();
             updateCategory = individualTaskCategory_TextInputEdit.getText().toString().trim();
@@ -195,7 +169,6 @@ public class individualTask extends AppCompatActivity {
             String updateDate = Objects.requireNonNull(individualTaskDateDeadline_TextInputEdit.getText()).toString().trim();
             String updateTime = Objects.requireNonNull(individualTaskTimeDeadline_TextInputEdit.getText()).toString().trim();
             predictedDuration = Objects.requireNonNull(individualTaskPredictedDuration_TextInputEditText.getText()).toString().trim();
-            predictedDurationUnits = Objects.requireNonNull(individualTaskPredictedDurationUnits_AutoCompleteTextView.getText()).toString().trim();
 
 
             /*
@@ -242,12 +215,11 @@ public class individualTask extends AppCompatActivity {
                                                     if (selected_date.compareTo(date_now) > 0 || selected_date.compareTo(date_now) == 0){
                                                         String duration = HouseOfCommons.processPredictedDuration(predictedDuration,predictedDurationUnits);
                                                         try {
-                                                            f = dbHelper.updateTask(randTaskId,randUserId,updateTitle,updateDescription,updateCategory,updatePrice,selected_date, duration);
+                                                            f = dbHelper.updateTask(currentId,randUserId,updateTitle,updateDescription,updateCategory,updatePrice,selected_date, duration);
                                                         }catch (Exception e){
                                                             e.printStackTrace();
                                                         }
                                                         if (f){
-
                                                             Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_LONG).show();
                                                         }else{
                                                             Toast.makeText(getApplicationContext(), "Update failure", Toast.LENGTH_LONG).show();
@@ -376,42 +348,51 @@ public class individualTask extends AppCompatActivity {
 
 
     }
-
-
-    private void populateIndividualTask(){
-        Bundle bundle = getIntent().getBundleExtra("individualTaskDetails");
-
-        randTaskId = bundle.getDouble("randTaskId");
-
-        individualTaskTitle = bundle.getString("taskTitle");
-        individualTaskTitle_TextInputEdit.setText(individualTaskTitle);
-
-        individualTaskDescription  = bundle.getString("taskDescription");
-        individualTaskDescription_TextInputEdit.setText(individualTaskDescription);
-
-        individualTaskAssociatedPrice = bundle.getString("taskAssociatedPrice");
-        individualTaskBills_TextInputEdit.setText(individualTaskAssociatedPrice);
-
-        individualTaskCategory = bundle.getString("taskCategory");
-        individualTaskCategory_TextInputEdit.setText(individualTaskCategory);
-
-        individualTaskDeadline = bundle.getString("taskDeadline");
+    public void showData(){
         String regex;
-        if(individualTaskDeadline.contains("T")){
-            regex = "T";
-        }else{
-            regex = " ";
+        try {
+            cursor = dbHelper.getTaskById(currentId, randUserId);
+        }catch (Exception e){
+            Toast.makeText(this,"Error " + e + "occurred", Toast.LENGTH_LONG).show();
         }
-        String[] dateTime = individualTaskDeadline.split(regex, 2);
-        individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
-        individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
+        System.out.println("done...");
+        if (cursor.moveToFirst()){
+            randomTaskId = cursor.getDouble(cursor.getColumnIndexOrThrow("randTaskId"));
 
-        Deadline = dateTime[0] + " " + dateTime[1];
+            Titre = cursor.getString(cursor.getColumnIndexOrThrow("TaskTitle"));
+            individualTaskTitle_TextInputEdit.setText(Titre);
 
-        individualTaskPredictedDurationFromDb = bundle.getString("taskPredictedDuration");
-        String[] actualDurations = HouseOfCommons.processPredictedTaskDurationForPopulation(individualTaskPredictedDurationFromDb);
-        individualTaskPredictedDuration_TextInputEditText.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[0]));
-        individualTaskPredictedDurationUnits_AutoCompleteTextView.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[1]));
+
+            Description = cursor.getString(cursor.getColumnIndexOrThrow("TaskDescription"));
+            individualTaskDescription_TextInputEdit.setText(Description);
+
+            Category = cursor.getString(cursor.getColumnIndexOrThrow("TaskCategory"));
+            individualTaskCategory_TextInputEdit.setText(Category);
+
+            Bills = cursor.getString(cursor.getColumnIndexOrThrow("TaskAssociatedPrice"));
+            individualTaskBills_TextInputEdit.setText(Bills);
+
+            String timeDateToFormat = cursor.getString(cursor.getColumnIndexOrThrow("TaskDeadline"));
+
+
+            if(timeDateToFormat.contains("T")){
+                regex = "T";
+            }else{
+                regex = " ";
+            }
+            String[] dateTime = timeDateToFormat.split(regex, 2);
+            individualTaskDateDeadline_TextInputEdit.setText(dateTime[0]);
+            individualTaskTimeDeadline_TextInputEdit.setText(dateTime[1]);
+
+            Deadline = dateTime[0] + " " + dateTime[1];
+
+            predictedDurationFromDb = cursor.getString(cursor.getColumnIndexOrThrow("TaskPredictedDuration"));
+            String[] actualDurations = HouseOfCommons.processPredictedTaskDurationForPopulation(predictedDurationFromDb);
+            individualTaskPredictedDuration_TextInputEditText.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[0]));
+            individualTaskPredictedDurationUnits_AutoCompleteTextView.setText(String.format(new Locale("en", "KE"),"%s",actualDurations[1]));
+
+        }
+        cursor.close();
 
 
     }
@@ -444,38 +425,37 @@ public class individualTask extends AppCompatActivity {
 
 private void startTaskAction(){
     Intent startTask = new Intent(getApplicationContext(), performTask.class );
-    startTask.putExtra("randTaskId", randTaskId);
+    startTask.putExtra("taskId", currentId);
+    startTask.putExtra("randomTaskId", randomTaskId);
     /*
      * Why checks, to counter the situation whereby a task is edited and performed on the fly
      * Without performing this checks, the updated version of the task won't be populated showing wrong facts
-     *
-
      * */
-    if (detailsUpdated){
+    if (updateDateTime != null){
         startTask.putExtra("taskTitle", updateTitle);
     }else{
-        startTask.putExtra("taskTitle", individualTaskTitle);
+        startTask.putExtra("taskTitle", Titre);
     }
 
-    if (detailsUpdated){
+    if (updateDateTime != null){
         startTask.putExtra("taskDescription", updateDescription);
     }else{
-        startTask.putExtra("taskDescription", individualTaskDescription);
+        startTask.putExtra("taskDescription", Description);
     }
 
-    if (detailsUpdated){
+    if (updateDateTime != null){
         startTask.putExtra("taskCategory", updateCategory);
     }else{
-        startTask.putExtra("taskCategory", individualTaskCategory);
+        startTask.putExtra("taskCategory", Category);
     }
 
-    if (detailsUpdated){
+    if (updateDateTime != null){
         startTask.putExtra("taskBills", updatePrice);
     }else{
-        startTask.putExtra("taskBills", individualTaskAssociatedPrice);
+        startTask.putExtra("taskBills", Bills);
     }
 
-    if (detailsUpdated){
+    if (updateDateTime != null){
         startTask.putExtra("taskDeadline", updateDateTime);
     }else{
         startTask.putExtra("taskDeadline", Deadline);

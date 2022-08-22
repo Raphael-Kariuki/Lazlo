@@ -3,7 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.1911231884057971" />
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/add_tasks_background.xml" value="0.1435" />
@@ -50,7 +49,7 @@
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_add_tasks.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_alarm_broadcast.xml" value="0.20625" />
-        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.18329466357308585" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
@@ -74,7 +73,6 @@
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />
-        <entry key="app/src/main/res/layout/activity_tasks.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_tasks_home_page.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_business.xml" value="0.20625" />
@@ -86,14 +84,12 @@
         <entry key="app/src/main/res/layout/reset_password.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/spending_listview.xml" value="0.2046875" />
         <entry key="app/src/main/res/layout/tasks_dropdown.xml" value="0.20969202898550723" />
-        <entry key="app/src/main/res/layout/tasks_recycler_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/user_details_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/userdata_listrow.xml" value="0.33" />
         <entry key="app/src/main/res/menu/action_bar_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />
-        <entry key="app/src/main/res/menu/flow_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/individual_task.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/menu/task_bar_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/splash_Image.xml" value="0.1" />
