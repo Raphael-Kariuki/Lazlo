@@ -5,31 +5,34 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
+import android.widget.Toast;
 
 public class entrySplash extends AppCompatActivity {
-AppCompatImageButton unlock;
+    AppCompatImageButton unlock;
+    boolean backPressed = false;
+
+    @Override
+    public void onBackPressed(){
+        if (backPressed){
+            super.onBackPressed();
+
+        }else{
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            backPressed = true;
+        }
+
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_splash);
 
+
         unlock = findViewById(R.id.unlock);
-        unlock.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                return true;
-            }
+        unlock.setOnLongClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            return true;
         });
-        /*int delayTime = 1;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
-            }
-        }, delayTime * 5000);*/
+
     }
 }

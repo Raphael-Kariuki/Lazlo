@@ -45,7 +45,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -79,7 +78,6 @@ public class Dashboard extends AppCompatActivity {
     ListView showSpendingListView;
     PieChart pieChart;
     BarChart barChart;
-    NumberFormat numberFormat;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(string, dateTimeFormatter);
@@ -95,13 +93,11 @@ public class Dashboard extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
         case android.R.id.home:
-            this.finish();
+            case R.id.myAccount:
+                //add the function to perform here
+                startActivity(new Intent(this, Account.class));
             return true;
-        case R.id.myAccount:
-            //add the function to perform here
-            startActivity(new Intent(this, Account.class));
-            return(true);
-        case R.id.exit:
+            case R.id.exit:
             //add the function to perform here
             SharedPreferences prf;
             prf = getSharedPreferences("user_details",MODE_PRIVATE);
@@ -117,6 +113,11 @@ public class Dashboard extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, Account.class));
+        super.onBackPressed();
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
@@ -129,7 +130,6 @@ public class Dashboard extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Dashboard");
 
-        numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
 
 
 
@@ -218,7 +218,7 @@ public class Dashboard extends AppCompatActivity {
                     selectedEnd_duration_String = getDateFromString(selectedEnd_duration + " 00:01", dateTimeFormatter);
 
                     Integer sum = populateSpendingView(randUserId,selectedStart_duration_String, selectedEnd_duration_String);
-                    String formattedSum = numberFormat.format(sum);
+                    String formattedSum = HouseOfCommons.numberFormat.format(sum);
                     sumTotalView.setText(String.format(new Locale("en","KE"),"%s",formattedSum));
                     populateSpendingDetails(selectedStart_duration_String, selectedEnd_duration_String);
 
@@ -548,7 +548,7 @@ public class Dashboard extends AppCompatActivity {
                 int monthlySpendingSum = monthLySumCursor.getInt(monthLySumCursor.getColumnIndexOrThrow("sumTotalSpendingPerMonth"));
                 //set text to view
                 monthlyTextViews[i -1].setTextSize(12);
-                monthlyTextViews[i - 1].setText(String.format(new Locale("en","KE"),"%s",numberFormat.format(monthlySpendingSum)));
+                monthlyTextViews[i - 1].setText(String.format(new Locale("en","KE"),"%s",HouseOfCommons.numberFormat.format(monthlySpendingSum)));
             }
         }
     }

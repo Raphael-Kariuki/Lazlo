@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -9,11 +11,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,14 +34,38 @@ public class forgotPassword extends AppCompatActivity {
     String emailAddress;
     Cursor success;
 
+    //navigate back to login
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //navigate back to login
     @Override
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), Login.class));
+        super.onBackPressed();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Forgot password");
 
         dbHelper = new DBHelper(this);
 
@@ -61,9 +89,8 @@ public class forgotPassword extends AppCompatActivity {
                 if (!emailAddress.isEmpty()){
                     if (Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()){
                         if(emailExists(emailAddress)){
-                            if (updateTempPassphrase(emailAddress)) {
 
-                                Toast.makeText(forgotPassword.this, "Success, redirecting", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(forgotPassword.this, "Checking email", Toast.LENGTH_SHORT).show();
                                 int delayTime = 1;
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -73,10 +100,8 @@ public class forgotPassword extends AppCompatActivity {
                                         startActivity(resetPassword);
                                         finish();
                                     }
-                                }, delayTime * 5000);
-                            }else{
-                                resetSuccessText.setText(R.string.Failed_password_reset);
-                            }
+                                }, delayTime * 2000);
+
 
                         }else{
                             resetPasswordEmailInputLayout.setErrorEnabled(true);
@@ -119,7 +144,6 @@ public class forgotPassword extends AppCompatActivity {
         while(success != null && success.moveToNext()){
             if(success.getString(success.getColumnIndexOrThrow("email")).equals(email)){
                 success.close();
-                Toast.makeText(this, "Email exists", Toast.LENGTH_SHORT).show();
                 a =  true;
                 break;
             }

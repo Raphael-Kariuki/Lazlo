@@ -1,9 +1,12 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,14 +27,35 @@ public class reset_password extends AppCompatActivity {
     DBHelper dbHelper;
     String emailAddress;
 
+    //navigate back to forgot password activity
     @Override
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), forgotPassword.class));
+    }
+    //navigate back to forgot password activity
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), forgotPassword.class));
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Reset password");
 
         emailAddress = getIntent().getStringExtra("emailAddress");
 

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.view.View;
 
 import android.os.Bundle;
@@ -22,7 +23,8 @@ public class Account extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), Dashboard.class));
+        startActivity(new Intent(this, Account.class));
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

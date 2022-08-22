@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -237,4 +238,7 @@ public class HouseOfCommons {
             actualDurationCombined[1] = actualDurationUnits;
             return actualDurationCombined;
         }
+
+        public static final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
+        public static final Locale locale = new Locale("en", "KE");
 }

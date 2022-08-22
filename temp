@@ -1081,3 +1081,15 @@ parent="Theme.MaterialComponents.DayNight.NoActionBar"
                                  }
                              }
                      * */
+
+                     ------------
+
+
+                             /*int delayTime = 1;
+                             new Handler().postDelayed(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     startActivity(new Intent(getApplicationContext(), Login.class));
+                                     finish();
+                                 }
+                             }, delayTime * 5000);*/

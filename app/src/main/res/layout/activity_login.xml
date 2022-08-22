@@ -54,7 +54,8 @@
         app:startIconDrawable="@drawable/ic_baseline_username_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintEnabled="false"
+        app:hintEnabled="true"
+        android:hint="@string/username"
         app:endIconMode="clear_text"
         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
@@ -65,7 +66,7 @@
             android:id="@+id/loginUserName_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"/>
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -80,7 +81,8 @@
         app:startIconDrawable="@drawable/ic_baseline_password_24"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/black"
-        app:hintEnabled="false"
+        app:hintEnabled="true"
+        android:hint="@string/password"
         app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
         app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
@@ -90,7 +92,6 @@
             android:id="@+id/loginPassword_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
             android:inputType="textPassword"
             android:autofillHints="password"
             />
