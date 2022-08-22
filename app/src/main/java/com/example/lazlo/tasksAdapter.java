@@ -1,5 +1,6 @@
 package com.example.lazlo;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.lazlo.Sql.DBHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -106,6 +110,30 @@ public class tasksAdapter extends RecyclerView.Adapter<tasksAdapter.tasksViewHol
                         break;
                     case R.id.deleteTask:
 
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setCancelable(true);
+                        builder.setTitle("Delete task");
+                        builder.setMessage("Are you sure you want to delete task " + model.getTaskTitle() + " ?");
+
+                        builder.setPositiveButton("Yes , delete", ((dialogInterface, i) -> {
+                            boolean b = false;
+                            try {
+                                b = new  DBHelper(mContext).deleteTask(model.getRandTaskId(), model.getRandUserId());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            if (b){
+                                Toast.makeText(mContext, "task delete successfully", Toast.LENGTH_SHORT).show();
+                                Intent backToTaskSView = new Intent(mContext, tasks.class);
+                                backToTaskSView.putExtra("tempCategory", model.getTaskCategory());
+                                mContext.startActivity(backToTaskSView);
+                                //SetOrRefreshListView();
+                            }else{
+                                Toast.makeText(mContext, "task delete unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        }));
+                        builder.setNegativeButton("No",((dialogInterface, i) -> dialogInterface.cancel()));
+                        builder.show();
                         break;
                 }
                 return false;

@@ -22,7 +22,6 @@ import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
 
 public class tasks extends AppCompatActivity {
@@ -64,6 +63,21 @@ String user_name,categoryToPopulateOnSort;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
         switch (menuItem.getItemId()){
+            case R.id.myAccount:
+                startActivity(new Intent(getApplicationContext(),Account.class));
+                break;
+            case R.id.myDashboard:
+                startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                break;
+            case R.id.exit:
+                //add the function to perform here
+                SharedPreferences prf;
+                prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                Intent i = new Intent(getApplicationContext(),Login.class);
+                SharedPreferences.Editor editor = prf.edit();
+                editor.clear();
+                editor.commit();
+                startActivity(i);
             case R.id.sortByDates:
                 if(stateToDetermineSortDeadlines == null){
                     taskModelArrayList.sort(taskModel.tasksDeadlineComparatorDesc);
@@ -161,7 +175,13 @@ String user_name,categoryToPopulateOnSort;
 
         //obtain user id and name from sharedPreferences
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
-        randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
+
+        //if randUserId doesn't exist in sharedPreferences, then exit to login page, this is unauthorized access
+        try {
+            randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
+        }catch (NullPointerException e){
+            startActivity(new Intent(getApplicationContext(), Login.class));
+        }
         user_name = sharedPreferences.getString("username",null);
 
         // process add task
