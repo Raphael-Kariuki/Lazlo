@@ -10,16 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
-            android:name=".tasks"
+            android:name=".completed"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+        <activity
+            android:name=".Error_page"
+            android:exported="false" />
+        <activity
+            android:name=".tasks"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".rescheduleCompletedTask"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
-        <activity
-            android:name=".searchableActivity"
-            android:exported="false" />
         <activity
             android:name=".entrySplash"
             android:exported="true">
