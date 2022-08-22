@@ -50,7 +50,7 @@ public class TasksHomePage extends AppCompatActivity {
         btnCompletedTasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CompletedTasks.class));
+                startActivity(new Intent(getApplicationContext(), completed.class));
             }
         });
 
