@@ -118,7 +118,7 @@ public class taskModel {
         String taskDeadline1 = t1.getTaskDeadline();
         String taskDeadline2 = t2.getTaskDeadline();
 
-        //descending order
+        //ascending order
         return taskDeadline1.compareTo(taskDeadline2);
     };
     public  static Comparator<taskModel> tasksDeadlineComparatorDesc = (t1, t2) -> {
@@ -132,7 +132,7 @@ public class taskModel {
         String taskPrice1 = t1.getTaskAssociatedPrice();
         String taskPrice2 = t2.getTaskAssociatedPrice();
 
-        //descending order
+        //ascending order
         return taskPrice1.compareTo(taskPrice2);
     };
     public  static Comparator<taskModel> tasksPriceComparatorAsc = (t1, t2) -> {
@@ -147,7 +147,7 @@ public class taskModel {
         String tasksCreation1 = t1.getTaskCreationTime();
         String tasksCreation2 = t2.getTaskCreationTime();
 
-        //descending order
+        //ascending order
         return tasksCreation1.compareTo(tasksCreation2);
     };
     public  static Comparator<taskModel> tasksCreationComparatorAsc = (t1, t2) -> {
@@ -161,7 +161,7 @@ public class taskModel {
         String tasksDuration1 = t1.getTaskPredictedDuration();
         String tasksDuration2 = t2.getTaskPredictedDuration();
 
-        //descending order
+        //ascending order
         return tasksDuration1.compareTo(tasksDuration2);
     };
     public  static Comparator<taskModel> tasksDurationComparatorAsc = (t1, t2) -> {

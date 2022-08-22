@@ -78,6 +78,7 @@ String user_name,categoryToPopulateOnSort;
                 editor.clear();
                 editor.commit();
                 startActivity(i);
+                break;
             case R.id.sortByDates:
                 if(stateToDetermineSortDeadlines == null){
                     taskModelArrayList.sort(taskModel.tasksDeadlineComparatorDesc);
