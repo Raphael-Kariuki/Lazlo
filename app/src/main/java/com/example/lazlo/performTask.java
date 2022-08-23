@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -149,10 +146,8 @@ public class performTask extends AppCompatActivity {
             }
             if (cursor != null && cursor.moveToFirst()){
                 trial = cursor.getInt(cursor.getColumnIndexOrThrow("taskTrial"));
-                System.out.println("trial " + trial);
                 Integer trials = trial + 1;
                 b = updateTaskStatusOnStartButtonPress(randomTaskId,startTaskDate,trials );
-                System.out.println("trials " + trials);
             }else{
                 //insert to db
 
@@ -376,8 +371,8 @@ public class performTask extends AppCompatActivity {
         runningTaskTitle.setText(Title);
         runningTaskDescription.setText(Description);
         runningTaskCategory.setText(Category);
-        runningTaskBills.setText(String.format(new Locale("en", "KE"),"%s %s",getString(R.string.money),Bills));
-        runningTaskDeadline.setText(Deadline);
+        runningTaskBills.setText(String.format(new Locale("en", "KE")," %s",HouseOfCommons.numberFormat.format(Long.parseLong(Bills))));
+        runningTaskDeadline.setText(HouseOfCommons.returnFormattedDeadline(Deadline));
     }
 
     public boolean insertDetailsOnTaskStart(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, Long taskStartTime,
