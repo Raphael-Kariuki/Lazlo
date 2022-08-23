@@ -86,6 +86,9 @@
     <string name="unit">Unit</string>
     <string name="open_drawer">open</string>
     <string name="close_drawer">close</string>
+    <string name="status">Status</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="exit">Exit</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>

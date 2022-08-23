@@ -55,6 +55,7 @@
         <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.18329466357308585" />
+        <entry key="app/src/main/res/layout/activity_draft_tasks.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_entry_splash.xml" value="0.20625" />
@@ -98,9 +99,10 @@
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/menu/flow_menu.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/menu/flow_menu2.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/flow_menu2.xml" value="0.22" />
         <entry key="app/src/main/res/menu/individual_task.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/menu/perform_task_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/task_bar_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/splash_Image.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/trial_image.xml" value="0.1165" />
