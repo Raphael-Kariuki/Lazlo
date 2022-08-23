@@ -146,7 +146,7 @@ public class HouseOfCommons {
     }
     //function that formats milliseconds to  a specific date format
     public static String returnDate(long epochDate){
-        String pattern = "EEE LLL dd HH:mm:ss yyyy";
+        String pattern = "EEE, LLL dd yyyy HH:mm:ss ";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("en", "KE"));
         return simpleDateFormat.format(new Date(epochDate));
     }
