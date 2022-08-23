@@ -396,7 +396,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                     String taskAssociatedPrice, String taskDeadline) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("randomUserId", randUserId);
+        contentValues.put("randUserId", randUserId);
         contentValues.put("TaskTitle", taskTitle);
         contentValues.put("TaskDescription", taskDescription);
         contentValues.put("TaskCategory", taskCategory);

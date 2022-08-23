@@ -6,22 +6,8 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_search_24"
         app:actionViewClass="android.widget.SearchView" />
-    <item
-        android:id="@+id/myAccount"
-        app:showAsAction="never"
-        android:title="@string/my_account">
-    </item>
-    <item
-        android:id="@+id/myDashboard"
-        app:showAsAction="never"
-        android:title="@string/dashboard">
-    </item>
 
-    <item
-        android:id="@+id/sortTasks"
-        app:showAsAction="never"
-        android:title="@string/sort">
-        <menu>
+
             <item
                 android:id="@+id/sortByDates"
                 app:showAsAction="never"
@@ -42,12 +28,5 @@
                 app:showAsAction="never"
                 android:title="@string/by_creation_time">
             </item>
-        </menu>
 
-    </item>
-    <item
-        android:id="@+id/exit"
-        app:showAsAction="never"
-        android:title="@string/logout">
-    </item>
 </menu>

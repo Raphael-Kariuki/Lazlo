@@ -51,8 +51,8 @@ public class AddTasks extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        //startActivity(new Intent(getApplicationContext(), PendingTasks.class));
-        finish();
+        startActivity(new Intent(getApplicationContext(), tasks.class));
+
     }
 
     /*
@@ -61,25 +61,27 @@ public class AddTasks extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (!Objects.requireNonNull(task_title.getText()).toString().isEmpty()) {
+            if (task_title.getText().toString().isEmpty() && task_description.getText().toString().isEmpty()) {
+                startActivity(new Intent(getApplicationContext(), tasks.class));
+
+            } else {
                 try {
                     Double  randUserId = Double.parseDouble(tasks_sharedPrefs.getString("randomUserId", null));
                     String taskTitle_String = task_title.getText().toString().trim();
-                    String taskDescription_String = Objects.requireNonNull(task_description.getText()).toString().trim();
-                    String selectedDate_String = Objects.requireNonNull(select_date.getText()).toString().trim();
-                    String TaskAssociatedPrice = Objects.requireNonNull(priceAutocompleteView.getText()).toString().trim();
+                    String taskDescription_String = task_description.getText().toString().trim();
+                    String selectedDate_String = select_date.getText().toString().trim();
+                    String TaskAssociatedPrice = priceAutocompleteView.getText().toString().trim();
                     String selectedCategory_string = tasksCategories.getText().toString().trim();
                     d = dbHelper.insertDraftTasks(randUserId, taskTitle_String, taskDescription_String, selectedCategory_string, TaskAssociatedPrice, selectedDate_String);
                     if (d) {
                         Toast.makeText(getApplicationContext(), "Draft saved successfully", Toast.LENGTH_LONG).show();
-                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Draft not saved", Toast.LENGTH_LONG).show();
                     }
+                    finish();
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "" + e, Toast.LENGTH_LONG).show();
                 }
-            } else {
-                this.finish();
-
             }
             return true;
         }

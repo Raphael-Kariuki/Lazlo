@@ -19,10 +19,7 @@ public class DraftTasks extends AppCompatActivity {
     DBHelper dbHelper;
     SharedPreferences drafts_sharedPrefs;
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), Account.class));
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

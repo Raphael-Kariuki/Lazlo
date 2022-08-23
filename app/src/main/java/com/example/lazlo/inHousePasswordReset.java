@@ -28,10 +28,7 @@ public class inHousePasswordReset extends AppCompatActivity {
     SharedPreferences spf;
     Double randUserId;
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), Account.class));
-    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -90,7 +87,6 @@ public class inHousePasswordReset extends AppCompatActivity {
                                     }
                                     if (b){
                                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), Account.class));
                                     }else {
                                         Toast.makeText(getApplicationContext(), "Password reset failed, kindly restart the process", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
