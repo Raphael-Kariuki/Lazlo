@@ -4,8 +4,10 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -40,6 +42,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -78,49 +81,76 @@ public class Dashboard extends AppCompatActivity {
     ListView showSpendingListView;
     PieChart pieChart;
     BarChart barChart;
+    public DrawerLayout dashboardDrawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView dashboardNavigationView;
 
     public static LocalDateTime getDateFromString(String string, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.parse(string, dateTimeFormatter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-        case android.R.id.home:
-            case R.id.myAccount:
-                //add the function to perform here
-                startActivity(new Intent(this, Account.class));
-            return true;
-            case R.id.exit:
-            //add the function to perform here
-            SharedPreferences prf;
-            prf = getSharedPreferences("user_details",MODE_PRIVATE);
-            Intent i = new Intent(getApplicationContext(),Login.class);
-            SharedPreferences.Editor editor = prf.edit();
-            editor.clear();
-            editor.apply();
-            startActivity(i);
-            return(true);
 
-    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+
         return(super.onOptionsItemSelected(item));
     }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(this, Account.class));
-        super.onBackPressed();
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+
+        dashboardDrawerLayout = findViewById(R.id.dashboardDrawerLayout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,dashboardDrawerLayout,R.string.open_drawer,R.string.close_drawer);
+
+        // pass the Open and Close toggle for the drawer layout listener
+        // to toggle the button
+        dashboardDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        dashboardNavigationView = findViewById(R.id.dashboardNavigationView);
+        dashboardNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_account:
+                    startActivity(new Intent(getApplicationContext(), editAccount.class));
+                    break;
+                case R.id.nav_dashboard:
+                    startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                    break;
+                case R.id.nav_addTasks:
+                    startActivity(new Intent(getApplicationContext(),AddTasks.class));
+                    break;
+                case R.id.nav_pendingTasks:
+                    startActivity(new Intent(getApplicationContext(), tasks.class));
+                    break;
+                case R.id.nav_completedTasks:
+                    startActivity(new Intent(getApplicationContext(), completed.class));
+                    break;
+                case R.id.nav_draftTasks:
+                    startActivity(new Intent(getApplicationContext(),DraftTasks.class));
+                    break;
+                case R.id.nav_security:
+                    startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                    break;
+                case R.id.nav_logout:
+                    SharedPreferences prf;
+                    prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                    Intent i = new Intent(getApplicationContext(),Login.class);
+                    SharedPreferences.Editor editor = prf.edit();
+                    editor.clear();
+                    editor.apply();
+                    startActivity(i);
+                    break;
+
+            }
+            return false;
+        });
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();

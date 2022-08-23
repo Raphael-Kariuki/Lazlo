@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/editAccountDrawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +9,13 @@
     tools:context=".editAccount"
     android:layout_marginRight="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_vertical_margin">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +31,7 @@
             android:src="@drawable/buttons_custom"
             android:padding="@dimen/activity_vertical_margin"
             android:clickable="true"
-            />
+            android:contentDescription="@string/profile_picture" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editUserName_TextInputLayout"
@@ -44,7 +53,6 @@
             android:autofillHints="username"
             android:textColorHint="@color/black"
             android:textColor="@color/black"
-            android:text="Rafa"
             android:hint="@string/username"
             />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,8 +76,7 @@
                 android:autofillHints="username"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black"
-                android:text="Rafa"
-                android:hint="Status"
+                android:hint="@string/status"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,11 +100,18 @@
                 android:autofillHints="Email address"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black"
-                android:text="Rafa"
-                android:hint="Email address"
+                android:hint="@string/email"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/editAccountNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/nav_header_layout"/>
+</androidx.drawerlayout.widget.DrawerLayout>

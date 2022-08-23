@@ -1,9 +1,12 @@
 package com.example.lazlo;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,19 +17,19 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Patterns;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Objects;
 
 public class editAccount extends AppCompatActivity {
 TextInputEditText editUsername_TextInputEdit,editAboutYou_TextInputEdit,editEmail_TextInput;
@@ -37,12 +40,70 @@ Double randUserId;
 String uname, status, emailAddress;
 Cursor success;
 ImageView profilePicture;
+DrawerLayout editAccountDrawerLayout;
+NavigationView editAccountNavigationView;
+ActionBarDrawerToggle editAccountActionBarDrawerToggle;
+@Override
+public  boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
+    if (editAccountActionBarDrawerToggle.onOptionsItemSelected(menuItem)){
+        return true;
+    }
 
+    return super.onOptionsItemSelected(menuItem);
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account);
 
+        editAccountDrawerLayout = findViewById(R.id.editAccountDrawerLayout);
+        editAccountActionBarDrawerToggle = new ActionBarDrawerToggle(this,editAccountDrawerLayout,R.string.open_drawer,R.string.close_drawer);
+
+        editAccountDrawerLayout.addDrawerListener(editAccountActionBarDrawerToggle);
+        editAccountActionBarDrawerToggle.syncState();
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Profile");
+
+
+        editAccountNavigationView = findViewById(R.id.editAccountNavigationView);
+        editAccountNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_account:
+                    startActivity(new Intent(getApplicationContext(), editAccount.class));
+                    break;
+                case R.id.nav_dashboard:
+                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    break;
+                case R.id.nav_addTasks:
+                    startActivity(new Intent(getApplicationContext(), AddTasks.class));
+                    break;
+                case R.id.nav_pendingTasks:
+                    startActivity(new Intent(getApplicationContext(), tasks.class));
+                    break;
+                case R.id.nav_completedTasks:
+                    startActivity(new Intent(getApplicationContext(), completed.class));
+                    break;
+                case R.id.nav_draftTasks:
+                    startActivity(new Intent(getApplicationContext(), DraftTasks.class));
+                    break;
+                case R.id.nav_security:
+                    startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                    break;
+                case R.id.nav_logout:
+                    SharedPreferences prf;
+                    prf = getSharedPreferences("user_details", MODE_PRIVATE);
+                    Intent i = new Intent(getApplicationContext(), Login.class);
+                    SharedPreferences.Editor editor = prf.edit();
+                    editor.clear();
+                    editor.apply();
+                    startActivity(i);
+                    break;
+            }
+                return false;
+        });
 
         spf = getSharedPreferences("user_details", MODE_PRIVATE);
         randUserId = Double.parseDouble(spf.getString("randomUserId", null));
@@ -69,13 +130,7 @@ ImageView profilePicture;
         editEmail_TextInput.setText(emailAddress);
 
 
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                chooseProfilePicture();
-            }
-        });
+        profilePicture.setOnClickListener(view -> chooseProfilePicture());
 
         setProfilePicture(randUserId);
 
@@ -126,23 +181,11 @@ ImageView profilePicture;
                         catch (IOException e) {
                             e.printStackTrace();
                         }
-                        /*
-                        *      private byte[] imagemTratada(byte[] imagem_img){
 
-                                    while (imagem_img.length > 500000){
-                                        Bitmap bitmap = BitmapFactory.decodeByteArray(imagem_img, 0, imagem_img.length);
-                                        Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.8), (int)(bitmap.getHeight()*0.8), true);
-                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                        resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                        imagem_img = stream.toByteArray();
-                                    }
-                                    return imagem_img;
-
-        }
-                        * */
-                        //Bitmap resized = Bitmap.createScaledBitmap(selectedImageBitmap,(int) (selectedImageBitmap.getWidth()*0.5), (int) (selectedImageBitmap.getHeight()*0.5),true);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        selectedImageBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        if (selectedImageBitmap != null) {
+                            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        }
                         byte[] byteArray = stream.toByteArray();
                         boolean b =  dbHelper.updateProfilePicture(byteArray,randUserId);
                         if (b){
@@ -157,10 +200,10 @@ ImageView profilePicture;
             });
     @Override
     public void onBackPressed() {
-        if (!editUsername_TextInputEdit.getText().toString().trim().isEmpty()){
+        if (!Objects.requireNonNull(editUsername_TextInputEdit.getText()).toString().trim().isEmpty()){
             if (editUsername_TextInputEdit.getText().toString().trim().length() <= 10){
-                if (!editAboutYou_TextInputEdit.getText().toString().trim().isEmpty()){
-                    if (!editEmail_TextInput.getText().toString().trim().isEmpty()){
+                if (!Objects.requireNonNull(editAboutYou_TextInputEdit.getText()).toString().trim().isEmpty()){
+                    if (!Objects.requireNonNull(editEmail_TextInput.getText()).toString().trim().isEmpty()){
                         if (Patterns.EMAIL_ADDRESS.matcher(editEmail_TextInput.getText().toString().trim()).matches()){
                             if (!editAboutYou_TextInputEdit.getText().toString().trim().equals(status)){
                                 //status changed
@@ -342,9 +385,9 @@ ImageView profilePicture;
 
     //username,Status,randUserId
     public void emailHasBeenChangedUsernameHasBeenChangedStatusHasBeenChanged_Update(Double randUserId){
-        String username = editUsername_TextInputEdit.getText().toString().trim();
-        String emailAddress = editEmail_TextInput.getText().toString().trim();
-        String Status = editAboutYou_TextInputEdit.getText().toString().trim();
+        String username = Objects.requireNonNull(editUsername_TextInputEdit.getText()).toString().trim();
+        String emailAddress = Objects.requireNonNull(editEmail_TextInput.getText()).toString().trim();
+        String Status = Objects.requireNonNull(editAboutYou_TextInputEdit.getText()).toString().trim();
 
         boolean b = false;
 
@@ -361,34 +404,11 @@ ImageView profilePicture;
             editor.putString("email", emailAddress);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 
-    public void emailHasBeenChangedUsernameHasBeenChanged_Update(Double randUserId){
-        String username = editUsername_TextInputEdit.getText().toString().trim();
-        String emailAddress = editEmail_TextInput.getText().toString().trim();
-
-        boolean b = false;
-
-        try {
-            b = dbHelper.updateUserNameAndEmail(username,randUserId,emailAddress);
-        }catch (Exception e){
-            System.out.println("Exception: " + e);
-        }
-
-        if (b){
-            Toast.makeText(this, "Success updating username", Toast.LENGTH_SHORT).show();
-            SharedPreferences.Editor editor =  spf.edit();
-            editor.putString("username", username);
-            editor.putString("email", emailAddress);
-            editor.apply();
-
-            startActivity(new Intent(getApplicationContext(), Account.class));
-        }
-    }
     public void emailHasChanged_Update(Double randUserId){
-        String emailAddress = editEmail_TextInput.getText().toString().trim();
+        String emailAddress = Objects.requireNonNull(editEmail_TextInput.getText()).toString().trim();
 
         boolean b = false;
 
@@ -404,12 +424,11 @@ ImageView profilePicture;
             editor.putString("email", emailAddress);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 
     public void userNameHasChanged_Update(Double randUserId){
-        String username = editUsername_TextInputEdit.getText().toString().trim();
+        String username = Objects.requireNonNull(editUsername_TextInputEdit.getText()).toString().trim();
 
         boolean b = false;
 
@@ -425,12 +444,11 @@ ImageView profilePicture;
             editor.putString("username", username);
             editor.apply();
 
-            startActivity(new Intent(getApplicationContext(), Account.class));
         }
     }
 
     public void statusHasBeenChanged_Update(Double randUserId){
-        String Status = editAboutYou_TextInputEdit.getText().toString().trim();
+        String Status = Objects.requireNonNull(editAboutYou_TextInputEdit.getText()).toString().trim();
 
         boolean b = false;
 

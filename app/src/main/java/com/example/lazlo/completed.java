@@ -2,7 +2,9 @@ package com.example.lazlo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -33,10 +36,10 @@ public class completed extends AppCompatActivity {
     completedTasksAdapter completedTasksAdapter;
     Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
     TabLayout tabLayout;
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
-    }
+
+    DrawerLayout completedTaskDrawerLayout;
+    NavigationView completedTaskNavigationView;
+    ActionBarDrawerToggle completedTaskActionBarDrawerToggle;
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -79,23 +82,13 @@ public class completed extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+
+        if (completedTaskActionBarDrawerToggle.onOptionsItemSelected(menuItem)){
+            return true;
+
+        }
         switch (menuItem.getItemId()) {
-            case R.id.myAccount:
-                startActivity(new Intent(getApplicationContext(), Account.class));
-                break;
-            case R.id.myDashboard:
-                startActivity(new Intent(getApplicationContext(), Dashboard.class));
-                break;
-            case R.id.exit:
-                //add the function to perform here
-                SharedPreferences prf;
-                prf = getSharedPreferences("user_details", MODE_PRIVATE);
-                Intent i = new Intent(getApplicationContext(), Login.class);
-                SharedPreferences.Editor editor = prf.edit();
-                editor.clear();
-                editor.apply();
-                startActivity(i);
-                break;
+
             case R.id.sortByDates:
                 if (stateToDetermineSortDeadlines == null){
                     completedTaskModelArrayList.sort(completedTaskModel.tasksDeadlineComparatorAsc);
@@ -144,6 +137,56 @@ public class completed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_completed);
+
+
+        completedTaskDrawerLayout = findViewById(R.id.completedTskDrawerLayout);
+        completedTaskActionBarDrawerToggle = new ActionBarDrawerToggle(this,completedTaskDrawerLayout,R.string.open_drawer,R.string.close_drawer);
+
+        completedTaskDrawerLayout.addDrawerListener(completedTaskActionBarDrawerToggle);
+        completedTaskActionBarDrawerToggle.syncState();
+
+
+        completedTaskNavigationView = findViewById(R.id.completedTasksNavigationView);
+        completedTaskNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_account:
+                        startActivity(new Intent(getApplicationContext(), editAccount.class));
+                        break;
+                    case R.id.nav_dashboard:
+                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                        break;
+                    case R.id.nav_addTasks:
+                        startActivity(new Intent(getApplicationContext(),AddTasks.class));
+                        break;
+                    case R.id.nav_pendingTasks:
+                        startActivity(new Intent(getApplicationContext(), tasks.class));
+                        break;
+                    case R.id.nav_completedTasks:
+                        startActivity(new Intent(getApplicationContext(), completed.class));
+                        break;
+                    case R.id.nav_draftTasks:
+                        startActivity(new Intent(getApplicationContext(),DraftTasks.class));
+                        break;
+                    case R.id.nav_security:
+                        startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                        break;
+                    case R.id.nav_logout:
+                        SharedPreferences prf;
+                        prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                        Intent i = new Intent(getApplicationContext(),Login.class);
+                        SharedPreferences.Editor editor = prf.edit();
+                        editor.clear();
+                        editor.apply();
+                        startActivity(i);
+                        break;
+
+                }
+                return false;
+            }
+        });
+
 
         //initialize database class helper
         dbHelper = new DBHelper(this);

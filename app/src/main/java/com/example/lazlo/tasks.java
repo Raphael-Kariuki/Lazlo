@@ -36,10 +36,12 @@ ArrayList<taskModel> taskModelArrayList;
 TabLayout tabLayout;
 FloatingActionButton btn_addTasks;
 String user_name,categoryToPopulateOnSort;
-    Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
-    public DrawerLayout drawerLayout;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
-    NavigationView navigationView;
+Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
+DrawerLayout drawerLayout;
+ActionBarDrawerToggle actionBarDrawerToggle;
+NavigationView navigationView;
+@Override
+public void onBackPressed(){}
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -62,32 +64,14 @@ String user_name,categoryToPopulateOnSort;
 
         return super.onCreateOptionsMenu(menu);
     }
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(),TasksHomePage.class));
-    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
         if (actionBarDrawerToggle.onOptionsItemSelected(menuItem)){
             return true;
         }
         switch (menuItem.getItemId()){
-                case R.id.myAccount:
-                startActivity(new Intent(getApplicationContext(),Account.class));
-                break;
-            case R.id.myDashboard:
-                startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                break;
-            case R.id.exit:
-                //add the function to perform here
-                SharedPreferences prf;
-                prf = getSharedPreferences("user_details",MODE_PRIVATE);
-                Intent i = new Intent(getApplicationContext(),Login.class);
-                SharedPreferences.Editor editor = prf.edit();
-                editor.clear();
-                editor.apply();
-                startActivity(i);
-                break;
+
             case R.id.sortByDates:
                 if(stateToDetermineSortDeadlines == null){
                     taskModelArrayList.sort(taskModel.tasksDeadlineComparatorDesc);
@@ -181,7 +165,36 @@ String user_name,categoryToPopulateOnSort;
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_account:
-                        startActivity(new Intent(getApplicationContext(), Account.class));
+                        startActivity(new Intent(getApplicationContext(), editAccount.class));
+                        break;
+                    case R.id.nav_dashboard:
+                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                        break;
+                    case R.id.nav_addTasks:
+                        startActivity(new Intent(getApplicationContext(),AddTasks.class));
+                        break;
+                    case R.id.nav_pendingTasks:
+                        startActivity(new Intent(getApplicationContext(), tasks.class));
+                        break;
+                    case R.id.nav_completedTasks:
+                        startActivity(new Intent(getApplicationContext(), completed.class));
+                        break;
+                    case R.id.nav_draftTasks:
+                        startActivity(new Intent(getApplicationContext(),DraftTasks.class));
+                        break;
+                    case R.id.nav_security:
+                        startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                        break;
+                    case R.id.nav_logout:
+                        SharedPreferences prf;
+                        prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                        Intent i = new Intent(getApplicationContext(),Login.class);
+                        SharedPreferences.Editor editor = prf.edit();
+                        editor.clear();
+                        editor.apply();
+                        startActivity(i);
+                        break;
+
                 }
                 return false;
             }

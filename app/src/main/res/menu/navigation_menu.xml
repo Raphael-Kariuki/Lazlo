@@ -18,30 +18,38 @@
                 <item
                     android:id="@+id/nav_addTasks"
                     android:title="Add tasks"
-                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                    android:icon="@drawable/ic_baseline_post_add_24"/>
                 <item
                     android:id="@+id/nav_pendingTasks"
                     android:title="Pending tasks"
                     android:icon="@drawable/ic_baseline_pending_actions_24"/>
                 <item
                     android:id="@+id/nav_completedTasks"
-                    android:title="Pending tasks"
-                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                    android:title="Completed tasks"
+                    android:icon="@drawable/ic_baseline_done_24"/>
                 <item
                     android:id="@+id/nav_draftTasks"
-                    android:title="Pending tasks"
-                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                    android:title="Draft tasks"
+                    android:icon="@drawable/ic_baseline_archive_24"/>
             </menu>
         </item>
     </group>
+<group >
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_security"
+                android:title="Security"
+                android:icon="@drawable/ic_baseline_security_24"/>
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout"
+                android:icon="@drawable/ic_baseline_power_settings_new_24"/>
+        </menu>
 
-    <item
-        android:id="@+id/nav_security"
-        android:title="Security"
-        android:icon="@drawable/ic_baseline_security_24"/>
-    <item
-        android:id="@+id/nav_logout"
-        android:title="Logout"
-        android:icon="@drawable/ic_baseline_power_settings_new_24"/>
+    </item>
+
+</group>
+
 
 </menu>

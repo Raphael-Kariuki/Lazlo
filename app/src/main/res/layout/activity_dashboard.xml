@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/dashboardDrawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Dashboard">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -58,8 +65,7 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/totalTasksPerMonth"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="80dp"
                             android:background="@drawable/uno"
                             android:gravity="center"
                             android:textColor="@color/white"
@@ -68,8 +74,7 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_height="20dp"
                             android:gravity="center"
                             android:text="@string/total_tasks"
                             android:textColor="@color/black"
@@ -89,8 +94,7 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/totalTasksCompletedPerMonth"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="80dp"
                             android:background="@drawable/deux"
                             android:gravity="center"
                             android:textColor="@color/black"
@@ -99,8 +103,7 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_height="20dp"
                             android:gravity="center"
                             android:text="@string/completed_tasks"
                             android:textColor="@color/black"
@@ -120,8 +123,7 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/totalTasksPendingPerMonth"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="80dp"
                             android:background="@drawable/trois"
                             android:gravity="center"
                             android:textColor="@color/black"
@@ -130,8 +132,7 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_height="20dp"
                             android:gravity="center"
                             android:text="@string/pending_tasks"
                             android:textColor="@color/black"
@@ -759,3 +760,11 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/dashboardNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/nav_header_layout"/>
+</androidx.drawerlayout.widget.DrawerLayout>
