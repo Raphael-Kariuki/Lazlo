@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Patterns;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -43,13 +44,27 @@ ImageView profilePicture;
 DrawerLayout editAccountDrawerLayout;
 NavigationView editAccountNavigationView;
 ActionBarDrawerToggle editAccountActionBarDrawerToggle;
+
+@Override
+public boolean onCreateOptionsMenu(@NonNull Menu menu){
+    getMenuInflater().inflate(R.menu.edit_account_menu, menu);
+    return super.onCreateOptionsMenu(menu);
+}
+
 @Override
 public  boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
     if (editAccountActionBarDrawerToggle.onOptionsItemSelected(menuItem)){
+        onBackPressed();
         return true;
+    }else if (menuItem.getItemId() == R.id.saveAccountDetails){
+        saveAccountDetails();
     }
 
     return super.onOptionsItemSelected(menuItem);
+}
+@Override
+public  void onBackPressed(){
+
 }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,8 +213,7 @@ public  boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
                     }
                 }
             });
-    @Override
-    public void onBackPressed() {
+    public void saveAccountDetails() {
         if (!Objects.requireNonNull(editUsername_TextInputEdit.getText()).toString().trim().isEmpty()){
             if (editUsername_TextInputEdit.getText().toString().trim().length() <= 10){
                 if (!Objects.requireNonNull(editAboutYou_TextInputEdit.getText()).toString().trim().isEmpty()){
@@ -207,6 +221,7 @@ public  boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
                         if (Patterns.EMAIL_ADDRESS.matcher(editEmail_TextInput.getText().toString().trim()).matches()){
                             if (!editAboutYou_TextInputEdit.getText().toString().trim().equals(status)){
                                 //status changed
+                                editAboutYou_TextInputLayout.setErrorEnabled(false);
                                 if (!editUsername_TextInputEdit.getText().toString().trim().equals(uname)){
                                     //username has been changed
                                     if (!isUserNameExist(editUsername_TextInputEdit.getText().toString().trim())){
