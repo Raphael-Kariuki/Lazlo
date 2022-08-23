@@ -3,8 +3,6 @@ package com.example.lazlo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,10 +13,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -26,8 +24,6 @@ import java.util.Locale;
 public class completed extends AppCompatActivity {
 
     DBHelper dbHelper;
-    AppCompatButton completed_Home, completed_School, completed_Work, completed_Business, completed_Shopping;
-    TextView completed_homeUnder, completed_schoolUnder, completed_workUnder, completed_businessUnder, completed_shoppingUnder;
     SharedPreferences sharedPreferences;
     Double randUserId;
     RecyclerView completed_recyclerView;
@@ -36,6 +32,7 @@ public class completed extends AppCompatActivity {
     Cursor completedTasksCursor;
     completedTasksAdapter completedTasksAdapter;
     Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
+    TabLayout tabLayout;
     @Override
     public void onBackPressed(){
         startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
@@ -96,7 +93,7 @@ public class completed extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), Login.class);
                 SharedPreferences.Editor editor = prf.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 startActivity(i);
                 break;
             case R.id.sortByDates:
@@ -157,18 +154,7 @@ public class completed extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Completed tasks");
 
-        //initialize views
-        completed_homeUnder = findViewById(R.id.completed_homeUnder);
-        completed_workUnder = findViewById(R.id.completed_workUnder);
-        completed_schoolUnder = findViewById(R.id.completed_schoolUnder);
-        completed_businessUnder = findViewById(R.id.completed_businessUnder);
-        completed_shoppingUnder = findViewById(R.id.completed_shoppingUnder);
 
-        completed_Home = findViewById(R.id.completed_homeTask);
-        completed_Work = findViewById(R.id.completed_workTasks);
-        completed_School =findViewById(R.id.completed_schoolTasks);
-        completed_Business = findViewById(R.id.completed_businessTasks);
-        completed_Shopping = findViewById(R.id.completed_shoppingTasks);
 
         //obtain user id and name from sharedPreferences
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
@@ -184,70 +170,48 @@ public class completed extends AppCompatActivity {
         completed_recyclerView.setLayoutManager(new LinearLayoutManager(this));
         completed_recyclerView.setHasFixedSize(true);
 
+        tabLayout = findViewById(R.id.completed_menu);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0:
+                        populateHomeTasks();
+                        break;
+                    case 1:
+                        populateShoppingTasks();
+                        break;
+                    case 2:
+                        populateSchoolTasks();
+                        break;
+                    case 3:
+                        populateBusinessTasks();
+                        break;
+                    case 4:
+                        populateWorkTasks();
+                        break;
+                }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         //setup so that on activity load, the home tab is populated and highlighted
         populateHomeTasks();
-        completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
         categoryToPopulateOnSort = "Home";
 
 
 
-        //TODO:Simplify this background setup with 9-patch drawables
 
-        //process Home button
-        completed_Home.setOnClickListener(view -> {
-            completed_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            completed_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Home";
-            populateHomeTasks();
-        });
 
-        //process the Shopping click
-        completed_Shopping.setOnClickListener(view -> {
-            completed_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            completed_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Shopping";
-            populateShoppingTasks();
-        });
-
-        //process the Work click
-        completed_Work.setOnClickListener(view -> {
-            completed_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            completed_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Work";
-            populateWorkTasks();
-        });
-        //process the School click
-        completed_School.setOnClickListener(view -> {
-            completed_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "School";
-            populateSchoolTasks();
-        });
-
-        //process the Business click
-        completed_Business.setOnClickListener(view -> {
-            completed_shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            completed_businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            categoryToPopulateOnSort = "Business";
-            populateBusinessTasks();
-        });
     }
     //obtain Home category content and populate list view on Home button click
     private  void populateHomeTasks(){
@@ -309,4 +273,27 @@ public class completed extends AppCompatActivity {
         completedTasksAdapter = new completedTasksAdapter(this, completedTaskModelArrayList);
         completed_recyclerView.setAdapter(completedTasksAdapter);
     }
+    //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
+    // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
+    private void SetOrRefreshListView2(){
+        String tempCategory = this.getIntent().getStringExtra("tempCategory");
+        if (tempCategory != null){
+            completedTasksCursor = dbHelper.getAllByCategories(randUserId,tempCategory);
+            //call this so that new cursor is picked up
+            completedTasksAdapter.notifyDataSetChanged();
+            completedTasksPopulate();
+        }
+
+
+        }
+        @Override
+        public void onResume() {
+            SetOrRefreshListView2();
+            super.onResume();
+        }
+        //clean up
+        @Override
+        protected void onDestroy(){
+            super.onDestroy();
+        }
 }

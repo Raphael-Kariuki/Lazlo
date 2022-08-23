@@ -176,6 +176,7 @@ public class AddTasks extends AppCompatActivity {
             String selectedTime_String = Objects.requireNonNull(selectTime_AutocompleteView.getText()).toString().trim();
             String selectedDateTime = selectedDate_String + " " + selected_time;
             String predictedDuration = Objects.requireNonNull(predictedDuration_TextInputEditText.getText()).toString().trim();
+            String predictedDurationUnits = predictedDurationUnits_AutoCompleteTextView.getText().toString().trim();
 
             //process inputs
             if (!taskTitle_String.isEmpty()){

@@ -6,148 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".tasks">
 
-    <LinearLayout
-        android:id="@+id/menu"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/completed_menu"
+        style="@style/Widget.App.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:baselineAligned="false">
+        app:tabMode="scrollable"
 
-        <LinearLayout
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/completed_homeTask"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/completed_homeTask"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableTop="@drawable/ic_baseline_home_24"
-                android:padding="10dp"
-                android:text="@string/home"
-                android:textColor="@color/black"
-                android:textSize="9sp"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:text="@string/home"
 
 
-                />
+            />
 
-            <TextView
-                android:id="@+id/completed_homeUnder"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                />
-        </LinearLayout>
-
-
-        <LinearLayout
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/completed_shoppingTasks"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:text="Shopping" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/completed_shoppingTasks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableTop="@drawable/ic_baseline_shopping_cart_24"
-                android:padding="10dp"
-                android:text="@string/shopping"
-                android:textColor="@color/black"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/completed_shoppingUnder"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                />
-        </LinearLayout>
-
-
-        <LinearLayout
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/completed_schoolTasks"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_school_24"
+            android:text="School" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/completed_schoolTasks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableTop="@drawable/ic_baseline_school_24"
-                android:padding="10dp"
-                android:text="@string/school"
-                android:textColor="@color/black"
-                android:textSize="9sp" />
 
-            <TextView
-                android:id="@+id/completed_schoolUnder"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/completed_businessTasks"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_business_24"
+            android:text="Business" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/completed_businessTasks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableTop="@drawable/ic_baseline_business_24"
-                android:padding="10dp"
-                android:text="@string/business"
-                android:textColor="@color/black"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/completed_businessUnder"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/completed_workTasks"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_baseline_work_24"
+            android:text="Work" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/completed_workTasks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:drawableTop="@drawable/ic_baseline_work_24"
-                android:padding="10dp"
-                android:text="@string/work"
-                android:textColor="@color/black"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/completed_workUnder"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                />
-        </LinearLayout>
-    </LinearLayout>
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/completed_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/menu"
+        app:layout_constraintTop_toBottomOf="@id/completed_menu"
         />
 
 

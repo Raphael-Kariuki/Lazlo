@@ -2,9 +2,9 @@ package com.example.lazlo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,29 +15,31 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class tasks extends AppCompatActivity {
 DBHelper dbHelper;
-tasksAdapter mAdapter;
+public tasksAdapter mAdapter;
 RecyclerView recyclerView;
 Cursor cursor;
 SharedPreferences sharedPreferences;
 Double randUserId;
 ArrayList<taskModel> taskModelArrayList;
-AppCompatButton Home, School, Work, Business, Shopping;
-TextView homeUnder, schoolUnder, workUnder, businessUnder, shoppingUnder;
+TabLayout tabLayout;
 FloatingActionButton btn_addTasks;
 String user_name,categoryToPopulateOnSort;
     Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
-
+    public DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    NavigationView navigationView;
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -61,9 +63,16 @@ String user_name,categoryToPopulateOnSort;
         return super.onCreateOptionsMenu(menu);
     }
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(),TasksHomePage.class));
+    }
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
+        if (actionBarDrawerToggle.onOptionsItemSelected(menuItem)){
+            return true;
+        }
         switch (menuItem.getItemId()){
-            case R.id.myAccount:
+                case R.id.myAccount:
                 startActivity(new Intent(getApplicationContext(),Account.class));
                 break;
             case R.id.myDashboard:
@@ -76,7 +85,7 @@ String user_name,categoryToPopulateOnSort;
                 Intent i = new Intent(getApplicationContext(),Login.class);
                 SharedPreferences.Editor editor = prf.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 startActivity(i);
                 break;
             case R.id.sortByDates:
@@ -150,6 +159,15 @@ String user_name,categoryToPopulateOnSort;
         //initialize database class helper
         dbHelper = new DBHelper(this);
 
+        drawerLayout = findViewById(R.id.drawerLayout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open_drawer,R.string.close_drawer);
+
+        // pass the Open and Close toggle for the drawer layout listener
+        // to toggle the button
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+
         ///setup action bar
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -157,18 +175,57 @@ String user_name,categoryToPopulateOnSort;
         actionBar.setTitle("Pending tasks");
 
 
-        //initialize views
-        homeUnder = findViewById(R.id.homeUnder);
-        workUnder = findViewById(R.id.workUnder);
-        schoolUnder = findViewById(R.id.schoolUnder);
-        businessUnder = findViewById(R.id.businessUnder);
-        shoppingUnder = findViewById(R.id.shoppingUnder);
+        navigationView = findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_account:
+                        startActivity(new Intent(getApplicationContext(), Account.class));
+                }
+                return false;
+            }
+        });
+        tabLayout = findViewById(R.id.menu);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0:
+                        populateHomeTasks();
+                        break;
+                    case 1:
+                        populateShoppingTasks();
 
-        Home = findViewById(R.id.homeTask);
-        Work = findViewById(R.id.workTasks);
-        School =findViewById(R.id.schoolTasks);
-        Business = findViewById(R.id.businessTasks);
-        Shopping = findViewById(R.id.shoppingTasks);
+                        break;
+                    case 2:
+                        populateSchoolTasks();
+
+                        break;
+                    case 3:
+                        populateBusinessTasks();
+
+                        break;
+                    case 4:
+                        populateWorkTasks();
+
+                        break;
+
+
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
 
@@ -196,69 +253,17 @@ String user_name,categoryToPopulateOnSort;
         recyclerView.setHasFixedSize(true);
 
 
+
         populateHomeTasks();
-        homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
+
+        //homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
         categoryToPopulateOnSort = "Home";
 
 
 
 
 
-        //TODO:Simplify this background setup with 9-patch drawables
 
-        //process Home button
-        Home.setOnClickListener(view -> {
-            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Home";
-            populateHomeTasks();
-        });
-
-        //process the Shopping click
-        Shopping.setOnClickListener(view -> {
-            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Shopping";
-            populateShoppingTasks();
-        });
-
-        //process the Work click
-        Work.setOnClickListener(view -> {
-            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "Work";
-            populateWorkTasks();
-        });
-        //process the School click
-        School.setOnClickListener(view -> {
-            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            categoryToPopulateOnSort = "School";
-            populateSchoolTasks();
-        });
-
-        //process the Business click
-        Business.setOnClickListener(view -> {
-            shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-            businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-            categoryToPopulateOnSort = "Business";
-            populateBusinessTasks();
-        });
 
     }
     //obtain Home category content and populate list view on Home button click
@@ -330,46 +335,6 @@ String user_name,categoryToPopulateOnSort;
         String tempCategory = this.getIntent().getStringExtra("tempCategory");
         if (tempCategory != null){
             cursor = dbHelper.getAllByCategoriesForPendingTasks(randUserId,tempCategory);
-
-            //highlight the obtained category button
-            switch (tempCategory) {
-                case "Home":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    break;
-                case "Business":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    break;
-                case "School":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    break;
-                case "Work":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    break;
-                case "Shopping":
-                    shoppingUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.orange));
-                    workUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    schoolUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    homeUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    businessUnder.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.white));
-                    break;
-
-            }
             //call this so that new cursor is picked up
             mAdapter.notifyDataSetChanged();
             taskListPopulate();

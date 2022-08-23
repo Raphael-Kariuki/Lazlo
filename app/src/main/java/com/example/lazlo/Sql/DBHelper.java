@@ -241,6 +241,8 @@ public class DBHelper extends SQLiteOpenHelper {
     //function to obtain all tasks by categories
     public Cursor getAllByCategoriesForPendingTasks(Double randUserId, String category) {
         return this.getWritableDatabase().query("TaskList", null, "randUserId=? and TaskCategory = ? and TaskState != 5", new String[]{String.valueOf(randUserId), String.valueOf(category)}, null, null, "TaskCreationTime DESC");
+        /*return this.getWritableDatabase().rawQuery("select *,count(randTaskId) as count from TaskList where randUserId = ? and TaskCategory = ? and TaskState != 5 " +
+                "order by TaskCreationTime DESC",new String[]{String.valueOf(randUserId), String.valueOf(category)});*/
     }
     //sort list view by deadline asc
     public Cursor getAllByCategoriesForPendingTasksSortByDeadlineAsc(Double randUserId, String category) {

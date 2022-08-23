@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/nav_account"
+        android:title="My Account"
+        android:icon="@drawable/ic_baseline_account_circle_24"/>
+    <item
+        android:id="@+id/nav_dashboard"
+        android:title="Dashboard"
+        android:icon="@drawable/ic_baseline_dashboard_24"/>
+    <group android:id="@+id/tasks">
+        <item android:id="@+id/tasksTitle"
+            android:title="Tasks">
+            <menu >
+                <item
+                    android:id="@+id/nav_addTasks"
+                    android:title="Add tasks"
+                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                <item
+                    android:id="@+id/nav_pendingTasks"
+                    android:title="Pending tasks"
+                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                <item
+                    android:id="@+id/nav_completedTasks"
+                    android:title="Pending tasks"
+                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+                <item
+                    android:id="@+id/nav_draftTasks"
+                    android:title="Pending tasks"
+                    android:icon="@drawable/ic_baseline_pending_actions_24"/>
+            </menu>
+        </item>
+    </group>
+
+    <item
+        android:id="@+id/nav_security"
+        android:title="Security"
+        android:icon="@drawable/ic_baseline_security_24"/>
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout"
+        android:icon="@drawable/ic_baseline_power_settings_new_24"/>
+
+</menu>

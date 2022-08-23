@@ -41,4 +41,6 @@
     <string name="reschedule">Reschedule</string>
     <string name="predicted_duration">Predicted duration</string>
     <string name="unit">Unit</string>
+    <string name="open_drawer">open</string>
+    <string name="close_drawer">close</string>
 </resources>
