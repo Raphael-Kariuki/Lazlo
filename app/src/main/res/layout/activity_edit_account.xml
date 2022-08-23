@@ -10,11 +10,14 @@
     android:layout_marginRight="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_vertical_margin">
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
    >
 
     <LinearLayout
@@ -107,6 +110,8 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/editAccountNavigationView"
         android:layout_width="wrap_content"
