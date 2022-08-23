@@ -2,23 +2,35 @@
     <!-- Base application theme. -->
     <style name="Lazlo" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
+        <!--
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
+        -->
         <!-- Secondary brand color. -->
+        <!--
         <item name="colorSecondary">@color/black</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/grey</item>
+        -->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+
+
+        <item name="android:statusBarColor" >@color/black</item>
+
+
         <!-- Customize your theme here. -->
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
     </style>
+
+
+    <!-- Tab layout theming -->
     <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.TabLayout</item>
         <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.tabText</item>
     </style>
     <style name="TextAppearance.MaterialComponents.tabText" parent="">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
     <style name="ThemeOverlay.App.TabLayout" parent="">
@@ -26,4 +38,21 @@
         <item name="colorSurface">#000000</item>
         <item name="colorOnSurface">#ffffff</item>
     </style>
+
+    <!-- Tab layout theming -->
+
+
+    <!-- Floating Action Button theming -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+    </style>
+    
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">#434343</item>
+    </style>
+
+
+    <!-- Floating Action Button theming -->
 </resources>
