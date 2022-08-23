@@ -98,6 +98,7 @@
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/drawer.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/menu/edit_account_menu.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/menu/flow_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/menu/flow_menu2.xml" value="0.22" />
         <entry key="app/src/main/res/menu/individual_task.xml" value="0.20416666666666666" />

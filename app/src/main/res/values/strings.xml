@@ -89,6 +89,10 @@
     <string name="status">Status</string>
     <string name="profile_picture">Profile picture</string>
     <string name="exit">Exit</string>
+    <string name="complete_task">Complete task</string>
+    <string name="pause_task">Pause task</string>
+    <string name="resume_task">Resume Task</string>
+    <string name="start_task">Start task</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>

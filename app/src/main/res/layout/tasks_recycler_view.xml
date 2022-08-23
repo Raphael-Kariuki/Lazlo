@@ -42,6 +42,7 @@
                 android:text="Tue, May 20 2022"
                 android:textSize="11sp"
                 android:clickable="false"
+                android:textStyle="bold"
                 />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:textSize="11sp"
                 android:text="Ksh 5,000"
                 android:clickable="false"
+                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/taskDescription"
@@ -68,6 +70,7 @@ The description goes here The description goes here
 The description goes here The description goes here "
                 android:maxLines="5"
                 android:clickable="false"
+                android:textStyle="bold"
                 />
 
 
