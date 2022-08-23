@@ -1,5 +1,7 @@
 package com.example.lazlo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -9,10 +11,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -22,8 +28,7 @@ import java.util.Locale;
 
 public class performTask extends AppCompatActivity {
 
-    AppCompatImageButton btnStartTask2,btnPauseTask, btnResumeTask;
-    AppCompatButton btnCancelDoingTask, btnCompleteDoingTask;
+    FloatingActionButton btnStartTask2,btnPauseTask, btnResumeTask,btnCompleteDoingTask;
     int taskState;
 
     long totalTaskDuration;
@@ -40,14 +45,50 @@ public class performTask extends AppCompatActivity {
     long cancelTaskDate;
 
     @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), individualTask.class));
+    public void onBackPressed(){}
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu){
+            getMenuInflater().inflate(R.menu.perform_task_menu, menu);
+            return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
+        if (menuItem.getItemId() == R.id.cancelDoingTask){
+
+            cancelTaskDate = new Date().getTime();
+            taskState = 4;
+            AlertDialog.Builder builder = new AlertDialog.Builder(performTask.this);
+
+            builder.setCancelable(true);
+            builder.setTitle("Cancel working on a task");
+            builder.setMessage("Are you sure you want to cancel working on this task?");
+            builder.setPositiveButton("Yes,Cancel", (dialogInterface, i) -> {
+
+                finish();
+                //updateTask db
+                boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,taskState);
+                if (b){
+                    Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
+            builder.show();
+        }
+
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perform_task);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle("Perform task");
 
         //obtain randTaskId from Intent passed from IndividualTask. Here coz of obtaining context
         randomTaskId = this.getIntent().getDoubleExtra("randTaskId", -1);
@@ -69,13 +110,11 @@ public class performTask extends AppCompatActivity {
         btnStartTask2 = findViewById(R.id.btnStartTask2);
         btnPauseTask = findViewById(R.id.btnPauseTask);
         btnResumeTask = findViewById(R.id.btnResumeTask);
-        btnCancelDoingTask = findViewById(R.id.btnCancelDoingTask);
         btnCompleteDoingTask = findViewById(R.id.btnCompleteDoingTask);
 
         btnStartTask2.setVisibility(View.VISIBLE);
         btnPauseTask.setVisibility(View.INVISIBLE);
         btnResumeTask.setVisibility(View.INVISIBLE);
-        btnCancelDoingTask.setVisibility(View.VISIBLE);
         btnCompleteDoingTask.setVisibility(View.INVISIBLE);
 
 
@@ -93,7 +132,6 @@ public class performTask extends AppCompatActivity {
             btnStartTask2.setVisibility(View.INVISIBLE);
             btnPauseTask.setVisibility(View.VISIBLE);
             btnResumeTask.setVisibility(View.INVISIBLE);
-            btnCancelDoingTask.setVisibility(View.VISIBLE);
             btnCompleteDoingTask.setVisibility(View.VISIBLE);
             taskState = 1;
 
@@ -138,7 +176,6 @@ public class performTask extends AppCompatActivity {
             btnStartTask2.setVisibility(View.INVISIBLE);
             btnPauseTask.setVisibility(View.INVISIBLE);
             btnResumeTask.setVisibility(View.VISIBLE);
-            btnCancelDoingTask.setVisibility(View.VISIBLE);
             btnCompleteDoingTask.setVisibility(View.INVISIBLE);
             taskState = 2;
             pauseTaskDate = new Date().getTime();
@@ -156,7 +193,6 @@ public class performTask extends AppCompatActivity {
             btnStartTask2.setVisibility(View.INVISIBLE);
             btnPauseTask.setVisibility(View.INVISIBLE);
             btnResumeTask.setVisibility(View.INVISIBLE);
-            btnCancelDoingTask.setVisibility(View.VISIBLE);
             btnCompleteDoingTask.setVisibility(View.VISIBLE);
             taskState = 3;
             resumeTaskDate = new Date().getTime();
@@ -171,30 +207,7 @@ public class performTask extends AppCompatActivity {
 
         });
 
-        //requires context and when placed inside setOnClickListener, it picks that as the context thus needs to be outside
 
-        btnCancelDoingTask.setOnClickListener(view -> {
-            cancelTaskDate = new Date().getTime();
-            taskState = 4;
-            AlertDialog.Builder builder = new AlertDialog.Builder(performTask.this);
-
-            builder.setCancelable(true);
-            builder.setTitle("Cancel working on a task");
-            builder.setMessage("Are you sure you want to cancel working on this task?");
-            builder.setPositiveButton("Yes,Cancel", (dialogInterface, i) -> {
-
-                finish();
-                //updateTask db
-                boolean b = updateTaskStatusOnCancelButtonPress(randomTaskId,cancelTaskDate,taskState);
-                if (b){
-                    Toast.makeText(performTask.this, "success", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(performTask.this, "Fail", Toast.LENGTH_SHORT).show();
-                }
-            });
-            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
-            builder.show();
-        });
         btnCompleteDoingTask.setOnClickListener(view -> {
 
             //obtain current date and time
