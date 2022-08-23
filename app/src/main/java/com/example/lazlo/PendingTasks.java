@@ -45,32 +45,11 @@ public class PendingTasks extends AppCompatActivity {
     TextView homeUnder, schoolUnder, workUnder, businessUnder, shoppingUnder;
     Integer stateToDetermineSortDeadlines,stateToDetermineSortPrice,stateToDetermineSortDuration,stateToDetermineSortCreation;
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case android.R.id.home:
-        case R.id.myAccount :
-            //add the function to perform here
-            startActivity(new Intent(this, TasksHomePage.class));
-            return(true);
-        case R.id.exit:
-            //add the function to perform here
-            SharedPreferences prf;
-            prf = getSharedPreferences("user_details",MODE_PRIVATE);
-            Intent i = new Intent(getApplicationContext(),Login.class);
-            SharedPreferences.Editor editor = prf.edit();
-            editor.clear();
-            editor.apply();
-            startActivity(i);
-            return(true);
 
-        case R.id.myDashboard:
-            startActivity(new Intent(this, Dashboard.class));
-            return (true);
+
         case R.id.sortByDates:
             if (stateToDetermineSortDeadlines == null){
                     Cursor cursor = dbHelper.getAllByCategoriesForPendingTasksSortByDeadlineAsc(randomUserId,categoryToPopulateOnSort);

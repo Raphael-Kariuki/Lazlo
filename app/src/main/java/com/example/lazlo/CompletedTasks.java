@@ -33,18 +33,6 @@ public class CompletedTasks extends AppCompatActivity {
 
 
     @Override
-    public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(getApplicationContext(), TasksHomePage.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_completed_tasks);
