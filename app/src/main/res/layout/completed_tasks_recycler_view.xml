@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     app:cardElevation="4dp"
     android:layout_margin="4dp"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="4dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +42,7 @@
                 android:layout_marginTop="7dp"
                 android:textColor="@color/black"
                 android:text="Tue, May 20 2022"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:clickable="false"
                 />
 
@@ -51,7 +53,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="7dp"
                 android:textColor="@color/black"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:text="Ksh 5,000"
                 android:clickable="false"
                 />
@@ -61,7 +63,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="7dp"
                 android:textColor="@color/black"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:layout_marginStart="5dp"
                 android:text="The description goes here The description goes here The description goes here The description goes here
 The description goes here The description goes here
@@ -78,6 +80,7 @@ The description goes here The description goes here "
             android:paddingTop="5dp"
             android:orientation="vertical"
             android:gravity="end"
+            android:layout_gravity="center_vertical"
             android:clickable="false"
             >
             <androidx.appcompat.widget.AppCompatImageButton
