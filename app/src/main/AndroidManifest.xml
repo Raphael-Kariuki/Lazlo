@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
-            android:name=".completed"
+            android:name=".timeTracker"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+        <activity
+            android:name=".completed"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".Error_page"
             android:exported="false" />
@@ -41,13 +45,11 @@
         <activity
             android:name=".Login"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-   />
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".Dashboard"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
-
         <activity
             android:name=".AddTasks"
             android:exported="false"
@@ -79,12 +81,11 @@
         <activity
             android:name=".DraftTasks"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".performTask"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
-
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".inHousePasswordReset"
             android:exported="false"
@@ -92,15 +93,15 @@
         <activity
             android:name=".editAccount"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".forgotPassword"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".reset_password"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".NotificationMessage"
             android:exported="false" />

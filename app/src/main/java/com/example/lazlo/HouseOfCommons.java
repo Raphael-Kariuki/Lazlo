@@ -200,7 +200,7 @@ public class HouseOfCommons {
             long seconds = duration/1000;
             formattedDuration  = seconds + " secs";
         }else {
-            formattedDuration = "< 1s";
+            formattedDuration = "less than 1 sec";
         }
         return formattedDuration;
     }

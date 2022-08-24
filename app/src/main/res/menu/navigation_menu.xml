@@ -11,6 +11,10 @@
         android:id="@+id/nav_dashboard"
         android:title="Dashboard"
         android:icon="@drawable/ic_baseline_dashboard_24"/>
+    <item
+        android:id="@+id/nav_timeTracker"
+        android:title="Time tracker"
+        android:icon="@drawable/ic_baseline_access_time_24"/>
     <group android:id="@+id/tasks">
         <item android:id="@+id/tasksTitle"
             android:title="Tasks">

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".timeTracker">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/timeTrackerCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/black"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false"
+        >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/trackYourTimeImage"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/trial_image"
+                android:contentDescription="track your time"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lostTime"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:text="Loading .."
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lostTimeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/track_your_time_title"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="5dp"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lostTimeSupportText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_tracker_helper_text"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="5dp"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="20dp">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/startTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pauseTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pause_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/resumeTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"
+                        android:text="@string/resume_timer"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="20dp"
+                    >
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/completeTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

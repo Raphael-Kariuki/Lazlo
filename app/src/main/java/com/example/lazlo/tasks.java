@@ -170,6 +170,9 @@ public void onBackPressed(){}
                     case R.id.nav_dashboard:
                         startActivity(new Intent(getApplicationContext(),Dashboard.class));
                         break;
+                    case R.id.nav_timeTracker:
+                        startActivity(new Intent(getApplicationContext(),timeTracker.class));
+                        break;
                     case R.id.nav_addTasks:
                         startActivity(new Intent(getApplicationContext(),AddTasks.class));
                         break;

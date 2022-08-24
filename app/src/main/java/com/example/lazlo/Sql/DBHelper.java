@@ -26,6 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //userId, taskId, startTime, pauseTime, resumeTime,stopTime, totalDuration, taskType,trials, taskState
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
         DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
+        DB.execSQL("create Table if not exists TimeTracker(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL,startTimerTime LONG NOT NULL, pauseTimerTime LONG,resumeTImerTime LONG,completeTimerTime LONG NOT NULL, lostDuration LONG NOT NULL, lostDurationReason TEXT)");
     }
 
     //method run when there's a db upgrade
@@ -35,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("drop Table if exists TaskListDrafts");
         DB.execSQL("drop Table if exists TaskStatus");
         DB.execSQL("drop Table if exists Completed_N_DeletedTasks");
+        DB.execSQL("drop Table if exists TimeTracker");
         //recreate the db
         onCreate(DB);
     }
@@ -79,6 +81,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean insertIntoTimeTracker(Double randUserId,long startTimerTime, long pauseTimerTime, long resumeTimerTime, long completeTimerTime, long lostDuration, String lostDurationReason){
+        ContentValues cv = new ContentValues();
+        cv.put("randUserId", randUserId);
+        cv.put("startTimerTime", startTimerTime);
+        cv.put("pauseTimerTime", pauseTimerTime);
+        cv.put("resumeTimerTime", resumeTimerTime);
+        cv.put("completeTimerTime", completeTimerTime);
+        cv.put("lostDuration", lostDuration);
+        cv.put("lostDurationReason", lostDurationReason);
+        long rv = this.getWritableDatabase().insert("TimeTracker",null, cv);
+        this.getWritableDatabase().close();
+        return rv != -1;
+    }
     //function to insert completed tasks
     public boolean insertCompleted_N_DeletedTasks(Double randUserId, Double randTaskId, LocalDateTime taskDeadline, String taskStartTime,
                                                   String taskPauseTime, String taskResumeTime, String taskCancelTime, String taskCompleteTime,

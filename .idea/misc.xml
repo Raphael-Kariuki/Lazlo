@@ -79,6 +79,7 @@
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/activity_tasks.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_tasks_home_page.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layout/activity_time_tracker.xml" value="0.25" />
         <entry key="app/src/main/res/layout/completed_tasks_recycler_view.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_business.xml" value="0.20625" />
