@@ -10,9 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
         <activity
+            android:name=".review"
+            android:exported="false" />
+
+        <service android:name=".timerService" />
+
+        <activity
             android:name=".timeTracker"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".completed"
             android:exported="false"
