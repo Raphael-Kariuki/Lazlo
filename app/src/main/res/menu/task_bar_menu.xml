@@ -6,27 +6,33 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_search_24"
         app:actionViewClass="android.widget.SearchView" />
+        <item android:id="@+id/sorting"
+            android:title="@string/sort"
+                android:icon="@drawable/ic_baseline_sort_24"
+            android:contentDescription="@string/sort"
+                app:showAsAction="always">
+                <menu >
+                        <item
+                            android:id="@+id/sortByDates"
+                            app:showAsAction="never"
+                            android:title="@string/by_date">
+                        </item>
+                        <item
+                            android:id="@+id/sortByPrice"
+                            android:title="@string/by_price">
+                        </item>
+                        <item
+                            android:id="@+id/sortByDuration"
+                            android:title="@string/by_duration">
+                        </item>
+                        <item
+                            android:id="@+id/sortByCreationTime"
+                            android:title="@string/by_creation_time">
+                        </item>
+                </menu>
+        </item>
 
 
-            <item
-                android:id="@+id/sortByDates"
-                app:showAsAction="never"
-                android:title="@string/by_date">
-            </item>
-            <item
-                android:id="@+id/sortByPrice"
-                app:showAsAction="never"
-                android:title="@string/by_price">
-            </item>
-            <item
-                android:id="@+id/sortByDuration"
-                app:showAsAction="never"
-                android:title="@string/by_duration">
-            </item>
-            <item
-                android:id="@+id/sortByCreationTime"
-                app:showAsAction="never"
-                android:title="@string/by_creation_time">
-            </item>
+
 
 </menu>
