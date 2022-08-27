@@ -9,23 +9,17 @@
         android:roundIcon="@mipmap/trial_image_round"
         android:supportsRtl="true"
         android:theme="@style/Lazlo">
-        <activity
-            android:name=".review"
-            android:exported="false" />
 
         <service android:name=".timerService" />
 
         <activity
-            android:name=".timeTracker"
+            android:name=".dailyReview"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name=".completed"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
-        <activity
-            android:name=".Error_page"
-            android:exported="false" />
         <activity
             android:name=".tasks"
             android:exported="false"

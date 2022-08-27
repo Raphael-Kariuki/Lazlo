@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/timeTrackerDrawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dailyReview">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/timeTrackerCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/black"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false"
+        >
+<LinearLayout
+    android:id="@+id/parentCardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/trackLostTimeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lostTimeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/track_your_time_title"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="5dp"
+                android:layout_gravity="start"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lostTime"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Loading .."
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/previousLostTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading .."
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="20dp">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/startTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pauseTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pause_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/resumeTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"
+                        android:text="@string/resume_timer"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="20dp"
+                    >
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/completeTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete_timer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/black"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/durationOfSleepLayoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:id="@+id/durationOfSleepLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/hoursOfSleepReceived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hours of sleep received"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_gravity="start"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sleepHrsTextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/black"
+                    app:hintEnabled="true"
+                    app:startIconDrawable="@drawable/ic_baseline_access_time_24"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+
+                    >
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/sleepHrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:hint="Hours"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sleepMinTextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/taskDescription_TextLayout"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/black"
+                    app:hintEnabled="true"
+                    app:startIconDrawable="@drawable/ic_baseline_access_time_24"
+                    app:boxCornerRadiusTopEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomEnd="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/activity_vertical_margin"
+                    app:boxCornerRadiusTopStart="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+
+                    >
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/sleepMin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center"
+                    android:hint="Minutes"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submitHrsOfSleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/hoursOfSleepReceivedView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hours of sleep received"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/hoursOfSleepReceivedHelper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chipsNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/trackLostTimeChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Track Lost time"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/trackBreaksChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Track breaks"/>
+
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+</LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_baseline_sort_24"
+        android:text="Review your day"
+        android:layout_gravity="center_horizontal"
+
+        />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/black"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/shiftLength"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/breaks"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/downtime"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/idealCycleTime"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/totalCount"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/rejectCount"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Loading .."
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+</ScrollView>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/timeTrackerNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/nav_header_layout"/>
+</androidx.drawerlayout.widget.DrawerLayout>

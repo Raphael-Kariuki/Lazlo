@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("create Table if not exists TaskStatus(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL, taskState INTEGER NOT NULL )");
         DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TimeTracker(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL,dateToday LONG NOT NULL, lostDuration LONG NOT NULL, lostDurationReason TEXT)");
+        DB.execSQL("create Table if not exists HoursOfSleep(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL, DateToRecord LONG UNIQUE NOT NULL,HoursOfSleep LONG NOT NULL)");
     }
 
     //method run when there's a db upgrade
@@ -37,20 +38,37 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("drop Table if exists TaskStatus");
         DB.execSQL("drop Table if exists Completed_N_DeletedTasks");
         DB.execSQL("drop Table if exists TimeTracker");
+        DB.execSQL("drop Table if exists HoursOfSleep");
         //recreate the db
         onCreate(DB);
     }
+    public boolean insertHoursOfSleep(Double randUserId,Long DateToRecord, Long HoursOfSleep){
+        ContentValues cv = new ContentValues();
+        cv.put("randUserId", randUserId);
+        cv.put("DateToRecord", DateToRecord);
+        cv.put("HoursOfSleep", HoursOfSleep);
+        Long rv ;
+        rv = this.getWritableDatabase().insert("HoursOfSleep",null,cv);
+        this.getWritableDatabase().close();
+        return rv != -1;
+
+    }
+    public Cursor getHoursOfSleepDetails(Double randUserId){
+        return this.getWritableDatabase().query("HoursOfSleep",null,"randUserId = ?",new String[]{String.valueOf(randUserId)},null,null,"DateToRecord ASC");
+    }
     public Cursor getCountOfTasksPerDay(Double randUserId,LocalDateTime startOfDay, LocalDateTime endOfDay){
-        return this.getWritableDatabase().query("TaskList",new String[]{"count(randTaskId)"},"randUserId = ? and taskDeadline > ? and taskDeadline < ?",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
+        //return this.getWritableDatabase().query("TaskList",new String[]{count("randTaskId")},"randUserId = ? and taskDeadline > ? and taskDeadline < ?",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as count from TaskList where randUserId = ? and taskDeadline > ? and taskDeadline < ?",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)});
     }
     public Cursor getCountOfCompletedTasksPerDay(Double randUserId,LocalDateTime startOfDay, LocalDateTime endOfDay){
         return this.getWritableDatabase().query("TaskList",new String[]{"count(randTaskId)"},"randUserId = ? and taskDeadline > ? and taskDeadline < ? and taskState = 5",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
     }
     public Cursor getCountOfPendingTasksPerDay(Double randUserId,LocalDateTime startOfDay, LocalDateTime endOfDay){
-        return this.getWritableDatabase().query("TaskList",new String[]{"count(randTaskId)"},"randUserId = ? and taskDeadline > ? and taskDeadline < ? and taskState != 5",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
+        //return this.getWritableDatabase().query("TaskList",new String[]{"count(randTaskId)"},"randUserId = ? and taskDeadline > ? and taskDeadline < ? and taskState != 5",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as count from TaskList where randUserId = ? and taskDeadline > ? and taskDeadline < ? and taskState != 5",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)});
     }
-    public Cursor getDowntimeDurationFromTimeTracker(Double randUserId){
-        return this.getWritableDatabase().query("TimeTracker",null,"randUserId = ?", null,null,null,null);
+    public Cursor getDowntimeDurationFromTimeTracker(Double randUserId,Long startOfDay, Long endOfDay){
+        return this.getWritableDatabase().query("TimeTracker",new String[]{"lostDuration"},"randUserId = ? and dateToday > ? and dateToday < ?", new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
     }
 
     //function to obtain completed tasks per month
