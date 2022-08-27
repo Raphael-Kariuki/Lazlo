@@ -54,6 +54,7 @@
         <entry key="app/src/main/res/layout/activity_completed.xml" value="0.21" />
         <entry key="app/src/main/res/layout/activity_completed_tasks.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_custom_spending.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_daily_review.xml" value="0.21" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.18329466357308585" />
         <entry key="app/src/main/res/layout/activity_draft_tasks.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_drafts.xml" value="0.20625" />
@@ -76,10 +77,11 @@
         <entry key="app/src/main/res/layout/activity_searchable.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_sorted_tasks.xml" value="0.17391304347826086" />
+        <entry key="app/src/main/res/layout/activity_sorting_menu.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/activity_tab_layout_home.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/activity_tasks.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_tasks_home_page.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/layout/activity_time_tracker.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_time_tracker.xml" value="0.1" />
         <entry key="app/src/main/res/layout/completed_tasks_recycler_view.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_business.xml" value="0.20625" />
