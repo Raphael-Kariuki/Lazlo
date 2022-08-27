@@ -71,6 +71,8 @@ public void onBackPressed(){}
             return true;
         }
         switch (menuItem.getItemId()){
+            case R.id.sorting:
+                return true;
 
             case R.id.sortByDates:
                 if(stateToDetermineSortDeadlines == null){
@@ -81,7 +83,7 @@ public void onBackPressed(){}
                     stateToDetermineSortDeadlines = null;
                 }
                 mAdapter.notifyDataSetChanged();
-                break;
+                return true;
             case R.id.sortByCreationTime:
                 if(stateToDetermineSortCreation == null){
                     taskModelArrayList.sort(taskModel.tasksCreationComparatorDesc);
@@ -91,7 +93,7 @@ public void onBackPressed(){}
                     stateToDetermineSortCreation = null;
                 }
                 mAdapter.notifyDataSetChanged();
-                break;
+                return true;
             case R.id.sortByPrice:
                 if(stateToDetermineSortPrice == null){
                     taskModelArrayList.sort(taskModel.tasksPriceComparatorDesc);
@@ -101,7 +103,7 @@ public void onBackPressed(){}
                     stateToDetermineSortPrice = null;
                 }
                 mAdapter.notifyDataSetChanged();
-                break;
+                return true;
             case R.id.sortByDuration:
                 if(stateToDetermineSortDuration == null){
                     taskModelArrayList.sort(taskModel.tasksDurationComparatorDesc);
@@ -111,13 +113,12 @@ public void onBackPressed(){}
                     stateToDetermineSortDuration = null;
                 }
                 mAdapter.notifyDataSetChanged();
-                break;
+                return true;
             default:
-                throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
+                return super.onOptionsItemSelected(menuItem);
         }
-        return super.onOptionsItemSelected(menuItem);
-    }
 
+    }
     private void filter(String s) {
         ArrayList<taskModel> filteredList = new ArrayList<>();
         for (taskModel item: taskModelArrayList){
@@ -166,19 +167,19 @@ public void onBackPressed(){}
                 switch (item.getItemId()){
                     case R.id.nav_account:
                         startActivity(new Intent(getApplicationContext(), editAccount.class));
-                        break;
+                        return true;
                     case R.id.nav_dashboard:
                         startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                        break;
+                        return true;
                     case R.id.nav_timeTracker:
-                        startActivity(new Intent(getApplicationContext(),timeTracker.class));
-                        break;
+                        startActivity(new Intent(getApplicationContext(), dailyReview.class));
+                        return true;
                     case R.id.nav_addTasks:
                         startActivity(new Intent(getApplicationContext(),AddTasks.class));
-                        break;
+                        return true;
                     case R.id.nav_pendingTasks:
                         startActivity(new Intent(getApplicationContext(), tasks.class));
-                        break;
+                        return true;
                     case R.id.nav_completedTasks:
                         startActivity(new Intent(getApplicationContext(), completed.class));
                         break;

@@ -93,7 +93,7 @@ public  void onBackPressed(){
                     startActivity(new Intent(getApplicationContext(), Dashboard.class));
                     break;
                 case R.id.nav_timeTracker:
-                    startActivity(new Intent(getApplicationContext(),timeTracker.class));
+                    startActivity(new Intent(getApplicationContext(), dailyReview.class));
                     break;
                 case R.id.nav_addTasks:
                     startActivity(new Intent(getApplicationContext(), AddTasks.class));

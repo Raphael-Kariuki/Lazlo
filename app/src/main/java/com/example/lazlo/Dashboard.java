@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -124,7 +123,7 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(),Dashboard.class));
                     break;
                 case R.id.nav_timeTracker:
-                    startActivity(new Intent(getApplicationContext(),timeTracker.class));
+                    startActivity(new Intent(getApplicationContext(), dailyReview.class));
                     break;
                 case R.id.nav_addTasks:
                     startActivity(new Intent(getApplicationContext(),AddTasks.class));
@@ -422,8 +421,8 @@ public class Dashboard extends AppCompatActivity {
         String rangeEnd = "31-" + newMonthIndex + "-" + mYear + " 00:01";
 
 
-        dateRanges[0] = stringToDate(rangeStart);
-        dateRanges[1] = stringToDate(rangeEnd);
+        dateRanges[0] = HouseOfCommons.stringToDate(rangeStart);
+        dateRanges[1] = HouseOfCommons.stringToDate(rangeEnd);
         return dateRanges;
 
     }
@@ -548,16 +547,7 @@ public class Dashboard extends AppCompatActivity {
         return totalPendingTasks_int;
     }
 
-    public LocalDateTime stringToDate(String date) {
-        LocalDateTime newDate = null;
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
-        try {
-            newDate = getDateFromString(date, dateTimeFormatter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return newDate;
-    }
+
 
     public void getSumOfSpendingPerMonth(Double randUserId) {
 
