@@ -241,4 +241,15 @@ public class HouseOfCommons {
 
         public static final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
         public static final Locale locale = new Locale("en", "KE");
+
+    public static LocalDateTime stringToDate(String date) {
+        LocalDateTime newDate = null;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
+        try {
+            newDate = getDateFromString(date, dateTimeFormatter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newDate;
+    }
 }
