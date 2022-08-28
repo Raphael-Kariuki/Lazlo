@@ -6,7 +6,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -16,12 +19,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lazlo.Sql.DBHelper;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.divider.MaterialDivider;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -56,9 +63,16 @@ MaterialAutoCompleteTextView sleepHrsAutoCompleteTextView, sleepMinAutoCompleteT
 MaterialButton btnSubmitHrsOfSleep;
 MaterialTextView showHrsOfSleepTxtView,hoursOfSleepReceivedHelper;
 Integer selectedHrsOfSleep,selectedMinOfSleep;
-LinearLayout durationOfSleepLayout,durationOfSleepLayoutContainer,trackLostTimeLayout;
-Chip trackLostTime, trackBreaksChip;
+LinearLayout durationOfSleepLayout,durationOfSleepLayoutContainer,trackLostTimeLayout,setupShiftTimeLayout,oeeRequirementsLayout;
+Chip trackLostTime, trackBreaksChip,setupShiftDurationChip,proceedToReviewChip;
 TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
+ExtendedFloatingActionButton reviewYourDayExtendedFloatingBtn,timeTrackerCardExtendedFloatingBtn;
+MaterialCardView reviewYourDayCardView,timeTrackerCard;
+MaterialAutoCompleteTextView setupShiftStartAutocompleteView,setupShiftEndAutocompleteView;
+TextInputLayout setupShiftStartTextInputLayout,setupShiftEndTextInputLayout;
+String selectedStartDayTime,selectedEndDayTime,selected_time;
+MaterialDivider reviewDayDivider;
+MaterialButton proceedToGetReportOfDaysReport;
 
     //store page instance when page is paused or destroyed
     @Override
@@ -265,6 +279,31 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
 
         timeTrackerDrawerLayout = findViewById(R.id.timeTrackerDrawerLayout);
 
+        reviewYourDayExtendedFloatingBtn = findViewById(R.id.reviewYourDayExtendedFloatingBtn);
+        reviewYourDayCardView = findViewById(R.id.reviewYourDayCardView);
+        reviewYourDayCardView.setVisibility(View.GONE);
+
+        timeTrackerCardExtendedFloatingBtn = findViewById(R.id.timeTrackerCardExtendedFloatingBtn);
+        timeTrackerCard = findViewById(R.id.timeTrackerCard);
+        timeTrackerCard.setVisibility(View.GONE);
+
+        setupShiftTimeLayout =  findViewById(R.id.setupShiftTimeLayout);
+        oeeRequirementsLayout = findViewById(R.id.oeeRequirementsLayout);
+        setupShiftDurationChip = findViewById(R.id.setupShiftDurationChip);
+        proceedToReviewChip = findViewById(R.id.proceedToReviewChip);
+        setupShiftTimeLayout.setVisibility(View.GONE);
+        oeeRequirementsLayout.setVisibility(View.GONE);
+
+        setupShiftStartAutocompleteView = findViewById(R.id.setupShiftStartAutocompleteView);
+        setupShiftEndAutocompleteView = findViewById(R.id.setupShiftEndAutocompleteView);
+        setupShiftStartTextInputLayout = findViewById(R.id.setupShiftStartTextInputLayout);
+        setupShiftEndTextInputLayout = findViewById(R.id.setupShiftEndTextInputLayout);
+
+        reviewDayDivider = findViewById(R.id.reviewDayDivider);
+        proceedToGetReportOfDaysReport = findViewById(R.id.proceedToGetReportOfDaysReport);
+        reviewDayDivider.setVisibility(View.GONE);
+        proceedToGetReportOfDaysReport.setVisibility(View.GONE);
+
         //supply arguments to function to hide sleep layout if 12 hrs limit hasn't been surpassed
         showTrackSleepLayout(randUserId,durationOfSleepLayout);
 
@@ -287,13 +326,18 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
         trackLostTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                durationOfSleepLayoutContainer.setVisibility(View.GONE);
-                trackLostTimeLayout.setVisibility(View.VISIBLE);
+                if(durationOfSleepLayoutContainer.getVisibility() == View.VISIBLE){
+                    TransitionManager.beginDelayedTransition(trackLostTimeLayout, new AutoTransition());
+                    durationOfSleepLayoutContainer.setVisibility(View.GONE);
+                    trackLostTimeLayout.setVisibility(View.VISIBLE);
+                }
+
             }
         });
         trackBreaksChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 if (durationOfSleepLayoutContainer.getVisibility() == View.GONE){
                     String text="Tracking of sleeping hours can only be done after a 12 hour limit";
@@ -342,6 +386,11 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
                 }else {
                     trackLostTimeLayout.setVisibility(View.GONE);
                     durationOfSleepLayoutContainer.setVisibility(View.VISIBLE);
+                }
+                if (trackLostTimeLayout.getVisibility() == View.VISIBLE){
+                    TransitionManager.beginDelayedTransition(durationOfSleepLayoutContainer, new AutoTransition());
+                    durationOfSleepLayoutContainer.setVisibility(View.VISIBLE);
+                    trackLostTimeLayout.setVisibility(View.GONE);
                 }
 
             }
@@ -398,6 +447,48 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
             }
         });
 
+        reviewYourDayExtendedFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (reviewYourDayCardView.getVisibility() == View.GONE){
+                    TransitionManager.beginDelayedTransition(reviewYourDayCardView, new AutoTransition());
+                    reviewYourDayCardView.setVisibility(View.VISIBLE);
+                    timeTrackerCard.setVisibility(View.GONE);
+                }else{
+                    TransitionManager.beginDelayedTransition(reviewYourDayCardView, new AutoTransition());
+                    reviewYourDayCardView.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        timeTrackerCardExtendedFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (timeTrackerCard.getVisibility() == View.GONE){
+                    TransitionManager.beginDelayedTransition(timeTrackerCard, new AutoTransition());
+                    timeTrackerCard.setVisibility(View.VISIBLE);
+                    reviewYourDayCardView.setVisibility(View.GONE);
+                }
+                else{
+                    TransitionManager.beginDelayedTransition(timeTrackerCard, new AutoTransition());
+                    timeTrackerCard.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        setupShiftStartAutocompleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectTime(setupShiftStartAutocompleteView);
+            }
+        });
+        setupShiftEndAutocompleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectTime(setupShiftEndAutocompleteView);
+            }
+        });
 
        
         breaksTextView.setText(getBreaksFromHoursOfSleep(randUserId));
@@ -408,6 +499,39 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
         int PendingTasksPerDay = getCountOfPendingTasksPerDay(randUserId, obtainDayRange());
         rejectCountTextView.setText(String.format((HouseOfCommons.locale),"%s : %d %s","Pending tasks of the day",PendingTasksPerDay,"tasks"));
 
+
+        //setup layoutVisibility on chip taps. Layouts involved are the review your day pre-report and setup shift length layout
+        //setupShiftTimeLayout oeeRequirementsLayout
+        setupShiftDurationChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if (setupShiftTimeLayout.getVisibility() == View.GONE){
+                   TransitionManager.beginDelayedTransition(setupShiftTimeLayout, new AutoTransition());
+                   setupShiftTimeLayout.setVisibility(View.VISIBLE);
+                   oeeRequirementsLayout.setVisibility(View.GONE);
+               }else{
+                   TransitionManager.beginDelayedTransition(setupShiftTimeLayout, new AutoTransition());
+                   setupShiftTimeLayout.setVisibility(View.GONE);
+               }
+            }
+        });
+        proceedToReviewChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (oeeRequirementsLayout.getVisibility() == View.GONE){
+                    TransitionManager.beginDelayedTransition(oeeRequirementsLayout,new AutoTransition());
+                    oeeRequirementsLayout.setVisibility(View.VISIBLE);
+                    setupShiftTimeLayout.setVisibility(View.GONE);
+                    reviewDayDivider.setVisibility(View.VISIBLE);
+                    proceedToGetReportOfDaysReport.setVisibility(View.VISIBLE);
+                }else{
+                    TransitionManager.beginDelayedTransition(oeeRequirementsLayout,new AutoTransition());
+                    oeeRequirementsLayout.setVisibility(View.GONE);
+                    reviewDayDivider.setVisibility(View.GONE);
+                    proceedToGetReportOfDaysReport.setVisibility(View.GONE);
+                }
+            }
+        });
 
         runTimer();
 
@@ -569,6 +693,27 @@ TextInputLayout sleepHrsTextInputLayout, sleepMinTextInputLayout;
 
 
         });
+    }
+    private void selectTime(AutoCompleteTextView autoCompleteTextView){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour1, minute1) -> {
+            String formattedHour, formattedMinute;
+            if (hour1 < 10){
+                formattedHour = "0" + hour1;
+            }else{
+                formattedHour = "" + hour1;
+            }
+            if (minute1 < 10 ){
+                formattedMinute = "0" + minute1;
+            }else{
+                formattedMinute = "" + minute1;
+            }
+            selected_time = formattedHour + ":" + formattedMinute;
+            autoCompleteTextView.setText(HouseOfCommons.FormatTime(hour1, minute1));
+        },hour, minute,false);
+        timePickerDialog.show();
     }
     private void insertTimeTrackerDetails(Double randUserId,long dateToday,long duration,String reason){
         boolean b = dbHelper.insertIntoTimeTracker(randUserId,dateToday,duration,reason);

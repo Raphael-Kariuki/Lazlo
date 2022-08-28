@@ -15,7 +15,36 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
     android:orientation="vertical">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="15dp"
+    android:layout_marginTop="15dp"
+    android:gravity="center"
+    >
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/timeTrackerCardExtendedFloatingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_baseline_access_time_24"
+        android:text="@string/track_your_time_title"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.App.FloatingActionButton"
+        android:layout_weight="1"
+        />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/reviewYourDayExtendedFloatingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_baseline_sort_24"
+        android:text="Review your day"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.App.FloatingActionButton"
+        android:layout_weight="1"
+        />
+</LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/timeTrackerCard"
@@ -31,6 +60,7 @@ android:layout_height="wrap_content"
         android:focusable="false"
         android:checkable="false"
         >
+
 <LinearLayout
     android:id="@+id/parentCardContainer"
     android:layout_width="match_parent"
@@ -50,7 +80,7 @@ android:layout_height="wrap_content"
                 android:id="@+id/lostTimeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/track_your_time_title"
+                android:text="Track lost time"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:textColor="@color/black"
@@ -272,6 +302,11 @@ android:layout_height="wrap_content"
             />
     </LinearLayout>
     </LinearLayout>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:dividerColor="@color/grey"
+        android:outlineAmbientShadowColor="@color/black"/>
 
         <LinearLayout
             android:id="@+id/chipsNavigation"
@@ -279,6 +314,7 @@ android:layout_height="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
+
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -297,15 +333,9 @@ android:layout_height="wrap_content"
         </LinearLayout>
 </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/ic_baseline_sort_24"
-        android:text="Review your day"
-        android:layout_gravity="center_horizontal"
 
-        />
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/reviewYourDayCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
@@ -321,8 +351,88 @@ android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/setupShiftTimeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/setupShiftStartTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="true"
+                       android:padding="5dp"
+                        app:startIconDrawable="@drawable/ic_baseline_access_time_24"
 
+                        >
 
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/setupShiftStartAutocompleteView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Day start"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/setupShiftEndTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/black"
+                        app:hintEnabled="true"
+                      android:padding="5dp"
+                        app:startIconDrawable="@drawable/ic_baseline_access_time_24"
+                        >
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/setupShiftEndAutocompleteView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Day end"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/submitShiftStartAndEndBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"/>
+            </LinearLayout>
+
+<LinearLayout
+    android:id="@+id/oeeRequirementsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/shiftLength"
             android:layout_width="match_parent"
@@ -332,7 +442,23 @@ android:layout_height="wrap_content"
             android:textSize="13sp"
             android:textColor="@color/black"
             android:gravity="center"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Reset"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            />
+
+
+    </LinearLayout>
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/breaks"
             android:layout_width="match_parent"
@@ -383,12 +509,56 @@ android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:gravity="center"
             android:layout_gravity="center"/>
+</LinearLayout>
+            <LinearLayout
+                android:id="@+id/reviewDayChipsNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/setupShiftDurationChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set day start and end"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/proceedToReviewChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proceed to review day"/>
+
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/reviewDayDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:dividerColor="@color/grey"
+                android:outlineAmbientShadowColor="@color/black"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/proceedToGetReportOfDaysReport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proceed"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:tooltipText="Proceed to report generation"
+                />
+
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
+
 </ScrollView>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/timeTrackerNavigationView"
