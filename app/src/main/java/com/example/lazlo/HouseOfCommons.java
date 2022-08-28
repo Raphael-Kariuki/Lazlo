@@ -30,7 +30,7 @@ public class HouseOfCommons {
         return Double.parseDouble(formattedEntropy);
     }
     //this method converts the time into 12hr format and assigns am or pm. Essential for populating a view
-    public String FormatTime(int hour, int minute) {
+    public static String FormatTime(int hour, int minute) {
 
         String time;
         String formattedMinute;

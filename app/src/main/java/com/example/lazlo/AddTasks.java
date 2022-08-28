@@ -404,8 +404,7 @@ public class AddTasks extends AppCompatActivity {
                     formattedMinute = "" + minute1;
                 }
                 selected_time = formattedHour + ":" + formattedMinute;
-                HouseOfCommons houseOfCommons = new HouseOfCommons();
-                selectTime_AutocompleteView.setText(houseOfCommons.FormatTime(hour1, minute1));
+                selectTime_AutocompleteView.setText(HouseOfCommons.FormatTime(hour1, minute1));
             },hour, minute,false);
             timePickerDialog.show();
         }
