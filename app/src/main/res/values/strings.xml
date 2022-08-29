@@ -100,6 +100,9 @@
     <string name="complete_timer">Complete</string>
     <string name="time_tracker_helper_text">1. Press start to start recording time lost\n\n 2. Press pause to pause the timer. \n\n3. Press stop to end that timer session, a dialog will appear, fill in reason to account for that lost time.</string>
     <string name="timer_loading">loading ..</string>
+    <string name="lost_time_zero_">Zero lost time during the day ?</string>
+    <string name="sleep_must_be_accounted_for">Sleep must be accounted for</string>
+    <string name="zero_tasks_">Zero tasks have been worked on today</string>
     <string-array name="categories">
         <item>Home</item>
         <item>Shopping</item>

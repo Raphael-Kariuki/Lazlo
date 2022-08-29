@@ -161,47 +161,44 @@ public void onBackPressed(){}
 
 
         navigationView = findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_account:
-                        startActivity(new Intent(getApplicationContext(), editAccount.class));
-                        return true;
-                    case R.id.nav_dashboard:
-                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                        return true;
-                    case R.id.nav_timeTracker:
-                        startActivity(new Intent(getApplicationContext(), dailyReview.class));
-                        return true;
-                    case R.id.nav_addTasks:
-                        startActivity(new Intent(getApplicationContext(),AddTasks.class));
-                        return true;
-                    case R.id.nav_pendingTasks:
-                        startActivity(new Intent(getApplicationContext(), tasks.class));
-                        return true;
-                    case R.id.nav_completedTasks:
-                        startActivity(new Intent(getApplicationContext(), completed.class));
-                        break;
-                    case R.id.nav_draftTasks:
-                        startActivity(new Intent(getApplicationContext(),DraftTasks.class));
-                        break;
-                    case R.id.nav_security:
-                        startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
-                        break;
-                    case R.id.nav_logout:
-                        SharedPreferences prf;
-                        prf = getSharedPreferences("user_details",MODE_PRIVATE);
-                        Intent i = new Intent(getApplicationContext(),Login.class);
-                        SharedPreferences.Editor editor = prf.edit();
-                        editor.clear();
-                        editor.apply();
-                        startActivity(i);
-                        break;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_account:
+                    startActivity(new Intent(getApplicationContext(), editAccount.class));
+                    return true;
+                case R.id.nav_dashboard:
+                    startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                    return true;
+                case R.id.nav_timeTracker:
+                    startActivity(new Intent(getApplicationContext(), dailyReview.class));
+                    return true;
+                case R.id.nav_addTasks:
+                    startActivity(new Intent(getApplicationContext(),AddTasks.class));
+                    return true;
+                case R.id.nav_pendingTasks:
+                    startActivity(new Intent(getApplicationContext(), tasks.class));
+                    return true;
+                case R.id.nav_completedTasks:
+                    startActivity(new Intent(getApplicationContext(), completed.class));
+                    break;
+                case R.id.nav_draftTasks:
+                    startActivity(new Intent(getApplicationContext(),DraftTasks.class));
+                    break;
+                case R.id.nav_security:
+                    startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                    break;
+                case R.id.nav_logout:
+                    SharedPreferences prf;
+                    prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                    Intent i = new Intent(getApplicationContext(),Login.class);
+                    SharedPreferences.Editor editor = prf.edit();
+                    editor.clear();
+                    editor.apply();
+                    startActivity(i);
+                    break;
 
-                }
-                return false;
             }
+            return false;
         });
         tabLayout = findViewById(R.id.menu);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
