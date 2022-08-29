@@ -27,7 +27,6 @@
         >
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/completed_homeTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_baseline_home_24"
@@ -37,14 +36,12 @@
             />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/completed_shoppingTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_baseline_shopping_cart_24"
             android:text="@string/shopping" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/completed_schoolTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_baseline_school_24"
@@ -52,14 +49,12 @@
 
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/completed_businessTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_baseline_business_24"
             android:text="@string/business" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/completed_workTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_baseline_work_24"

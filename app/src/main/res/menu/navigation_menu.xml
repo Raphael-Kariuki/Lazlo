@@ -15,9 +15,8 @@
         android:id="@+id/nav_timeTracker"
         android:title="Time tracker"
         android:icon="@drawable/ic_baseline_access_time_24"/>
-    <group android:id="@+id/tasks">
-        <item android:id="@+id/tasksTitle"
-            android:title="Tasks">
+    <group>
+        <item android:title="Tasks">
             <menu >
                 <item
                     android:id="@+id/nav_addTasks"

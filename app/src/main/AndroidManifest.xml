@@ -55,23 +55,7 @@
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
-            android:name=".PendingTasks"
-            android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
             android:name=".individualTask"
-            android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
-        <activity
-            android:name=".CompletedTasks"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity

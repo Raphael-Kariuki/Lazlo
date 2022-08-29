@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -251,5 +252,21 @@ public class HouseOfCommons {
             e.printStackTrace();
         }
         return newDate;
+    }
+    public String[] obtainDayRange(){
+        Calendar calendar = Calendar.getInstance(HouseOfCommons.locale);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int dDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int yYear = calendar.get(Calendar.YEAR);
+
+        String startOfDay = String.format(HouseOfCommons.locale,"%d-%02d-%02d%s%02d:%02d",yYear,mMonth,dDay,"T",0,1);
+        String endOfDay = String.format(HouseOfCommons.locale,"%d-%02d-%02d%s%02d:%02d",yYear,mMonth,dDay,"T",0,0);
+
+        String[] dayRange = new String[2];
+        dayRange[0] = startOfDay;
+        dayRange[1] = endOfDay;
+
+        return dayRange;
+
     }
 }

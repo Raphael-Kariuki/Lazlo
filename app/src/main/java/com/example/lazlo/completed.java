@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -80,6 +81,7 @@ public class completed extends AppCompatActivity {
         completedTasksAdapter.complete_filterList(complete_filteredList);
 
     }
+    @SuppressLint({"NonConstantResourceId", "NotifyDataSetChanged"})
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
 
@@ -133,6 +135,7 @@ public class completed extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(menuItem);
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,44 +150,41 @@ public class completed extends AppCompatActivity {
 
 
         completedTaskNavigationView = findViewById(R.id.completedTasksNavigationView);
-        completedTaskNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_account:
-                        startActivity(new Intent(getApplicationContext(), editAccount.class));
-                        break;
-                    case R.id.nav_dashboard:
-                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                        break;
-                    case R.id.nav_addTasks:
-                        startActivity(new Intent(getApplicationContext(),AddTasks.class));
-                        break;
-                    case R.id.nav_pendingTasks:
-                        startActivity(new Intent(getApplicationContext(), tasks.class));
-                        break;
-                    case R.id.nav_completedTasks:
-                        startActivity(new Intent(getApplicationContext(), completed.class));
-                        break;
-                    case R.id.nav_draftTasks:
-                        startActivity(new Intent(getApplicationContext(),DraftTasks.class));
-                        break;
-                    case R.id.nav_security:
-                        startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
-                        break;
-                    case R.id.nav_logout:
-                        SharedPreferences prf;
-                        prf = getSharedPreferences("user_details",MODE_PRIVATE);
-                        Intent i = new Intent(getApplicationContext(),Login.class);
-                        SharedPreferences.Editor editor = prf.edit();
-                        editor.clear();
-                        editor.apply();
-                        startActivity(i);
-                        break;
+        completedTaskNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_account:
+                    startActivity(new Intent(getApplicationContext(), editAccount.class));
+                    break;
+                case R.id.nav_dashboard:
+                    startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                    break;
+                case R.id.nav_addTasks:
+                    startActivity(new Intent(getApplicationContext(),AddTasks.class));
+                    break;
+                case R.id.nav_pendingTasks:
+                    startActivity(new Intent(getApplicationContext(), tasks.class));
+                    break;
+                case R.id.nav_completedTasks:
+                    startActivity(new Intent(getApplicationContext(), completed.class));
+                    break;
+                case R.id.nav_draftTasks:
+                    startActivity(new Intent(getApplicationContext(),DraftTasks.class));
+                    break;
+                case R.id.nav_security:
+                    startActivity(new Intent(getApplicationContext(), inHousePasswordReset.class));
+                    break;
+                case R.id.nav_logout:
+                    SharedPreferences prf;
+                    prf = getSharedPreferences("user_details",MODE_PRIVATE);
+                    Intent i = new Intent(getApplicationContext(),Login.class);
+                    SharedPreferences.Editor editor = prf.edit();
+                    editor.clear();
+                    editor.apply();
+                    startActivity(i);
+                    break;
 
-                }
-                return false;
             }
+            return false;
         });
 
 
@@ -318,6 +318,7 @@ public class completed extends AppCompatActivity {
     }
     //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
     // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
+    @SuppressLint("NotifyDataSetChanged")
     private void SetOrRefreshListView2(){
         String tempCategory = this.getIntent().getStringExtra("tempCategory");
         if (tempCategory != null){

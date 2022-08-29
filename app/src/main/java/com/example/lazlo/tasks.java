@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -65,6 +66,7 @@ public void onBackPressed(){}
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint({"NonConstantResourceId", "NotifyDataSetChanged"})
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
         if (actionBarDrawerToggle.onOptionsItemSelected(menuItem)){
@@ -136,6 +138,7 @@ public void onBackPressed(){}
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -345,6 +348,7 @@ public void onBackPressed(){}
 
     //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
     // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
+    @SuppressLint("NotifyDataSetChanged")
     private void SetOrRefreshListView2(){
         String tempCategory = this.getIntent().getStringExtra("tempCategory");
         if (tempCategory != null){

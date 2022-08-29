@@ -6,9 +6,9 @@ public class completedTaskModel {
 
 
     private String taskTitle,taskDescription,taskCategory,taskAssociatedPrice,taskDeadline,taskPredictedDuration,ParentTaskId;
-    private long taskCreationTime,taskStartTime,taskCompleteTime,taskDuration;
+    private final long taskCreationTime,taskStartTime,taskCompleteTime,taskDuration;
     private Double randTaskId,randUserId;
-    private int taskTrial;
+    private final int taskTrial;
     private int taskState;
     private String parentTaskId;
 
@@ -62,32 +62,8 @@ public class completedTaskModel {
         this.taskState = taskState;
     }
 
-    public void setTaskPredictedDuration(String taskPredictedDuration) {
-        this.taskPredictedDuration = taskPredictedDuration;
-    }
-
-    public void setTaskCreationTime(long taskCreationTime) {
-        this.taskCreationTime = taskCreationTime;
-    }
-
     public void setTaskAssociatedPrice(String taskAssociatedPrice) {
         this.taskAssociatedPrice = taskAssociatedPrice;
-    }
-
-    public void setTaskCompleteTime(long taskCompleteTime) {
-        this.taskCompleteTime = taskCompleteTime;
-    }
-
-    public void setTaskDuration(long taskDuration) {
-        this.taskDuration = taskDuration;
-    }
-
-    public void setTaskStartTime(long taskStartTime) {
-        this.taskStartTime = taskStartTime;
-    }
-
-    public void setTaskTrial(int taskTrial) {
-        this.taskTrial = taskTrial;
     }
 
     public String getTaskDeadline() {
@@ -148,10 +124,6 @@ public class completedTaskModel {
 
     public String getParentTaskId() {
         return ParentTaskId;
-    }
-
-    public void setParentTaskId(String parentTaskId) {
-        ParentTaskId = parentTaskId;
     }
 
     public  static Comparator<completedTaskModel> tasksDeadlineComparatorAsc = (t1, t2) -> {

@@ -14,7 +14,6 @@
     >
 
     <ScrollView
-        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -49,7 +48,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/quickStatsView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
@@ -161,7 +159,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/barChartLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -238,7 +235,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/customAndMonthly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spendingView">
@@ -637,7 +633,6 @@
                     <!--          Duration Selection -->
 
                     <LinearLayout
-                        android:id="@+id/dates"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
@@ -689,7 +684,6 @@
 
                     <!-- end of duration selection -->
                     <LinearLayout
-                        android:id="@+id/showSpendingSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -717,7 +711,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/listViewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

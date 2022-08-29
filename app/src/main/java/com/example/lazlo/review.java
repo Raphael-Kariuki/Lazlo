@@ -27,22 +27,7 @@ Double randUserId;
         dbHelper = new DBHelper(this);
     }
 
-    private String[] obtainDayRange(){
-        Calendar calendar = Calendar.getInstance(HouseOfCommons.locale);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int dDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int yYear = calendar.get(Calendar.YEAR);
 
-        String startOfDay = String.format(HouseOfCommons.locale,"%d-%02d-%02d%s%02d:%02d",yYear,mMonth,dDay,"T",0,1);
-        String endOfDay = String.format(HouseOfCommons.locale,"%d-%02d-%02d%s%02d:%02d",yYear,mMonth,dDay,"T",0,0);
-
-        String[] dayRange = new String[2];
-        dayRange[0] = startOfDay;
-        dayRange[1] = endOfDay;
-
-        return dayRange;
-
-    }
     private int getCountOfTotalTasksPerDay(Double randUserId, String[] dayRange){
         ArrayList<LocalDateTime> localDateTimes = new ArrayList<>();
         for (String range: dayRange){

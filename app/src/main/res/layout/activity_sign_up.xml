@@ -169,7 +169,6 @@
         android:textAllCaps="false"
         />
     <TextView
-        android:id="@+id/Switch2login2"
         android:layout_below="@id/btnSignUp_signUpPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

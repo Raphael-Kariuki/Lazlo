@@ -29,7 +29,6 @@
             >
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/homeTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home"
@@ -38,14 +37,12 @@
 
                 />
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/shoppingTasks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/shopping"
                 android:icon="@drawable/ic_baseline_shopping_cart_24"
                 />
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/schoolTasks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/school"
@@ -54,7 +51,6 @@
 
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/businessTasks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/business"
@@ -62,7 +58,6 @@
                 />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/workTasks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/work"
