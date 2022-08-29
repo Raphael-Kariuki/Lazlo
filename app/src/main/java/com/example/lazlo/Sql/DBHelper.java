@@ -1,11 +1,12 @@
 package com.example.lazlo.Sql;
 
 /*added code*/
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("create Table if not exists Completed_N_DeletedTasks(_id INTEGER PRIMARY KEY,randUserId DOUBLE NOT NULL, randTaskId DOUBLE NOT NULL,taskDeadline LOCALDATETIME NOT NULL,taskStartTime LONG NOT NULL, taskPauseTime LONG , taskResumeTime LONG, taskCancelTime LONG,taskCompleteTime LONG, taskDuration LONG, taskType TEXT, taskTrial INTEGER NOT NULL)");
         DB.execSQL("create Table if not exists TimeTracker(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL,dateToday LONG NOT NULL, lostDuration LONG NOT NULL, lostDurationReason TEXT)");
         DB.execSQL("create Table if not exists HoursOfSleep(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL, DateToRecord LONG UNIQUE NOT NULL,HoursOfSleep LONG NOT NULL)");
+        DB.execSQL("create Table if not exists ReviewYourDayDetails(_id INTEGER PRIMARY KEY, randUserId DOUBLE NOT NULL, ShiftStart LOCALDATETIME NOT NULL,ShiftDuration LONG NOT NULL)");
     }
 
     //method run when there's a db upgrade
@@ -39,8 +41,26 @@ public class DBHelper extends SQLiteOpenHelper {
         DB.execSQL("drop Table if exists Completed_N_DeletedTasks");
         DB.execSQL("drop Table if exists TimeTracker");
         DB.execSQL("drop Table if exists HoursOfSleep");
+        DB.execSQL("drop Table if exists ReviewYourDayDetails");
         //recreate the db
         onCreate(DB);
+    }
+    public boolean updateShiftDetails(Double randUserId, LocalDateTime shiftStart){
+        ContentValues cv = new ContentValues();
+        cv.put("ShiftStart", String.valueOf(shiftStart));
+        int rv;
+        rv = this.getWritableDatabase().update("ReviewYourDayDetails",cv,"randUserId = ?",new String[]{String.valueOf(randUserId)});
+        return rv != -1;
+
+    }
+    public boolean insertShiftDetails(Double randUserId, LocalDateTime shiftStart, Long ShiftDuration){
+        ContentValues cv = new ContentValues();
+        cv.put("randUserId", randUserId);
+        cv.put("ShiftStart", String.valueOf(shiftStart));
+        cv.put("ShiftDuration", ShiftDuration);
+        Long rv;
+        rv = this.getWritableDatabase().insert("ReviewYourDayDetails",null,cv);
+        return rv != -1;
     }
     public boolean insertHoursOfSleep(Double randUserId,Long DateToRecord, Long HoursOfSleep){
         ContentValues cv = new ContentValues();
@@ -53,8 +73,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return rv != -1;
 
     }
-    public Cursor getHoursOfSleepDetails(Double randUserId){
-        return this.getWritableDatabase().query("HoursOfSleep",null,"randUserId = ?",new String[]{String.valueOf(randUserId)},null,null,"DateToRecord ASC");
+    public Cursor getHoursOfSleepDetails(Double randUserId,Long startOfDay, Long endOfDay){
+        return this.getWritableDatabase().query("HoursOfSleep",null,"randUserId = ? and DateToRecord > ? and DateToRecord < ?",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,"DateToRecord ASC");
     }
     public Cursor getCountOfTasksPerDay(Double randUserId,LocalDateTime startOfDay, LocalDateTime endOfDay){
         //return this.getWritableDatabase().query("TaskList",new String[]{count("randTaskId")},"randUserId = ? and taskDeadline > ? and taskDeadline < ?",new String[]{String.valueOf(randUserId),String.valueOf(startOfDay),String.valueOf(endOfDay)},null,null,null);
