@@ -3,12 +3,23 @@ package com.example.lazlo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -43,6 +54,48 @@ public class AddTasks extends AppCompatActivity {
     TextInputLayout taskTitle_TextLayout,taskDescription_TextLayout,tasksCategoryTextLayout,
             price_TextLayout,selectedDate_TextInputLayout,selectedTime_TextInputLayout,predictedDuration_TextInputLayout,predictedDurationUnits_TextInputLayout;
     boolean b,d;
+
+
+
+    //create channel
+    private void createNotificationChannel(){
+            CharSequence name = "lazloChannel";
+            String description = "Lazlo's channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("lazlo", name, importance);
+            channel.setDescription(description);
+
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+    }
+
+    //set alarm and send required values to notification receiver
+    private void setAlarm(long delay,double randUserId, double randTaskId,String taskTitle, String taskDescription,String category,double price,LocalDateTime deadline,long taskCreation,String duration){
+        Intent intent = new Intent(AddTasks.this, NotificationsReceiver.class);
+        intent.putExtra("randUserId", randUserId);
+        intent.putExtra("randTaskId", randTaskId);
+        intent.putExtra("taskTitle", taskTitle);
+        intent.putExtra("taskDescription", taskDescription);
+        intent.putExtra("category", category);
+        intent.putExtra("price", String.valueOf(price));
+        intent.putExtra("deadline", String.valueOf(deadline));
+        intent.putExtra("taskCreation", String.valueOf(taskCreation));
+        intent.putExtra("duration", duration);
+
+
+        sendBroadcast(intent);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(AddTasks.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long futureMills = System.currentTimeMillis() + delay;
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, futureMills, pendingIntent);
+
+
+
+    }
 
 
 
@@ -91,6 +144,8 @@ public class AddTasks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tasks);
+
+        createNotificationChannel();
 
         //initialize db class to use in sql transactions
         dbHelper = new DBHelper(this);
@@ -201,7 +256,15 @@ public class AddTasks extends AppCompatActivity {
                                                                 Double randomTaskId = HouseOfCommons.generateRandomId();
                                                                 Integer defaultTaskState = 0;
                                                                 String defaultParentTaskId = "0.0";
-                                                                b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,new Date().getTime(),duration,defaultTaskState,defaultParentTaskId);
+                                                                long creationDate = new Date().getTime();
+                                                                b = dbHelper.insertTasks(randomTaskId,Double.parseDouble(randUserId), taskTitle_String, taskDescription_String, selected_category, Price, selected_date,creationDate,duration,defaultTaskState,defaultParentTaskId);
+
+
+                                                                //setup notification and alarm to be triggered halfway and 1/3 through the deadline
+                                                                long diff = HouseOfCommons.getDateFromLocalDateTime(selected_date).getTime() - System.currentTimeMillis();
+                                                                setAlarm((diff/3),Double.parseDouble(randUserId),randomTaskId, taskTitle_String, taskDescription_String,selected_category,Price,selected_date,creationDate,duration);
+                                                                setAlarm((diff/2),Double.parseDouble(randUserId),randomTaskId, taskTitle_String, taskDescription_String,selected_category,Price,selected_date,creationDate,duration);
+
 
                                                             }catch(Exception e){
                                                                 System.out.println("Db insertion error: " + e);
