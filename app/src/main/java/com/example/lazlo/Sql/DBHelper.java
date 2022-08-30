@@ -364,6 +364,14 @@ public class DBHelper extends SQLiteOpenHelper {
                         "where ctl.randUserId = ? and tl.TaskCategory = ? and tl.taskState = 5 order by completedTaskCompletionDate ",
                 new String[]{String.valueOf(randUserId), String.valueOf(category)});
     }
+    public Cursor getCompletedTasksCount(Double randUserId, String category){
+        return this.getWritableDatabase().rawQuery("select count(tl.randTaskId) as count from TaskList tl inner join " +
+                "Completed_N_DeletedTasks ctl on tl.randTaskId = ctl.randTaskId where ctl.randUserId = ? and tl.TaskCategory = ? " +
+                "and tl.taskState = 5 ", new String[]{String.valueOf(randUserId),String.valueOf(category)});
+    }
+    public Cursor getCountPerCategory(Double randUserId, String category){
+        return this.getWritableDatabase().rawQuery("select count(randTaskId) as count from TaskList where randUserId = ? and TaskCategory = ? and taskState != 5",new String[]{String.valueOf(randUserId),String.valueOf(category)});
+    }
 
     public Cursor getAllTasksById(Long taskId, Double randUserId) {
         return this.getWritableDatabase().rawQuery("Select distinct " +

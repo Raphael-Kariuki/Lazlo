@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -25,6 +26,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class tasks extends AppCompatActivity {
 DBHelper dbHelper;
@@ -144,6 +146,19 @@ public void onBackPressed(){}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
+        //obtain user id and name from sharedPreferences
+        sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
+
+        //if randUserId doesn't exist in sharedPreferences, then exit to login page, this is unauthorized access
+        try {
+            randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
+        }catch (NullPointerException e){
+            startActivity(new Intent(getApplicationContext(), Login.class));
+        }
+        user_name = sharedPreferences.getString("username",null);
+
+
+
         //initialize database class helper
         dbHelper = new DBHelper(this);
 
@@ -204,6 +219,13 @@ public void onBackPressed(){}
             return false;
         });
         tabLayout = findViewById(R.id.menu);
+        int[] counts = getCategoryCount(randUserId);
+        tabLayout.getTabAt(0).getOrCreateBadge().setNumber(counts[0]);
+        tabLayout.getTabAt(1).getOrCreateBadge().setNumber(counts[1]);
+        tabLayout.getTabAt(2).getOrCreateBadge().setNumber(counts[2]);
+        tabLayout.getTabAt(3).getOrCreateBadge().setNumber(counts[3]);
+        tabLayout.getTabAt(4).getOrCreateBadge().setNumber(counts[4]);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -248,16 +270,7 @@ public void onBackPressed(){}
 
 
 
-        //obtain user id and name from sharedPreferences
-        sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
 
-        //if randUserId doesn't exist in sharedPreferences, then exit to login page, this is unauthorized access
-        try {
-            randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
-        }catch (NullPointerException e){
-            startActivity(new Intent(getApplicationContext(), Login.class));
-        }
-        user_name = sharedPreferences.getString("username",null);
 
         // process add task
         btn_addTasks =  findViewById(R.id.btn_addTasks);
@@ -282,6 +295,28 @@ public void onBackPressed(){}
 
 
 
+    }
+    private int[] getCategoryCount(Double randUserId){
+        Cursor count = null;
+        String[] categoryToGetCount = {"Home","Shopping","School","Business","Work"};
+        int[] counts = new int[5];
+        int categoryCount = 0;
+        int x = 0;
+
+        while(x < 5){
+                try {
+                    count = dbHelper.getCountPerCategory(randUserId,categoryToGetCount[x]);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if (count != null && count.moveToFirst()){
+                    categoryCount = count.getInt(count.getColumnIndexOrThrow("count"));
+                }
+                counts[x] = categoryCount;
+                Log.i("x",""+x);
+                x ++;
+            }
+            return counts;
     }
     //obtain Home category content and populate list view on Home button click
     private  void populateHomeTasks(){

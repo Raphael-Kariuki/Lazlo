@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -46,9 +47,14 @@ public class completed extends AppCompatActivity {
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.task_bar_menu, menu);
+
+        //obtain the search element declared in the menu meant to be displayed on the action bar
         SearchView searchView = (SearchView) menu.findItem(R.id.search_bar).getActionView();
+
+        //iconify by default
         searchView.setIconifiedByDefault(true);
 
+        //create a query listener
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -65,8 +71,11 @@ public class completed extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+    //function that filters contents of an array list created with task details in the completed.class
     private void filter(String s) {
         ArrayList<completedTaskModel> complete_filteredList = new ArrayList<>();
+
         for (completedTaskModel item: completedTaskModelArrayList){
             Locale locale = new Locale("en","KE");
             if (item.getTaskTitle().toLowerCase(locale).contains(s.toLowerCase(locale))
@@ -85,10 +94,12 @@ public class completed extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
 
+        //process menu icon to show navigation menu
         if (completedTaskActionBarDrawerToggle.onOptionsItemSelected(menuItem)){
             return true;
-
         }
+
+        //iterate through the elements of the menu to perform the required actions
         switch (menuItem.getItemId()) {
 
             case R.id.sortByDates:
@@ -100,7 +111,8 @@ public class completed extends AppCompatActivity {
                     stateToDetermineSortDeadlines = null;
                 }
                 completedTasksAdapter.notifyDataSetChanged();
-                break;
+                return true;
+
             case R.id.sortByCreationTime:
                 if (stateToDetermineSortCreation == null){
                     completedTaskModelArrayList.sort(completedTaskModel.tasksCreationComparatorAsc);
@@ -110,7 +122,7 @@ public class completed extends AppCompatActivity {
                     stateToDetermineSortCreation = null;
                 }
                 completedTasksAdapter.notifyDataSetChanged();
-                break;
+               return  true;
             case R.id.sortByDuration:
                 if (stateToDetermineSortDuration == null){
                     completedTaskModelArrayList.sort(completedTaskModel.tasksDurationComparatorAsc);
@@ -120,7 +132,7 @@ public class completed extends AppCompatActivity {
                     stateToDetermineSortDuration = null;
                 }
                 completedTasksAdapter.notifyDataSetChanged();
-                break;
+                return true;
             case R.id.sortByPrice:
                 if (stateToDetermineSortPrice == null){
                     completedTaskModelArrayList.sort(completedTaskModel.tasksPriceComparatorAsc);
@@ -130,10 +142,13 @@ public class completed extends AppCompatActivity {
                     stateToDetermineSortPrice = null;
                 }
                 completedTasksAdapter.notifyDataSetChanged();
-                break;
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(menuItem);
+
 
         }
-        return super.onOptionsItemSelected(menuItem);
     }
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -142,13 +157,43 @@ public class completed extends AppCompatActivity {
         setContentView(R.layout.activity_completed);
 
 
+        //initialize database class helper
+        dbHelper = new DBHelper(this);
+
+        ///setup action bar
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Completed tasks");
+
+        //obtain user id and name from sharedPreferences
+        sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
+
+        //if randUserId doesn't exist in sharedPreferences, then exit to login page, this is unauthorized access
+        try {
+            randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
+        }catch (NullPointerException e){
+            startActivity(new Intent(getApplicationContext(), Login.class));
+        }
+
+
+        //get the drawer layout
         completedTaskDrawerLayout = findViewById(R.id.completedTskDrawerLayout);
+
+        //initialize the toggle to show and hide the menu
         completedTaskActionBarDrawerToggle = new ActionBarDrawerToggle(this,completedTaskDrawerLayout,R.string.open_drawer,R.string.close_drawer);
 
+        //bind the toggle to the drawer
         completedTaskDrawerLayout.addDrawerListener(completedTaskActionBarDrawerToggle);
         completedTaskActionBarDrawerToggle.syncState();
 
 
+        //process the recycle view
+        completed_recyclerView = findViewById(R.id.completed_recyclerView);
+        completed_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        completed_recyclerView.setHasFixedSize(true);
+
+        //obtain the navigation view and set a on-click listener
         completedTaskNavigationView = findViewById(R.id.completedTasksNavigationView);
         completedTaskNavigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
@@ -182,38 +227,19 @@ public class completed extends AppCompatActivity {
                     editor.apply();
                     startActivity(i);
                     break;
-
             }
             return false;
         });
 
 
-        //initialize database class helper
-        dbHelper = new DBHelper(this);
-
-        ///setup action bar
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Completed tasks");
-
-
-
-        //obtain user id and name from sharedPreferences
-        sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
-
-        //if randUserId doesn't exist in sharedPreferences, then exit to login page, this is unauthorized access
-        try {
-            randUserId = Double.parseDouble(sharedPreferences.getString("randomUserId", null));
-        }catch (NullPointerException e){
-            startActivity(new Intent(getApplicationContext(), Login.class));
-        }
-
-        completed_recyclerView = findViewById(R.id.completed_recyclerView);
-        completed_recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        completed_recyclerView.setHasFixedSize(true);
-
+        //process the tabLayout to perform specific action on individual tab press
         tabLayout = findViewById(R.id.completed_menu);
+        int[] counts = getCategoryCount(randUserId);
+        tabLayout.getTabAt(0).getOrCreateBadge().setNumber(counts[0]);
+        tabLayout.getTabAt(1).getOrCreateBadge().setNumber(counts[1]);
+        tabLayout.getTabAt(2).getOrCreateBadge().setNumber(counts[2]);
+        tabLayout.getTabAt(3).getOrCreateBadge().setNumber(counts[3]);
+        tabLayout.getTabAt(4).getOrCreateBadge().setNumber(counts[4]);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -256,6 +282,28 @@ public class completed extends AppCompatActivity {
 
 
     }
+    private int[] getCategoryCount(Double randUserId){
+        Cursor count = null;
+        String[] categoryToGetCount = {"Home","Shopping","School","Business","Work"};
+        int[] counts = new int[5];
+        int categoryCount = 0;
+        int x = 0;
+
+        while(x < 5){
+            try {
+                count = dbHelper.getCompletedTasksCount(randUserId,categoryToGetCount[x]);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if (count != null && count.moveToFirst()){
+                categoryCount = count.getInt(count.getColumnIndexOrThrow("count"));
+            }
+            counts[x] = categoryCount;
+            Log.i("x",""+x);
+            x ++;
+        }
+        return counts;
+    }
     //obtain Home category content and populate list view on Home button click
     private  void populateHomeTasks(){
         completedTasksCursor = dbHelper.getAllByCategories(randUserId,"Home");
@@ -286,10 +334,9 @@ public class completed extends AppCompatActivity {
         completedTasksPopulate();
 
     }
+    //function to obtain values from the db on a provided cursor, the store them in an array
     private void completedTasksPopulate(){
         completedTaskModelArrayList = new ArrayList<>();
-
-
         while(completedTasksCursor != null && completedTasksCursor.moveToNext()){
             Double completedTaskRandTaskId = completedTasksCursor.getDouble(completedTasksCursor.getColumnIndexOrThrow("completedTaskRandTaskId"));
             Double completedTaskRandUserId = completedTasksCursor.getDouble(completedTasksCursor.getColumnIndexOrThrow("completedTaskRandUserId"));
@@ -308,15 +355,18 @@ public class completed extends AppCompatActivity {
             String completedTaskParentTaskId = completedTasksCursor.getString(completedTasksCursor.getColumnIndexOrThrow("completedTaskParentTaskId"));
 
 
+            //add the obtained values to an array list
             completedTaskModelArrayList.add(new completedTaskModel(completedTaskRandTaskId,completedTaskRandUserId,completedTaskTitle,
                     completedTaskDescription,completedTaskAssociatedPrice,completedTaskCategory,completedTaskDeadline,completedTaskCreationDate
                     ,completedTaskStartDate,completedTaskCompletionDate,completedTaskActualDuration,completedTaskPredictedDuration,
                     completedTaskTrials,completedTaskState,completedTaskParentTaskId));
         }
+
+        //attach the arrayList with values to ana adapter  and bind the adapter to the recyclerView
         completedTasksAdapter = new completedTasksAdapter(this, completedTaskModelArrayList);
         completed_recyclerView.setAdapter(completedTasksAdapter);
     }
-    //this function on the other hand receives a category string from addTasks. This is to ensure once a task is added, it's category is automatically
+    //this function on the other hand receives a category string a preceding activity. This is to ensure configured, it's category is automatically
     // rendered on the list view, not some different category. The specific category button is also highlighted . UX matters
     @SuppressLint("NotifyDataSetChanged")
     private void SetOrRefreshListView2(){
