@@ -141,7 +141,7 @@ public class HouseOfCommons {
         Matcher matcher = pattern.matcher(passphrase);
         return matcher.matches();
     }
-    //function converts a localDateTime to date so as to further
+    //function converts a localDateTime to date, further used in returnFormattedDeadline
     public static Date getDateFromLocalDateTime(LocalDateTime localDateTime){
         return Date.from(localDateTime.atZone(ZoneId.of("GMT+3")).toInstant());
     }
@@ -154,7 +154,7 @@ public class HouseOfCommons {
     /*
     *function that implements 2 functions
     * 1st obtains a date from a localDateTime
-    * 2nd format the obtained date to a specific date format
+    * 2nd format the obtained date to a specific date format. Used in populating views. IndividualCompletedTask
      */
     public static String returnFormattedDeadline(String localDateTimeDeadline){
         Date newDate = getDateFromLocalDateTime(LocalDateTime.parse(localDateTimeDeadline));
@@ -183,7 +183,7 @@ public class HouseOfCommons {
     }
     /*
     * This function receives a value that represents the duration a task was carried out. Formats the value to a presentable format
-    * for populating the completed task details
+    * for populating the completed task details. Used in populating view in individual task
     * */
     public static String returnDuration(long duration){
         String formattedDuration;
@@ -243,6 +243,7 @@ public class HouseOfCommons {
         public static final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en","KE"));
         public static final Locale locale = new Locale("en", "KE");
 
+        //function that converts a string to date using a formatter
     public static LocalDateTime stringToDate(String date) {
         LocalDateTime newDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d-L-yyyy HH:mm");
