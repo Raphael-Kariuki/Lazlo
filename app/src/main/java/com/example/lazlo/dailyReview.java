@@ -35,6 +35,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -73,6 +74,8 @@ MaterialAutoCompleteTextView setupShiftStartAutocompleteView;
 MaterialDivider reviewDayDivider;
 
 Long finalDownTime,finalBreak,finalIdealCycleTime;
+MaterialCardView oeeResults,oeeResultsOverall;
+MaterialTextView Availabilty, pPerformance, qQuality,overallOeePercentage;
 
     //store page instance when page is paused or destroyed
     @Override
@@ -298,8 +301,8 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
 
 
         //view to show on successful shift setup
-        successSetupShiftStart.findViewById(R.id.successSetupShiftStart);
-        successSetupShiftStart.setVisibility(View.GONE);
+        //successSetupShiftStart.findViewById(R.id.successSetupShiftStart);
+        //successSetupShiftStart.setVisibility(View.GONE);
 
         //container layout for oee requirements
         oeeRequirementsLayout = findViewById(R.id.oeeRequirementsLayout);
@@ -319,6 +322,17 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
 
         //btn to proceed and do the calculations for the oee
         proceedToGetReportOfDaysReport = findViewById(R.id.proceedToGetReportOfDaysReport);
+
+        //oeeResults
+        oeeResults = findViewById(R.id.oeeResults);
+        oeeResults.setVisibility(View.GONE);
+        oeeResultsOverall = findViewById(R.id.oeeResultsOverall);
+        oeeResultsOverall.setVisibility(View.GONE);
+        Availabilty = findViewById(R.id.Availabilty);
+        pPerformance = findViewById(R.id.Performance);
+        qQuality = findViewById(R.id.Quality);
+        overallOeePercentage = findViewById(R.id.overallOeePercentage);
+
 
 
 
@@ -558,7 +572,8 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
 
             long idealCycleTime;
             long differenceBetweenShiftDurationMinusTotalLostDurationPlusDowntime;
-            differenceBetweenShiftDurationMinusTotalLostDurationPlusDowntime  = ((24 * 3600000) - totalLostDurationPlusDowntime);
+            differenceBetweenShiftDurationMinusTotalLostDurationPlusDowntime  = ((24 * 3600) - totalLostDurationPlusDowntime);
+            Log.i("diff",""+differenceBetweenShiftDurationMinusTotalLostDurationPlusDowntime);
 
             if (totalTasksPerDay != 0){
                 idealCycleTime  = differenceBetweenShiftDurationMinusTotalLostDurationPlusDowntime / totalTasksPerDay;
@@ -570,8 +585,8 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
                 //process ideal cycle tim e for population
                 int hrs;
                 int min;
-                hrs = (int) (idealCycleTime / 3600000);
-                min = (int) ((idealCycleTime % 3600000) / 600000);
+                hrs = (int) (idealCycleTime / 3600);
+                min = (int) ((idealCycleTime % 3600) / 60);
 
                 String idealCycleTime_str = String.format(HouseOfCommons.locale,"%s %d %s %d %s","The ideal task time : ",hrs, "hours", min, "minutes");
                 idealCycleTimeTextView.setText(idealCycleTime_str);
@@ -940,8 +955,13 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
         proceedToGetReportOfDaysReport.setOnClickListener(view -> {
             int shiftLength = 24;
             Long breaks = finalBreak; //<------------seconds
-            Long downtime = finalDownTime; //<-------seconds
-            Long idealCycleTime = finalIdealCycleTime / 1000; //<---------millis
+            Long downtime;
+            if(finalDownTime == null){
+                 downtime = Long.parseLong("0"); //<-------seconds
+            }else{
+                downtime = finalDownTime;
+            }
+            Long idealCycleTime = finalIdealCycleTime ; //<---------millis
             int totalCount = finalTotalTasks; //<-----int
             int rejectCount = finalPendingTasksPerDay; //<-----int
             Log.i("Final data",breaks +":"+downtime+":"+idealCycleTime+":"+totalCount+":"+rejectCount);
@@ -962,6 +982,19 @@ Long finalDownTime,finalBreak,finalIdealCycleTime;
             Log.i("oee",""+Performance);
             Log.i("oee",""+Quality);
             Log.i("oee",""+oee);
+
+            String pattern = "##.##";
+            DecimalFormat decimalFormat = new DecimalFormat(pattern);
+
+            Availabilty.setText(String.format(HouseOfCommons.locale,"%s : %s%s","Your availability to perform tasks was", decimalFormat.format(Availability * 100),"%" ));
+            qQuality.setText(String.format(HouseOfCommons.locale,"%s : %s%s", "The quality of task performed  ",decimalFormat.format(Quality * 100),"%"));
+            pPerformance.setText(String.format(HouseOfCommons.locale,"%s : %s%s", "Your performance today was  ",decimalFormat.format(Performance * 100),"%"));
+
+            overallOeePercentage.setText(String.format(HouseOfCommons.locale,"%s%s", decimalFormat.format(oee ),"%"));
+            oeeResultsOverall.setVisibility(View.VISIBLE);
+            oeeResults.setVisibility(View.VISIBLE);
+            reviewYourDayCardView.setVisibility(View.GONE);
+            timeTrackerCard.setVisibility(View.GONE);
 
         });
     }

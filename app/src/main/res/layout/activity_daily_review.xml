@@ -446,7 +446,7 @@ android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"/>
             </LinearLayout>
-            <LinearLayout
+           <!-- <LinearLayout
                 android:id="@+id/successSetupShiftStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -464,6 +464,7 @@ android:layout_height="wrap_content"
                     android:layout_weight="1"
                     />
             </LinearLayout>
+            -->
 
 
 <LinearLayout
@@ -574,6 +575,104 @@ android:layout_height="wrap_content"
 
 
         </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/oeeResultsOverall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/black"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false"
+        app:contentPadding="4dp"
+        android:fadingEdgeLength="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Overall performance"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/overallOeePercentage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="@string/loading"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/oeeResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/black"
+        android:clickable="false"
+        android:focusable="false"
+        android:checkable="false"
+        app:contentPadding="4dp"
+        android:fadingEdgeLength="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/Availabilty"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/loading"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/Performance"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/loading"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/Quality"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/loading"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+
+
+        </LinearLayout>
+
 
     </com.google.android.material.card.MaterialCardView>
 
