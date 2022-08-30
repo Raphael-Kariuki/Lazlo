@@ -18,7 +18,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text= "It's a dangerous business, Frodo, going out of your door.\n
+            android:text= "It's a dangerous business, Frodo, going out of your door.\n\n
 You step into the road, and if you don't keep your feet, there's no knowing where you might be swept off to."
             style="@style/TextAppearance.Material3.TitleMedium"
             android:textColor="@color/grey"
@@ -26,8 +26,8 @@ You step into the road, and if you don't keep your feet, there's no knowing wher
             android:textStyle="bold"
             android:textSize="30sp"
             android:padding="@dimen/activity_vertical_margin"
-            app:fontFamily="cursive"
             android:layout_weight="1"
+            app:fontFamily="casual"
             />
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/unlock"
