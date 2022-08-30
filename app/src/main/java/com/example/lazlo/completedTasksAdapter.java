@@ -22,6 +22,8 @@ public class completedTasksAdapter extends RecyclerView.Adapter<completedTasksAd
     private final Context nContext;
     private ArrayList<completedTaskModel> nTaskModelArrayList;
 
+
+    //class constructor
     public completedTasksAdapter(Context nContext, ArrayList<completedTaskModel> completedTaskModelArrayList) {
         this.nContext = nContext;
         this.nTaskModelArrayList = completedTaskModelArrayList;
